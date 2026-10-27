@@ -50,9 +50,10 @@ with open(os.path.join(root, "docs", "genome16S_decisions.tsv")) as fh:
     decision = {r["genome"]: r for r in csv.DictReader(fh, delimiter="\t")}
 sintax = {r[0].split(";")[0]: (r[3] if len(r) > 3 else "") for r in table("custom_16S_vs_gtdb.tsv")}
 
-# longest validated copy per genome = the one the tree uses
+# longest validated copy per genome = the one the tree uses; sorted so that ties (copies of equal length)
+# always go to the lowest copy number (iterating the set directly changed the pick between runs)
 longest = {}
-for sid in clean:
+for sid in sorted(clean):
     g = sid.split("__16S_")[0]
     if g not in longest or len(seqs[sid]) > len(seqs[longest[g]]):
         longest[g] = sid

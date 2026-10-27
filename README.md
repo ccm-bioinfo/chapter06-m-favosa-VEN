@@ -15,6 +15,8 @@ Do the Lactobacillaceae ASVs of the only *M. favosa* sample (B-VEN-D9, 10MFH) ge
 classification when the references include our full-length 16S recovered from MAGs/genomes
 (Clades 1–4, Xolalpa-Aroche et al. 2026) instead of GTDB/AMPtk alone?
 
+Final results, methods and caveats: [`docs/summary.md`](docs/summary.md).
+
 ## Data policy
 No data are committed to GitHub: `data/` holds only symlinks (see `data/manifest.tsv`).
 Inputs and final results will be deposited in Zenodo record
@@ -38,17 +40,17 @@ full APIBA 16S dataset 10.5281/zenodo.20481566.
 | `00_download_zenodo.sh` | anywhere | `data/` from Zenodo (once the record is published) |
 | `01_inputs_overview.py <host>` | both | input counts (merged into `docs/inputs_overview.tsv`) |
 | `02_favosa_asvs.py` | Mac | `results/favosa_ASVs.tsv`: first look at B-VEN-D9 ASVs and earlier classifications |
-| `03_genome16S_review.py` | alnitak | `results/03_genome16S_review.tsv`: barrnap 16S per genome + decisions in `docs/genome16S_decisions.tsv` |
+| `03_genome16S_review.py` | alnitak | `results/03_genome16S_review.tsv`: barrnap 16S per genome + decisions in `docs/genome16S_decisions.tsv` (the single place where genomes enter or leave: unpublished isolates, Costa Rica MAG, contaminated 16S and public genomes that duplicate a GTDB reference are `use=no`) |
 | `04_favosa_queries.py` | both | `results/04_queries/`: B-VEN-D9 ASVs (all 273; 69 Lactobacillaceae by AMPtk) |
-| `05_mg16S_labels.py` | Mac | `docs/mg16S_labels.tsv`: genus and paper clade of each recovered 16S (strongest MarkerMAG link) |
+| `05_mg16S_labels.py` | Mac | `docs/mg16S_labels.tsv`: genus and paper clade of each recovered 16S (strongest MarkerMAG link; Clades 3 and 4 merged as Clade 3-4) |
 | `06_sintax_refs.py` | alnitak | `results/06_sintax/refs/`: SILVA 138.2, GTDB r226, GTDB + our 16S, sensitivity (no MAG_41/45 16S) |
 | `07_sintax.sh` | alnitak | `results/06_sintax/*.tsv`: SINTAX (cutoff 0.8, seed 1) of the 273 ASVs per reference |
 | `08_tree_inputs.py` | alnitak | `results/08_tree/`: GTDB + our genome 16S + MG16S references, ASV queries, tip table |
 | `09_constraint.R` | Mac | `results/08_tree/constraint.tree`: GTDB genome topology, our 16S at their genus MRCA |
 | `10_tree.sh` | alnitak | constrained IQ-TREE, EPA-ng placement, gappa assignment and grafted tree |
 | `11_compare.py` | both | `results/11_compare/`: per-ASV classification by method, LAB summary, whole-community genus summary |
-| `13_identity.sh` | alnitak | `results/13_identity/`: best-hit identity of each LAB ASV to our 16S vs GTDB |
+| `13_identity.sh` | alnitak | `results/13_identity/`: best-hit identity of each LAB ASV to our 16S vs GTDB (then deletes the 1.2 GB `gtdb_ours.fa`) |
 | `14_fig6_4.R` | Mac | `results/14_fig6_4/`: chapter Fig. 6.4 (A ITS1 from VIT tables, B 16S by reference = fig1) + fungal genus table behind Table 6.4 |
-| `12_figures.R` | Mac | `results/12_figures/`: fig1 genus composition per method (style of chapter Fig. 6.4B), fig2 circular placement tree (style of VIT lab16S_circular) |
+| `12_figures.R` | Mac | `results/12_figures/`: fig1 genus composition per method (style of chapter Fig. 6.4B); fig2 circular placement tree (style of VIT lab16S_circular); fig3 Nicoliella zoom; fig4/fig4b Nicoliella–Acetilactobacillus subtree rooted on Fructilactobacillus (rectangular / circular); fig5 pairwise V4 differences heatmap (+ TSV) |
 
-Order: 00 → 03 → 04 → 05 (Mac) → 06 → 07 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac).
+Order: 00 → 03 → 04 → 05 (Mac) → 06 → 07 → 13 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac) → 14 (Mac).

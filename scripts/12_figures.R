@@ -85,7 +85,7 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
            type == "GTDB"       ~ "GTDB r226 reference",
            type == "genome" & grepl("^MAG_", label)       ~ "Xolalpa 2026 MAG",
            type == "genome" & grepl("^N_barcode", label)  ~ "Xolalpa 2026 isolate",
-           type == "genome"     ~ "Public bee-LAB genome (custom set)",
+           type == "genome"     ~ "Public bee-LAB isolate genome (custom set)",
            type == "metagenome" ~ "16S recovered from Xolalpa 2026 metagenomes",
            clade != ""          ~ paste0("ASV: ", clade),
            genus == "Acetilactobacillus" ~ "ASV: Acetilactobacillus",
@@ -106,12 +106,12 @@ d <- d |> mutate(tiplab = ifelse(tip %in% nic_tips & type == "ASV",
 
 cols <-c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
           "ASV: other / family only" = "#999999",
-          "Xolalpa 2026 MAG" = "#0072B2", "Xolalpa 2026 isolate" = "#0072B2", "Public bee-LAB genome (custom set)" = "#7F7FBF",
+          "Xolalpa 2026 MAG" = "#0072B2", "Xolalpa 2026 isolate" = "#0072B2", "Public bee-LAB isolate genome (custom set)" = "#7F7FBF",
           "16S recovered from Xolalpa 2026 metagenomes" = "#56B4E9",
           "GTDB r226 reference" = "grey55")
 cols <- cols[names(cols) %in% d$grupo]
-# Xolalpa 2026 MAGs as triangles, isolates as squares, everything else as circles (shared legend with colour)
-shapes <- setNames(ifelse(names(cols) == "Xolalpa 2026 MAG", 17, ifelse(names(cols) == "Xolalpa 2026 isolate", 15, 16)), names(cols))
+# MAGs as triangles; isolate genomes (Xolalpa 2026 and public) as squares; everything else as circles (shared legend)
+shapes <- setNames(ifelse(names(cols) == "Xolalpa 2026 MAG", 17, ifelse(names(cols) %in% c("Xolalpa 2026 isolate", "Public bee-LAB isolate genome (custom set)"), 15, 16)), names(cols))
 
 # genus sectors: MRCA of the GTDB and genome references of each genus (constrained to the genome topology)
 hl_genera <- c(Acetilactobacillus = "#F5DEB3", Nicoliella = "#F2D7E8", Apilactobacillus = "#D9EAD3",
@@ -145,7 +145,7 @@ ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 18, height = 16, d
 
 # ---- Figure 3: zoom on the Nicoliella sector, every tip with its origin ---------------------------
 origin <- c("GTDB r226 reference" = "GTDB", "Xolalpa 2026 MAG" = "Xolalpa 2026, MAG",
-            "Xolalpa 2026 isolate" = "Xolalpa 2026, isolate", "Public bee-LAB genome (custom set)" = "public genome",
+            "Xolalpa 2026 isolate" = "Xolalpa 2026, isolate", "Public bee-LAB isolate genome (custom set)" = "public isolate",
             "16S recovered from Xolalpa 2026 metagenomes" = "Xolalpa 2026, metagenome 16S")
 nic <- keep.tip(tree, nic_tips)
 dn <- d |> filter(tip %in% nic_tips) |>

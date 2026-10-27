@@ -1,0 +1,29 @@
+tip	source	genome_type	record	genus	species	clade_Xolalpa2026	16S_used	16S_length_bp	role
+GTDB_GCF_004359375.1	GTDB r226 representative	-	GCF_004359375.1	Acetilactobacillus	Acetilactobacillus jinshanensis	-	longest GTDB r226 SSU >= 1400 bp	1572	reference
+OWN_A_jinshanensis_subsaerogenes	public genome	isolate	GCA_023612235.1	Acetilactobacillus	Acetilactobacillus jinshanensis	-	A_jinshanensis_subsaerogenes__16S_1	1576	reference
+OWN_A_jinshanensis_brasiliensis	public genome	MAG	GCA_043289735.1	Acetilactobacillus	Acetilactobacillus sp. A jinshanensis brasiliensis	-	A_jinshanensis_brasiliensis__16S_1	1576	reference
+GTDB_GCF_027923585.1	GTDB r226 representative	-	GCF_027923585.1	Philodulcilactobacillus	Philodulcilactobacillus myokonensis	-	longest GTDB r226 SSU >= 1400 bp	1573	reference
+GTDB_GCF_019303535.1	GTDB r226 representative	-	GCF_019303535.1	Nicoliella	Nicoliella sp019303535	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
+GTDB_GCF_023380205.1	GTDB r226 representative	-	GCF_023380205.1	Nicoliella	Nicoliella spurrieriana	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
+GTDB_GCF_037546185.1	GTDB r226 representative	-	GCF_037546185.1	Nicoliella	Nicoliella lavandulae	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
+OWN_ESL1104_GCF_058510645_1	public genome	isolate	GCF_058510645.1	Nicoliella	Nicoliella sp. ESL1104 GCF 058510645 1	-	ESL1104_GCF_058510645_1__16S_1	1576	reference
+OWN_ESL1106_GCF_058509965_1	public genome	isolate	GCF_058509965.1	Nicoliella	Nicoliella sp. ESL1106 GCF 058509965 1	-	ESL1106_GCF_058509965_1__16S_1	1578	reference
+OWN_ESL1113_GCF_058509245_1	public genome	isolate	GCF_058509245.1	Nicoliella	Nicoliella sp. ESL1113 GCF 058509245 1	-	ESL1113_GCF_058509245_1__16S_1	1576	reference
+OWN_ESL1120_GCF_058508515_1	public genome	isolate	GCF_058508515.1	Nicoliella	Nicoliella sp. ESL1120 GCF 058508515 1	-	ESL1120_GCF_058508515_1__16S_1	1576	reference
+OWN_MAG_22_Melli_029	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 22 Melli 029	Clade 2 Nicoliella-related	MAG_22_Melli_029__16S_3	1569	reference
+OWN_N_barcode03	Xolalpa 2026	isolate	PRJNA1235305 (isolate 40_Melli_barcode03)	Nicoliella	Nicoliella sp. N barcode03	Clade 2 Nicoliella-related	N_barcode03__16S_1	1576	reference
+OWN_N_barcode04	Xolalpa 2026	isolate	PRJNA1235305 (isolate 39_Melli_barcode04)	Nicoliella	Nicoliella sp. N barcode04	Clade 2 Nicoliella-related	N_barcode04__16S_1	1576	reference
+OWN_MAG_47_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 47 Melli 001	Clade 2 Nicoliella-related	MAG_47_Melli_001__16S_1	1576	reference
+OWN_N_barcode20	Xolalpa 2026	isolate	PRJNA1235305 (isolate 90_Scapto_barcode20)	Nicoliella	Nicoliella sp. N barcode20	Clade 2 Nicoliella-related	N_barcode20__16S_3	1577	reference
+OWN_ESL1149_GCF_058107265_1	public genome	isolate	GCF_058107265.1	Nicoliella	Nicoliella sp. ESL1149 GCF 058107265 1	-	ESL1149_GCF_058107265_1__16S_1	1577	reference
+OWN_MAG_41_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 41 Melli 001	Clade 2 Nicoliella-related	MAG_41_Melli_001__16S_1	1349	reference
+OWN_MAG_45_Melli_020	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 45 Melli 020	Clade 2 Nicoliella-related	MAG_45_Melli_020__16S_1	1576	reference
+GTDB_GCF_001434095.1	GTDB r226 representative	-	GCF_001434095.1	Fructilactobacillus	Fructilactobacillus fructivorans	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_001436645.1	GTDB r226 representative	-	GCF_001436645.1	Fructilactobacillus	Fructilactobacillus florum	-	longest GTDB r226 SSU >= 1400 bp	1571	outgroup
+GTDB_GCF_024029335.1	GTDB r226 representative	-	GCF_024029335.1	Fructilactobacillus	Fructilactobacillus myrtifloralis	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_024029915.1	GTDB r226 representative	-	GCF_024029915.1	Fructilactobacillus	Fructilactobacillus ixorae	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_024029355.1	GTDB r226 representative	-	GCF_024029355.1	Fructilactobacillus	Fructilactobacillus cliffordii	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_024029675.1	GTDB r226 representative	-	GCF_024029675.1	Fructilactobacillus	Fructilactobacillus carniphilus	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_024029435.1	GTDB r226 representative	-	GCF_024029435.1	Fructilactobacillus	Fructilactobacillus hinvesii	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
+GTDB_GCF_002907375.1	GTDB r226 representative	-	GCF_002907375.1	Fructilactobacillus	Fructilactobacillus lindneri	-	longest GTDB r226 SSU >= 1400 bp	1574	outgroup
+GTDB_GCF_021698855.1	GTDB r226 representative	-	GCF_021698855.1	Fructilactobacillus	Fructilactobacillus sp021698855	-	longest GTDB r226 SSU >= 1400 bp	1412	outgroup

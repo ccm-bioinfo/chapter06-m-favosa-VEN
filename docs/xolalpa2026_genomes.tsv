@@ -2,13 +2,13 @@ genome	type	clade_paper	GTDB_genus_paper	in_table	decision
 MAG_40_Melli_029	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
 MAG_45_Melli_016	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
 MAG_46_Melli_022	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
-MAG_22_Melli_029	MAG	2	Nicoliella	pending	
-MAG_41_Melli_001	MAG	2	Nicoliella	pending	
-MAG_45_Melli_020	MAG	2	Nicoliella	pending	
-MAG_47_Melli_001	MAG	2	Nicoliella	pending	
-N_barcode03	isolate	2	Nicoliella	pending	
-N_barcode04	isolate	2	Nicoliella	pending	
-N_barcode20	isolate	2	Nicoliella	pending	
+MAG_22_Melli_029	MAG	2	Nicoliella	yes	16S 1569 bp in tree; 1 other copy with discordant genus not used
+MAG_41_Melli_001	MAG	2	Nicoliella	yes	16S 1349 bp in tree (divergent, sensitivity test); 2 copies with discordant genus not used
+MAG_45_Melli_020	MAG	2	Nicoliella	yes	16S 1576 bp in tree (divergent, sensitivity test); 3 copies with discordant genus/family not used
+MAG_47_Melli_001	MAG	2	Nicoliella	yes	16S 1576 bp in tree; P16S_19 bin is this MAG
+N_barcode03	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
+N_barcode04	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
+N_barcode20	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
 MAG_51_Scapto_004	MAG	3	Acetilactobacillus	pending	
 MAG_89_Scapto_002	MAG	3	Acetilactobacillus	pending	
 MAG_90_Scapto_012	MAG	3	Acetilactobacillus	pending	

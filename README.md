@@ -37,4 +37,6 @@ full APIBA 16S dataset 10.5281/zenodo.20481566.
 | `00_link_data.sh` | both | `data/` symlinks |
 | `00_download_zenodo.sh` | anywhere | `data/` from Zenodo (skeleton until the record exists) |
 | `01_inputs_overview.py <host>` | both | input counts (merged into `docs/inputs_overview.tsv`) |
+| `03_genome16S_review.py` | alnitak | `results/03_genome16S_review.tsv`: barrnap 16S per genome with decisions from `docs/genome16S_decisions.tsv` |
+| `04_favosa_queries.py` | both | `results/04_queries/`: B-VEN-D9 ASVs (all + Lactobacillaceae by AMPtk) as FASTA + counts |
 | `02_favosa_asvs.py` | Mac | `results/favosa_ASVs.tsv`: B-VEN-D9 ASVs with AMPtk / GTDB / previous custom taxonomy and linked 16S-MAG clade |

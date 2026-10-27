@@ -6,6 +6,8 @@ vit/taxonomy_amptk.txt	BEEHONEY_16S_ASV/BEEHONEY_16S_ASV.ASVs.taxonomy.txt	16S_r
 vit/sintax_gtdb.tsv	results/16S_reclass_GTDB_custom/sintax_gtdb.tsv	16S_reclass/sintax_gtdb.tsv	SINTAX vs GTDB r226 only (baseline) [Zenodo: B-VEN-D9 subset]	vit/sintax_gtdb.tsv
 vit/sintax_gtdb_custom.tsv	results/16S_reclass_GTDB_custom/sintax_gtdb_custom.tsv	16S_reclass/sintax_gtdb_custom_noUNU.tsv	SINTAX vs GTDB r226 + own 16S (previous reclass; local copy may predate the noUNU rerun) [Zenodo: B-VEN-D9 subset]	vit/sintax_gtdb_custom.tsv
 vit/otu_table_gtdbcustom_taxonomy.txt	BEEHONEY_16S_ASV_GTDBcustom/BEEHONEY_16S_ASV_GTDBcustom.ASVs.otu_table.taxonomy.txt	-	Counts + relabeled GTDB+own-16S taxonomy used in the previous figures (source of "LAB_abeja_no_cultivada") [Zenodo: B-VEN-D9 subset]	vit/otu_table_gtdbcustom_taxonomy.txt
+vit/16S_genus_relabund_Mfav.tsv	results/BEEHONEY_16S_ASV_Mfav_plots/16S_genus_relabund.tsv	-	Genus relative abundance of B-VEN-D9, AMPtk 16S (source of chapter Fig. 6.4B)	vit/16S_genus_relabund_Mfav.tsv
+vit/ITS_genus_relabund_Mfav.tsv	results/BEEHONEY_ITS_ASV_Mfav_plots/ITS_genus_relabund.tsv	-	Genus relative abundance of B-VEN-D9, AMPtk ITS1 (source of chapter Fig. 6.4A)	vit/ITS_genus_relabund_Mfav.tsv
 ours/mg16S_LAB.fa	results/16S_metagenoma/mg16S_LAB.fa	16S_link/mg16S_vis/mg16S_LAB.fa	23 Lactobacillaceae 16S >=1000 bp recovered from metagenomes (MG16S_*)	ours/mg16S_LAB.fa
 ours/mg16S_info.tsv	results/16S_metagenoma/mg16S_info.tsv	16S_link/mg16S_vis/mg16S_info.tsv	Length, SINTAX, samples and linked bin of each MG16S	ours/mg16S_info.tsv
 ours/asv2mg16S.tsv	results/16S_metagenoma/asv2mg16S.tsv	16S_link/mg16S_vis/asv2mg16S.tsv	ASV -> recovered 16S by V4 identity	ours/asv2mg16S.tsv

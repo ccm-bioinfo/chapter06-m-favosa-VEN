@@ -42,10 +42,12 @@ p1 <- ggplot(s, aes(method, pct, fill = genus)) +
   geom_col(width = 0.75) +
   geom_text(data = subset(s, pct >= 0.05), aes(y = 1 - mid, label = sprintf("%.0f%%", 100 * pct)),
             size = 4.5, colour = "grey15") +
-  scale_fill_manual(values = pal, breaks = lev, name = "Genus / paper clade") +
-  scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0)) +
+  scale_fill_manual(values = pal, breaks = lev, name = "Genus / paper clade",   # genera in italics
+                    labels = lapply(lev, function(l) if (l %in% c(special, names(CLADE_COL)[1:3])) l else bquote(italic(.(l))))) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0), limits = c(0, 1.0001),
+                     breaks = seq(0, 1, 0.25)) +
   theme_bw(base_size = 13) +
-  theme(legend.position = "bottom", legend.title.position = "top",
+  theme(legend.position = "bottom", legend.title.position = "top", legend.text.align = 0,
         legend.text = element_text(size = 12), legend.title = element_text(size = 13, face = "bold"),
         legend.key.size = unit(0.55, "cm"),
         panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 11)) +
@@ -54,6 +56,7 @@ p1 <- ggplot(s, aes(method, pct, fill = genus)) +
        subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n", sep = "",
                          "Genera < 0.3% in every bar are grouped as Other."),
        x = NULL, y = "Relative Abundance")
+saveRDS(p1, file.path(out, "fig1_genus_by_method.rds"))   # reused as panel B of Fig. 6.4 (14_fig6_4.R)
 ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 10, height = 8.5)
 ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 10, height = 8.5, dpi = 300, bg = "white")
 

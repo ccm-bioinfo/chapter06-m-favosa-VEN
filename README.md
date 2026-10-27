@@ -48,7 +48,7 @@ full APIBA 16S dataset 10.5281/zenodo.20481566.
 | `10_tree.sh` | alnitak | constrained IQ-TREE, EPA-ng placement, gappa assignment and grafted tree |
 | `11_compare.py` | both | `results/11_compare/`: per-ASV classification by method, LAB summary, whole-community genus summary |
 | `13_identity.sh` | alnitak | `results/13_identity/`: best-hit identity of each LAB ASV to our 16S vs GTDB |
-| `14_fig6_4.R` | Mac | `results/14_fig6_4/`: chapter Fig. 6.4 (A ITS1, B 16S) redrawn side by side from the VIT tables |
+| `14_fig6_4.R` | Mac | `results/14_fig6_4/`: chapter Fig. 6.4 (A ITS1 from VIT tables, B 16S by reference = fig1) + fungal genus table behind Table 6.4 |
 | `12_figures.R` | Mac | `results/12_figures/`: fig1 genus composition per method (style of chapter Fig. 6.4B), fig2 circular placement tree (style of VIT lab16S_circular) |
 
 Order: 00 → 03 → 04 → 05 (Mac) → 06 → 07 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac).

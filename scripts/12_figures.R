@@ -64,6 +64,7 @@ ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 10, height = 8.5,
 tree <- read.tree("results/08_tree/graft/epa_result.newick")
 info <- read.delim("results/08_tree/tip_info.tsv", stringsAsFactors = FALSE)
 cls  <- read.delim("results/11_compare/favosa_LAB_classification.tsv", stringsAsFactors = FALSE)
+total_lab <- sum(cls$reads)
 
 out_tips <- info$tip[info$family %in% c("Streptococcaceae", "Enterococcaceae")]
 tree <- root(tree, outgroup = intersect(out_tips, tree$tip.label), resolve.root = TRUE)
@@ -96,7 +97,13 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
                          ifelse(clade != "", paste0(" [", sub("^(Clado \\d).*", "\\1", clade), "]"), "")))) |>
   rename(name = label)
 
-cols <- c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
+# Nicoliella sector: every tip labelled (ASVs too, whatever their abundance)
+nic_tips <- extract.clade(tree, getMRCA(tree, intersect(d$tip[d$type %in% c("GTDB", "genome") &
+                                                              d$genus == "Nicoliella"], tree$tip.label)))$tip.label
+d <- d |> mutate(tiplab = ifelse(tip %in% nic_tips & type == "ASV",
+                                 sprintf("%s (%s reads)", name, cls$reads[match(name, cls$ASV)]), tiplab))
+
+cols <-c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
           "ASV: other / family only" = "#999999",
           "Our genome (published)" = "#0072B2", "Public bee-LAB genome (custom set)" = "#7F7FBF",
           "16S recovered from our metagenomes" = "#56B4E9",
@@ -131,4 +138,24 @@ p2 <- ggtree(tree, layout = "circular", branch.length = "none", size = 0.25) %<+
                         if (length(drop) > 0) paste("\nLeft out for anomalous branch (> 0.3):", paste(drop, collapse = ", ")) else ""))
 ggsave(file.path(out, "fig2_placement_tree.pdf"), p2, width = 18, height = 16, limitsize = FALSE)
 ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 18, height = 16, dpi = 200, bg = "white")
+
+# ---- Figure 3: zoom on the Nicoliella sector, every tip with its origin ---------------------------
+origin <- c("GTDB r226 reference" = "GTDB", "Our genome (published)" = "ours, published",
+            "Public bee-LAB genome (custom set)" = "public genome", "16S recovered from our metagenomes" = "ours, metagenome 16S")
+nic <- keep.tip(tree, nic_tips)
+dn <- d |> filter(tip %in% nic_tips) |>
+  mutate(zlab = case_when(type == "ASV" ~ sprintf("%s  [favosa ASV, %s reads]", name, cls$reads[match(name, cls$ASV)]),
+                          TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
+                                        ifelse(clade != "", paste0(", ", sub("^(Clado \\d).*", "\\1", clade)), ""), "]")))
+p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
+  geom_tippoint(aes(colour = grupo), size = 3) +
+  geom_tiplab(aes(label = zlab, colour = grupo), size = 4, offset = 0.2, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") +
+  xlim(0, max(node.depth(nic, method = 2)) + 9) +
+  theme(legend.position = "bottom", legend.text = element_text(size = 11)) +
+  guides(colour = guide_legend(ncol = 2)) +
+  labs(title = "Nicoliella sector of Fig. 2: all tips",
+       subtitle = "Cladogram (same topology as Fig. 2); only the published barcode03/04/20 isolates of our Nicoliella genomes are included")
+ggsave(file.path(out, "fig3_nicoliella_clade.pdf"), p3, width = 11, height = 8)
+ggsave(file.path(out, "fig3_nicoliella_clade.png"), p3, width = 11, height = 8, dpi = 300, bg = "white")
 message("figures in ", out)

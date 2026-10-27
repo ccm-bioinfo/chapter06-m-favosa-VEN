@@ -168,4 +168,72 @@ p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
        subtitle = "Cladogram (same topology as Fig. 2); of the Xolalpa 2026 Nicoliella isolates only the published barcode03/04/20 are included")
 ggsave(file.path(out, "fig3_nicoliella_clade.pdf"), p3, width = 11, height = 8)
 ggsave(file.path(out, "fig3_nicoliella_clade.png"), p3, width = 11, height = 8, dpi = 300, bg = "white")
+
+# ---- Figure 4: Nicoliella-Acetilactobacillus block of Fig. 2, rooted on Fructilactobacillus ------------
+# block = tips of the circle from the Acetilactobacillus sector to the end of the Nicoliella sector (monophyletic)
+ord <- tree$tip.label[tree$edge[tree$edge[, 2] <= Ntip(tree), 2]]
+gen <- setNames(d$genus, d$tip)
+blk <- ord[seq_len(max(which(gen[ord] == "Nicoliella" & !grepl("^ASV", ord))))]
+stopifnot(length(extract.clade(tree, getMRCA(tree, blk))$tip.label) == length(blk))
+fru <- intersect(d$tip[d$genus == "Fructilactobacillus" & d$type %in% c("GTDB", "genome")], tree$tip.label)
+sub <- ladderize(root(keep.tip(tree, c(blk, fru)), outgroup = fru, resolve.root = TRUE))
+hl4 <- do.call(rbind, lapply(c("Acetilactobacillus", "Nicoliella", "Fructilactobacillus"), function(g) {
+  types <- if (g == "Acetilactobacillus") c("GTDB", "genome", "metagenome", "ASV") else c("GTDB", "genome")
+  tips <- intersect(d$tip[d$type %in% types & d$genus == g], sub$tip.label)
+  data.frame(node = getMRCA(sub, tips), genus_hl = g)
+}))
+p4 <- ggtree(sub, branch.length = "none", size = 0.3) %<+% d +
+  geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 8) +
+  scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
+  geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.6, 0.8))),
+                alpha = 0.9) +
+  geom_tiplab(aes(label = ifelse(type == "GTDB", name, tiplab), colour = grupo), size = 2.6, offset = 0.3, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
+  scale_size_continuous(range = c(0.8, 7), name = "% of Lactobacillaceae reads (ASV)", breaks = c(0.1, 1, 5, 20, 60)) +
+  xlim(0, max(node.depth(sub, method = 2)) + 9) +
+  theme(legend.position = "right", legend.text = element_text(size = 10)) +
+  labs(title = "16S Nicoliella and Acetilactobacillus: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026",
+       subtitle = "Subtree of Fig. 2 (same EPA-ng placement), rooted on Fructilactobacillus; cladogram (no branch lengths)")
+ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.pdf"), p4, width = 12, height = 18)
+ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.png"), p4, width = 12, height = 18, dpi = 250, bg = "white")
+
+# ---- Figure 5: pairwise differences in the V4 region among the Fig. 4 sequences (outgroup excluded) -----------
+# alignment of the tree (MAFFT + trimAl); V4 window = alignment columns covered by the ASVs (>= half of them).
+# difference = alignment column inside the window where both sequences have a base and the bases differ, or one
+# has a base and the other an internal gap (indel); N and ambiguity codes are not counted
+aln <- toupper(as.character(read.dna("results/08_tree/all.trim.aln", format = "fasta", as.matrix = TRUE)))
+asv_cov <- colMeans(aln[grepl("^ASV", rownames(aln)), , drop = FALSE] != "-")
+win <- range(which(asv_cov >= 0.5))
+a <- aln[blk, win[1]:win[2]]
+nd <- matrix(0L, length(blk), length(blk), dimnames = list(blk, blk))
+for (i in seq_along(blk)) for (j in seq_len(i - 1)) {
+  x <- a[i, ]; y <- a[j, ]
+  ok <- (x %in% c("A", "C", "G", "T", "-")) & (y %in% c("A", "C", "G", "T", "-")) & !(x == "-" & y == "-")
+  nd[i, j] <- nd[j, i] <- sum(x[ok] != y[ok])
+}
+tl5 <- setNames(ifelse(d$type == "GTDB", d$name, d$tiplab), d$tip)[blk]
+tl5 <- ifelse(tl5 == "" | is.na(tl5), blk, tl5)
+tord <- rev(intersect(get_taxa_name(ggtree(sub)), blk))   # tree order, top to bottom
+write.table(cbind(seq = tl5[tord], nd[tord, tord]), file.path(out, "fig5_V4_differences.tsv"), sep = "\t",
+            quote = FALSE, row.names = FALSE)
+hm <- expand.grid(r = tord, c = tord, stringsAsFactors = FALSE)
+hm$n <- nd[cbind(hm$r, hm$c)]
+hm$r <- factor(tl5[hm$r], levels = tl5[tord]); hm$c <- factor(tl5[hm$c], levels = rev(tl5[tord]))
+lab_col <- cols[d$grupo[match(tord, d$tip)]]
+p5 <- ggplot(hm, aes(c, r, fill = n)) +
+  geom_tile(colour = "white", linewidth = 0.1) +
+  geom_text(aes(label = n, colour = n > max(n) / 2), size = 1.1, show.legend = FALSE) +
+  scale_colour_manual(values = c("FALSE" = "grey20", "TRUE" = "white")) +
+  scale_fill_gradient(low = "#F7FBFF", high = "#08306B", name = "Differences\n(V4, bp)") +
+  scale_x_discrete(position = "top") +
+  coord_fixed() +
+  theme_minimal(base_size = 9) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, size = 4.5, colour = rev(lab_col)),
+        axis.text.y = element_text(size = 4.5, colour = lab_col), panel.grid = element_blank()) +
+  labs(x = NULL, y = NULL,
+       title = "Pairwise differences in the 16S V4 region (515F-806R) among the sequences of Fig. 4",
+       subtitle = sprintf("Alignment columns %d-%d of the tree alignment (%d columns); order as in Fig. 4; label colour as in Fig. 4",
+                          win[1], win[2], diff(win) + 1))
+ggsave(file.path(out, "fig5_V4_differences_heatmap.pdf"), p5, width = 16, height = 16.5)
+ggsave(file.path(out, "fig5_V4_differences_heatmap.png"), p5, width = 16, height = 16.5, dpi = 250, bg = "white")
 message("figures in ", out)

@@ -15,6 +15,12 @@ Do the Lactobacillaceae ASVs of the only *M. favosa* sample (B-VEN-D9, 10MFH) ge
 classification when the references include our full-length 16S recovered from MAGs/genomes
 (Clades 1–4, Xolalpa-Aroche et al. 2026) instead of GTDB/AMPtk alone?
 
+## Data policy
+No data are committed to GitHub: `data/` holds only symlinks (see `data/manifest.tsv`).
+Inputs and final results will be deposited in Zenodo; the pipeline will then start by
+downloading that record. Public references (GTDB r226 SSU) are downloaded from their source,
+not redeposited.
+
 ## Layout
 - `data/`     symlinks to shared inputs (`manifest.tsv`; recreate with `scripts/00_link_data.sh`)
 - `docs/inputs_overview.tsv`  what each input is, where it lives (Mac/alnitak), size and record count

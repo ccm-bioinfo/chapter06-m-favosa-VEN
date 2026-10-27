@@ -63,18 +63,26 @@ if os.path.exists(pq):
                 + ([("s", path[2])] if len(path) > 2 else [])
         epa[r[0]] = (label_from(ranks), r[5], r[1])
 
+alwr = {}  # accumulated LWR of the best-hit taxopath (sum over all placements)
+pa = f"{res}/08_tree/assign_all/per_query.tsv"
+if os.path.exists(pa):
+    for r in tsv(pa)[1:]:
+        alwr[(r[0], r[5])] = r[3]
+
 per_method = {"RDP (AMPtk)": rdp, "SILVA 138.2": runs["silva"], "GTDB r226": runs["gtdb"],
               "GTDB + our 16S": runs["gtdb_ours"], "Tree placement (EPA-ng)": epa}
 
 with open(f"{out}/favosa_LAB_classification.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
     w.writerow(["ASV", "reads", "pct_LAB_reads", "RDP_AMPtk", "SILVA", "SILVA_conf", "GTDB", "GTDB_conf",
-                "GTDB_ours", "GTDB_ours_conf", "GTDB_ours_sens", "same_as_sens", "EPA_taxopath", "EPA_LWR"])
+                "GTDB_ours", "GTDB_ours_conf", "GTDB_ours_sens", "same_as_sens", "EPA_taxopath", "EPA_LWR",
+                "EPA_aLWR", "SINTAX_vs_EPA"])
     for a in lab:
         s, g, o, ss = runs["silva"][a], runs["gtdb"][a], runs["gtdb_ours"][a], runs["gtdb_ours_sens"][a]
         e = epa.get(a, ("", "", ""))
         w.writerow([a, counts[a][0], f"{100 * counts[a][0] / total:.2f}", rdp[a][0], s[0], s[2], g[0], g[2],
-                    o[0], o[2], ss[0], o[0] == ss[0], e[1], e[2]])
+                    o[0], o[2], ss[0], o[0] == ss[0], e[1], e[2], alwr.get((a, e[1]), ""),
+                    "same" if o[0] == e[0] else "differ"])
 
 with open(f"{out}/summary_by_method.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")

@@ -56,41 +56,40 @@ d <- data.frame(label = tr$tip.label, stringsAsFactors = FALSE) |>
   left_join(cls[, c("ASV", "reads")], by = c("label" = "ASV")) |>
   mutate(type = ifelse(is.na(type), "favosa ASV", type),
          clade_lab = gsub("_", " ", sub("^(Clado_\\d)_", "\\1 ", clade)),
-         shown = case_when(type == "favosa ASV" ~ paste0(label, " (", format(reads, big.mark = ","), ")"),
+         shown = case_when(type == "favosa ASV" ~ paste0(label, " (", format(reads, big.mark = ",", trim = TRUE), ")"),
                            type == "GTDB" ~ label.y,
                            type == "genome" ~ paste0(label.y, if_else(clade != "", paste0(" [", clade_lab, "]"), "")),
                            TRUE ~ paste0("MG16S ", label.y, if_else(clade != "", paste0(" [", clade_lab, "]"), ""))),
          who = recode(type, GTDB = "GTDB r226 reference", genome = "Our genome 16S",
                       metagenome = "16S recovered from our metagenomes", `favosa ASV` = "M. favosa ASV"),
          is_asv = type == "favosa ASV", is_ours = type %in% c("genome", "metagenome"))
-
-# shade the paper clades: MRCA of the reference tips of each clade plus the ASVs placed in it
-hl <- do.call(rbind, lapply(c("Clado 3 Acetilactobacillus-like", "Clado 4 Acetilactobacillus-like",
-                              "Clado 2 Nicoliella-related"), function(cl) {
-  key  <- sub(" ", "_", sub(" ", "_", cl))
-  tips <- c(info$tip[info$clade == key], cls$ASV[grepl(key, cls$EPA_taxopath)])
-  tips <- intersect(tips, tr$tip.label)
-  if (length(tips) < 2) return(NULL)
-  data.frame(node = getMRCA(tr, tips), hclade = cl)
-}))
+# clade colour: references by their paper clade, ASVs by their EPA-ng clade (clades are not monophyletic in
+# the 16S tree, so clade shading by MRCA would be misleading)
+asv_clade <- setNames(sub("^(Clado_\\d)_", "\\1 ", sub(".*;(Clado_[^;]+)$", "\\1", cls$EPA_taxopath)), cls$ASV)
+d$cl <- ifelse(d$is_asv, gsub("_", " ", asv_clade[d$label]), d$clade_lab)
+d$cl[!d$cl %in% names(COL)] <- NA
+d$shown[d$is_asv & d$reads < 50] <- ""      # label only abundant ASVs
 
 p2 <- ggtree(tr, layout = "circular", size = 0.25, colour = INK2) %<+% d +
-  geom_hilight(data = hl, aes(node = node, fill = hclade), alpha = 0.22, extend = 0.6) +
-  scale_fill_manual(values = COL, name = "Paper clade (Xolalpa-Aroche et al. 2026)") +
-  geom_tippoint(aes(subset = is_asv, size = reads), shape = 21, fill = INK, colour = "white", stroke = 0.4) +
-  geom_tippoint(aes(subset = is_ours, shape = who), colour = INK, size = 1.6) +
+  geom_tippoint(aes(subset = is_asv, size = reads, fill = cl), shape = 21, colour = "white", stroke = 0.3) +
+  geom_tippoint(aes(subset = is_ours, shape = who, colour = cl), size = 1.6) +
+  scale_fill_manual(values = COL, na.value = "#9a9890", name = "Paper clade (Xolalpa-Aroche et al. 2026)",
+                    breaks = names(COL)[1:3]) +
+  scale_colour_manual(values = COL, na.value = INK, guide = "none") +
   scale_shape_manual(values = c("Our genome 16S" = 15, "16S recovered from our metagenomes" = 17), name = NULL) +
-  scale_size_area(max_size = 5, breaks = c(10, 100, 1000, 10000), name = "ASV reads") +
-  geom_tiplab2(aes(label = shown, colour = who), size = 1.25, offset = 0.02, show.legend = FALSE) +
+  scale_size_area(max_size = 5, breaks = c(10, 100, 1000, 10000), name = "M. favosa ASV reads") +
+  ggnewscale::new_scale_colour() +
+  geom_tiplab2(aes(label = shown, colour = who), size = 1.3, offset = 0.02, show.legend = FALSE) +
   scale_colour_manual(values = c("GTDB r226 reference" = "#9a9890", "Our genome 16S" = INK,
-                                 "16S recovered from our metagenomes" = INK, "M. favosa ASV" = "#2a78d6"), guide = "none") +
+                                 "16S recovered from our metagenomes" = INK, "M. favosa ASV" = INK), guide = "none") +
+  guides(fill = guide_legend(override.aes = list(size = 3)), size = guide_legend(override.aes = list(fill = INK))) +
   labs(title = "Placement of Melipona favosa honey Lactobacillaceae ASVs",
        subtitle = "16S tree constrained to the GTDB r226 genome topology; ASVs grafted at their EPA-ng best placement") +
   theme(legend.position = "right", legend.text = element_text(size = 7, colour = INK2),
         legend.title = element_text(size = 7.5, colour = INK),
         plot.title = element_text(face = "bold", size = 11, colour = INK),
         plot.subtitle = element_text(size = 8, colour = INK2))
-p2 <- p2 + xlim(0, max(p2$data$x, na.rm = TRUE) * 1.45)
+p2 <- p2 + xlim(0, max(p2$data$x, na.rm = TRUE) * 1.3)
 ggsave(file.path(out, "fig2_placement_tree.pdf"), p2, width = 11, height = 9.5)
 ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 11, height = 9.5, dpi = 300, bg = "white")
 message("figures in ", out)

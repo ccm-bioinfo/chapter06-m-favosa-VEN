@@ -20,6 +20,9 @@ epa-ng --ref-msa refs.trim.aln --tree refeval.raxml.bestTree --query query.trim.
   --model refeval.raxml.bestModel -T $T --outdir . --redo > epa.log
 gappa examine assign --jplace-path epa_result.jplace --taxon-file taxon.tsv \
   --per-query-results --best-hit --out-dir assign --allow-file-overwriting > /dev/null
+# accumulated LWR per taxon (all placements, not only the best edge): support for genus vs clade
+gappa examine assign --jplace-path epa_result.jplace --taxon-file taxon.tsv \
+  --per-query-results --out-dir assign_all --allow-file-overwriting > /dev/null
 gappa examine graft --jplace-path epa_result.jplace --out-dir graft --allow-file-overwriting > /dev/null
 grep -E "Log-likelihood of the tree" ref_constr.iqtree
 

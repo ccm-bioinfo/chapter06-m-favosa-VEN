@@ -98,13 +98,15 @@ with open(f"{out}/summary_by_method.tsv", "w") as fh:
             w.writerow([m, lbl, len(asvs), n, f"{100 * n / total:.2f}"])
 
 # whole community at genus level, as in chapter Fig. 6.4B (paper clade replaces the genus when assigned;
-# no genus = "Unclassified"); the tree only places Lactobacillaceae, the rest keeps GTDB + our 16S
+# no genus = "Lactobacillaceae (no genus)" or "Unclassified"); the tree only places Lactobacillaceae, the rest keeps GTDB + our 16S
 def genus_label(ranks):
     names = dict(ranks)
     if names.get("s", "").startswith("Clado"):
         return names["s"].replace("_", " ", 2).replace("_", " ")
-    g = names.get("g", "Unclassified")
-    return "Unclassified" if "Incertae_Sedis" in g or "uncultured" in g.lower() else g
+    g = names.get("g", "")
+    if not g or "Incertae_Sedis" in g or "uncultured" in g.lower():
+        return "Lactobacillaceae (no genus)" if names.get("f") == "Lactobacillaceae" else "Unclassified"
+    return g
 
 
 def ranks_of(tax):

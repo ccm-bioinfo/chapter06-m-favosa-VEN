@@ -23,7 +23,7 @@ s$genus[!s$genus %in% keep] <- "Other"
 s <- s |> group_by(method, genus) |> summarise(pct = sum(pct_reads) / 100, .groups = "drop")
 s$method <- factor(METHODS[s$method], levels = METHODS)
 
-special <- c("Other", "Unclassified")
+special <- c("Other", "Lactobacillaceae (no genus)", "Unclassified")
 genera  <- sort(setdiff(unique(s$genus), c(special, names(CLADE_COL))))
 # Fig. 6.4B colours for the genera it shows; Paired order continues for the rest
 fig64 <- c(Bacteroides = "#A6CEE3", Comamonas = "#1F78B4", Dysgonomonas = "#B2DF8A", Fusobacterium = "#33A02C",
@@ -32,7 +32,8 @@ fig64 <- c(Bacteroides = "#A6CEE3", Comamonas = "#1F78B4", Dysgonomonas = "#B2DF
 extra <- c("#B15928", "#8DD3C7", "#BC80BD", "#80B1D3", "#FCCDE5")
 new_g <- setdiff(genera, names(fig64))
 pal <- c(fig64[intersect(genera, names(fig64))], setNames(extra[seq_along(new_g)], new_g),
-         CLADE_COL[intersect(names(CLADE_COL), s$genus)], Other = "grey65", Unclassified = "grey88")
+         CLADE_COL[intersect(names(CLADE_COL), s$genus)], Other = "grey65",
+         "Lactobacillaceae (no genus)" = "#E3D3B0", Unclassified = "grey88")
 lev <- c(names(CLADE_COL)[names(CLADE_COL) %in% s$genus], genera, special)
 s$genus <- factor(s$genus, levels = rev(lev))
 s <- s |> arrange(method, genus) |> group_by(method) |> mutate(mid = cumsum(pct) - pct / 2) |> ungroup()
@@ -47,7 +48,8 @@ p1 <- ggplot(s, aes(method, pct, fill = genus)) +
   theme(legend.text = element_text(size = 9), legend.key.size = unit(0.4, "cm"),
         panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 8.5)) +
   labs(title = "16S Genus Composition: Melipona favosa honey (10MFH) by reference",
-       subtitle = "Same ASVs; only the classification reference changes. Genera < 0.3% in every bar are grouped as Other.",
+       subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n",
+                         "Genera < 0.3% in every bar are grouped as Other."),
        x = NULL, y = "Relative Abundance")
 ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 9, height = 6)
 ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 9, height = 6, dpi = 300, bg = "white")
@@ -74,7 +76,8 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
   mutate(clade = gsub("_", " ", clade),
          grupo = case_when(
            type == "GTDB"       ~ "GTDB r226 reference",
-           type == "genome"     ~ "Our genome (published)",
+           type == "genome" & grepl("^(MAG_|N_barcode)", label) ~ "Our genome (published)",
+           type == "genome"     ~ "Public bee-LAB genome (custom set)",
            type == "metagenome" ~ "16S recovered from our metagenomes",
            clade != ""          ~ paste0("ASV: ", clade),
            genus == "Acetilactobacillus" ~ "ASV: Acetilactobacillus",
@@ -89,7 +92,8 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
 
 cols <- c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
           "ASV: other / family only" = "#999999",
-          "Our genome (published)" = "#0072B2", "16S recovered from our metagenomes" = "#56B4E9",
+          "Our genome (published)" = "#0072B2", "Public bee-LAB genome (custom set)" = "#7F7FBF",
+          "16S recovered from our metagenomes" = "#56B4E9",
           "GTDB r226 reference" = "grey55")
 cols <- cols[names(cols) %in% d$grupo]
 

@@ -1,0 +1,8 @@
+# data/ only holds symlinks to shared inputs; never commit data
+data/*
+!data/manifest.tsv
+!data/README.md
+results/
+.DS_Store
+*.pdf
+*.png

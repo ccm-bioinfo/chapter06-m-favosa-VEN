@@ -1,0 +1,19 @@
+link	group	on_mac	on_alnitak	n_records	unit	size_MB	description
+vit/16S_metadata.tsv	vit	yes	yes	41	rows	0.00	Metadata of the 39 VIT 16S samples; M. favosa = B-VEN-D9 (10MFH) only
+vit/ASVs.fa.gz	vit	yes	yes	1472	sequences	0.06	All 1472 V4 ASVs (AMPtk/DADA2)
+vit/otu_table.txt	vit	yes	yes	1471	rows	0.12	ASV counts, all samples (filter to B-VEN-D9)
+vit/taxonomy_amptk.txt	vit	yes	yes	1472	rows	0.42	Original AMPtk taxonomy (as in the submitted chapter)
+vit/sintax_gtdb.tsv	vit	yes	yes	1472	rows	0.35	SINTAX vs GTDB r226 only (baseline)
+vit/sintax_gtdb_custom.tsv	vit	yes	yes	1472	rows	0.36	SINTAX vs GTDB r226 + own 16S (previous reclass; local copy may predate the noUNU rerun)
+vit/otu_table_gtdbcustom_taxonomy.txt	vit	yes	no	1471	rows	0.28	"Counts + relabeled GTDB+own-16S taxonomy used in the previous figures (source of ""LAB_abeja_no_cultivada"")"
+ours/mg16S_LAB.fa	ours	yes	yes	23	sequences	0.03	23 Lactobacillaceae 16S >=1000 bp recovered from metagenomes (MG16S_*)
+ours/mg16S_info.tsv	ours	yes	yes	67	rows	0.01	Length, SINTAX, samples and linked bin of each MG16S
+ours/asv2mg16S.tsv	ours	yes	yes	236	rows	0.00	ASV -> recovered 16S by V4 identity
+ours/ASV_16S_recuperado_bin.tsv	ours	yes	no	61	rows	0.01	ASV -> 16S -> MAG -> clade label
+ours/ligas_16S_resumen.tsv	ours	yes	no	18	rows	0.00	MarkerMAG link summary with clade label (etiqueta_liga)
+ours/ligas_16S_MAG.tsv	ours	yes	no	148	rows	0.02	All MarkerMAG 16S-MAG links
+ours/custom_16S.clean.noUNU.sintax.fa	ours	no	yes	143	sequences	0.23	143 barrnap 16S from MAGs/isolates/public genomes, validated vs GTDB-Tk, UNU excluded
+ours/custom_taxonomy.tsv	ours	yes	yes	73	rows	0.01	GTDB-Tk taxonomy of each custom genome
+ours/custom_16S_check.tsv	ours	yes	yes	213	rows	0.02	16S vs genome taxonomy check
+refs/ssu_all_r226.fna.gz	refs	no	yes	1053664	sequences	73.18	GTDB r226 SSU (73 MB)
+refs/constraint_gtdb.tree	refs	yes	yes	173	tips	0.00	Genome (GTDB) topology used to constrain the 16S tree

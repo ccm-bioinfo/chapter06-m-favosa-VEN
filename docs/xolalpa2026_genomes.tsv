@@ -1,0 +1,28 @@
+genome	type	clade_paper	GTDB_genus_paper	in_table	decision
+MAG_40_Melli_029	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_45_Melli_016	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_46_Melli_022	MAG	1	Nicoliella	yes	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_22_Melli_029	MAG	2	Nicoliella	pending	
+MAG_41_Melli_001	MAG	2	Nicoliella	pending	
+MAG_45_Melli_020	MAG	2	Nicoliella	pending	
+MAG_47_Melli_001	MAG	2	Nicoliella	pending	
+N_barcode03	isolate	2	Nicoliella	pending	
+N_barcode04	isolate	2	Nicoliella	pending	
+N_barcode20	isolate	2	Nicoliella	pending	
+MAG_51_Scapto_004	MAG	3	Acetilactobacillus	pending	
+MAG_89_Scapto_002	MAG	3	Acetilactobacillus	pending	
+MAG_90_Scapto_012	MAG	3	Acetilactobacillus	pending	
+MAG_92_Scapto_009	MAG	3	Acetilactobacillus	pending	
+MAG_23_Scapto_001	MAG	4	Acetilactobacillus	pending	
+MAG_42_Melli_004	MAG	4	Acetilactobacillus	pending	
+MAG_89_Scapto_001	MAG	4	Acetilactobacillus	pending	
+MAG_92_Scapto_002	MAG	4	Acetilactobacillus	pending	
+MAG_22_Melli_031	MAG	-	-	pending	
+MAG_39_Melli_018	MAG	-	-	pending	
+MAG_43_Scapto_014	MAG	-	-	pending	
+MAG_43_Scapto_022	MAG	-	-	pending	
+MAG_46_Melli_006	MAG	-	-	pending	
+MAG_46_Melli_018	MAG	-	-	pending	
+MAG_46_Melli_021	MAG	-	-	pending	
+MAG_92_Scapto_020	MAG	-	-	pending	
+MAG_92_Scapto_034	MAG	-	-	pending	

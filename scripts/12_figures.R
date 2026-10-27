@@ -41,18 +41,21 @@ s <- s |> arrange(method, genus) |> group_by(method) |> mutate(mid = cumsum(pct)
 p1 <- ggplot(s, aes(method, pct, fill = genus)) +
   geom_col(width = 0.75) +
   geom_text(data = subset(s, pct >= 0.05), aes(y = 1 - mid, label = sprintf("%.0f%%", 100 * pct)),
-            size = 3, colour = "grey15") +
+            size = 4.5, colour = "grey15") +
   scale_fill_manual(values = pal, breaks = lev, name = "Genus / paper clade") +
   scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0)) +
-  theme_bw(base_size = 11) +
-  theme(legend.text = element_text(size = 9), legend.key.size = unit(0.4, "cm"),
-        panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 8.5)) +
+  theme_bw(base_size = 13) +
+  theme(legend.position = "bottom", legend.title.position = "top",
+        legend.text = element_text(size = 12), legend.title = element_text(size = 13, face = "bold"),
+        legend.key.size = unit(0.55, "cm"),
+        panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 11)) +
+  guides(fill = guide_legend(ncol = 4, byrow = TRUE)) +
   labs(title = "16S Genus Composition: Melipona favosa honey (10MFH) by reference",
-       subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n",
+       subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n", sep = "",
                          "Genera < 0.3% in every bar are grouped as Other."),
        x = NULL, y = "Relative Abundance")
-ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 9, height = 6)
-ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 9, height = 6, dpi = 300, bg = "white")
+ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 10, height = 8.5)
+ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 10, height = 8.5, dpi = 300, bg = "white")
 
 # ---- Figure 2 ---------------------------------------------------------------------------------
 tree <- read.tree("results/08_tree/graft/epa_result.newick")

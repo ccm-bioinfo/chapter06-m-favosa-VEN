@@ -55,7 +55,8 @@ with open(f"{out}/gtdb.fa", "w") as fo:
     for h, s in fasta(f"{data}/refs/ssu_all_r226.fna.gz"):
         if len(s) < MINLEN:
             continue
-        sid, lin = h.split(" ", 2)[:2]
+        sid, lin = h.split(" ", 1)
+        lin = lin.split(" [")[0]  # lineage up to the [location=..] fields; species names contain spaces
         tax = ",".join(f"{p.split('__')[0]}:{clean(p.split('__')[1])}" for p in lin.split(";") if p.split("__")[1])
         fo.write(f">{sid};tax={tax};\n{s}\n")
         n += 1

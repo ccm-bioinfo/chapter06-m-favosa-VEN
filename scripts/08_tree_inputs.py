@@ -40,7 +40,7 @@ best = {}
 for h, s in fasta(f"{data}/refs/ssu_all_r226.fna.gz"):
     tip = "GTDB_" + h.split("~")[0][3:]
     if tip in want and len(s) >= 1400 and len(s) > len(best.get(tip, ("", ""))[1]):
-        best[tip] = (h.split(" ", 2)[1], s)
+        best[tip] = (h.split(" ", 1)[1].split(" [")[0], s)
 for tip, (lin, s) in sorted(best.items()):
     f, g, sp = (re.search(rf"{r}__([^;]*)", lin).group(1) for r in "fgs")
     tips.append((tip, "GTDB", f, g, "", sp, s))

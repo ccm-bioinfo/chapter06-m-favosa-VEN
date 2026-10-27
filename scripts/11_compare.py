@@ -97,6 +97,41 @@ with open(f"{out}/summary_by_method.tsv", "w") as fh:
             n = sum(counts[a][0] for a in asvs)
             w.writerow([m, lbl, len(asvs), n, f"{100 * n / total:.2f}"])
 
+# whole community at genus level, as in chapter Fig. 6.4B (paper clade replaces the genus when assigned;
+# no genus = "Unclassified"); the tree only places Lactobacillaceae, the rest keeps GTDB + our 16S
+def genus_label(ranks):
+    names = dict(ranks)
+    if names.get("s", "").startswith("Clado"):
+        return names["s"].replace("_", " ", 2).replace("_", " ")
+    g = names.get("g", "Unclassified")
+    return "Unclassified" if "Incertae_Sedis" in g or "uncultured" in g.lower() else g
+
+
+def ranks_of(tax):
+    return [tuple(x.split(":", 1)) for x in tax.replace('"', "").split(",") if ":" in x]
+
+
+raw = {k: {r[0]: (r[3] if len(r) > 3 else "") for r in tsv(f"{res}/06_sintax/{k}.tsv")}
+       for k in ("silva", "gtdb", "gtdb_ours")}
+genus = {"RDP (AMPtk)": {a: genus_label(ranks_of(counts[a][2])) for a in counts},
+         "SILVA 138.2": {a: genus_label(ranks_of(raw["silva"][a])) for a in counts},
+         "GTDB r226": {a: genus_label(ranks_of(raw["gtdb"][a])) for a in counts},
+         "GTDB + our 16S": {a: genus_label(ranks_of(raw["gtdb_ours"][a])) for a in counts}}
+genus["Tree placement (EPA-ng)"] = {a: (genus_label([(r, n) for r, n in [("f", "")] + [
+    (("g", "s")[i], p) for i, p in enumerate(epa[a][1].split(";")[1:3]) if p != "unresolved"]])
+    if a in epa else genus["GTDB + our 16S"][a]) for a in counts}
+all_reads = sum(c[0] for c in counts.values())
+with open(f"{out}/summary_genus_all.tsv", "w") as fh:
+    w = csv.writer(fh, delimiter="\t", lineterminator="\n")
+    w.writerow(["method", "genus", "n_ASVs", "reads", "pct_reads"])
+    for m in METHODS:
+        agg = {}
+        for a in counts:
+            agg.setdefault(genus[m][a], []).append(a)
+        for g, asvs in sorted(agg.items(), key=lambda x: -sum(counts[a][0] for a in x[1])):
+            n = sum(counts[a][0] for a in asvs)
+            w.writerow([m, g, len(asvs), n, f"{100 * n / all_reads:.2f}"])
+
 sens_diff = [a for a in lab if runs["gtdb_ours"][a][0] != runs["gtdb_ours_sens"][a][0]]
 print(f"{len(lab)} LAB ASVs, {total} reads; EPA placements: {len(epa)}; "
       f"ASVs changing without MAG_41/45 16S: {len(sens_diff)} {sens_diff}")

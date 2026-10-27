@@ -9,10 +9,10 @@ MAG_47_Melli_001	MAG	2	Nicoliella	yes	16S 1576 bp in tree; P16S_19 bin is this M
 N_barcode03	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
 N_barcode04	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
 N_barcode20	isolate	2	Nicoliella	yes	16S in tree (5 concordant copies)
-MAG_51_Scapto_004	MAG	3	Acetilactobacillus	pending	
-MAG_89_Scapto_002	MAG	3	Acetilactobacillus	pending	
-MAG_90_Scapto_012	MAG	3	Acetilactobacillus	pending	
-MAG_92_Scapto_009	MAG	3	Acetilactobacillus	pending	
+MAG_51_Scapto_004	MAG	3	Acetilactobacillus	yes	searched with barrnap, no 16S; represented by T16S_1 (6392 pairs, names ASV2)
+MAG_89_Scapto_002	MAG	3	Acetilactobacillus	yes	searched with barrnap, no 16S; represented by P16S_24 (450 pairs), doubtful: 19-24 V4 differences from T16S_1/T16S_2 and placed outside Clade 3-4
+MAG_90_Scapto_012	MAG	3	Acetilactobacillus	yes	searched with barrnap, no 16S; linked by P16S_25 (524 pairs) but P16S_25 links more strongly to another bin, so it gets no clade
+MAG_92_Scapto_009	MAG	3	Acetilactobacillus	yes	searched with barrnap, no 16S; no MarkerMAG link
 MAG_23_Scapto_001	MAG	4	Acetilactobacillus	pending	
 MAG_42_Melli_004	MAG	4	Acetilactobacillus	pending	
 MAG_89_Scapto_001	MAG	4	Acetilactobacillus	pending	

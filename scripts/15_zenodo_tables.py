@@ -69,6 +69,7 @@ with open(f"{out}/genomes_tree.tsv", "w") as fh:
 
 # ---- recovered 16S ---------------------------------------------------------------------------------------
 labels = {r["cluster"]: r for r in rows("docs/mg16S_labels.tsv")}
+notes = {r["16S"]: r["note"] for r in rows("docs/mg16S_notes.tsv")}
 links = {}
 for r in rows("data/ours/ligas_16S_MAG.tsv"):
     links.setdefault(r["16S"], []).append(r)
@@ -85,7 +86,7 @@ with open(f"{out}/recovered_16S.tsv", "w") as fh:
     w.writerow(["16S", "assembly", "length_bp", "family_SINTAX", "genus_SINTAX", "samples_with_reads",
                 "Lactobacillaceae_reference", "in_tree", "n_bins_linked", "strongest_bin", "strongest_pairs",
                 "Xolalpa2026_MAG_same_species", "ANI_bin_vs_MAG", "relation", "paper_clade_strongest_link",
-                "clade_assigned", "best_other_paper_clade", "best_other_clade_bin", "best_other_clade_pairs"])
+                "clade_assigned", "best_other_paper_clade", "best_other_clade_bin", "best_other_clade_pairs", "note"])
     for r in rows("data/ours/mg16S_info.tsv"):
         c = r["cluster"]
         lk = sorted(links.get(c, []), key=lambda x: -int(x["pares"]))
@@ -101,5 +102,5 @@ with open(f"{out}/recovered_16S.tsv", "w") as fh:
                     (top["MAG_articulo"] or "-") if top else "-", (top["ANI"] or "-") if top else "-",
                     RELATION.get(top["relacion"], "no Xolalpa 2026 MAG >= 95 % ANI") if top else "no link",
                     top_clade or "-", clade, paper_clade(other) if other else "-",
-                    other["bin"] if other else "-", other["pares"] if other else "-"])
+                    other["bin"] if other else "-", other["pares"] if other else "-", notes.get(c, "")])
 print("written", out)

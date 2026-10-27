@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "upload_type": "dataset",
+    "title": "Lactobacillaceae 16S rRNA of Melipona favosa honey (Venezuela) reclassified with full-length 16S recovered from stingless bee MAGs and genomes",
+    "creators": [
+      {"name": "Sélem-Mojica, Nelly", "affiliation": "Centro de Ciencias Matemáticas, UNAM Morelia", "orcid": "0000-0003-1697-3862"},
+      {"name": "Vit, Patricia", "affiliation": "Apitherapy and Bioactivity, Food Science Department, Universidad de Los Andes (APIBA-ULA), Mérida, Venezuela", "orcid": "TODO"}
+    ],
+    "description": "<p>Inputs and results of Chapter 6 (Melipona favosa honey, Paraguaná, Venezuela). 16S rRNA V4 ASVs of sample B-VEN-D9 (10MFH) are classified against GTDB r226 plus full-length 16S rRNA recovered from metagenome-assembled genomes (MAGs) and isolate genomes of Mexican stingless bee honeys (Clades 1-4, Xolalpa-Aroche et al. 2026), and placed on a Lactobacillaceae 16S tree constrained by the GTDB genome topology.</p><p>chapter06-inputs.tar.gz keeps the data/ layout used by the code (vit/, ours/, refs/; see data/manifest.tsv in the GitHub repository). vit/: subset of the APIBA 16S dataset for B-VEN-D9 (full dataset: 10.5281/zenodo.20481566). ours/: 16S rRNA recovered from metagenomes (phyloFlash) and linked to MAGs (MarkerMAG), and barrnap 16S from MAGs and genomes (MAGs: 10.5281/zenodo.18446951). GTDB r226 SSU is not redeposited; the code downloads it from GTDB.</p>",
+    "license": "cc-by-4.0",
+    "access_right": "open",
+    "keywords": ["16S rRNA", "Lactobacillaceae", "Acetilactobacillus", "stingless bees", "Melipona favosa", "honey microbiome", "MAGs", "phylogenetic placement"],
+    "related_identifiers": [
+      {"relation": "isDerivedFrom", "identifier": "10.5281/zenodo.18446951", "scheme": "doi", "resource_type": "dataset"},
+      {"relation": "isDerivedFrom", "identifier": "10.5281/zenodo.20481566", "scheme": "doi", "resource_type": "software"},
+      {"relation": "cites", "identifier": "10.1093/ismeco/ycag063", "scheme": "doi", "resource_type": "publication-article"},
+      {"relation": "isSupplementTo", "identifier": "https://github.com/ccm-bioinfo/chapter06-m-favosa-VEN", "scheme": "url", "resource_type": "software"}
+    ],
+    "communities": []
+  }
+}

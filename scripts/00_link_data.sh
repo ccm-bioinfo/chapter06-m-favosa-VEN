@@ -11,7 +11,7 @@ case $host in
   *) echo "unknown host: $host" >&2; exit 1 ;;
 esac
 
-grep -v '^#' data/manifest.tsv | while IFS=$'\t' read -r link src_local src_alnitak desc; do
+grep -v '^#' data/manifest.tsv | while IFS=$'\t' read -r link src_local src_alnitak desc _zenodo; do
   src=$( [[ $col == 2 ]] && echo "$src_local" || echo "$src_alnitak" )
   if [[ $src == "-" ]]; then echo "skip ($host): $link"; continue; fi
   if [[ ! -e $base/$src ]]; then echo "MISSING: $base/$src" >&2; continue; fi

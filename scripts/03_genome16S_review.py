@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """One row per barrnap 16S from the custom genomes, for manual review before building references.
-Edit the 'use' column (yes/no) and 'note'; later steps read it.
+Decisions per genome (published, paper clade, use, note) come from docs/genome16S_decisions.tsv
+and override the default (use = longest validated copy).
 Usage (alnitak): python3 scripts/03_genome16S_review.py > results/03_genome16S_review.tsv"""
 import csv, os, re, sys
 
@@ -44,6 +45,9 @@ seqs = fasta("custom_16S.fa")
 clean = set(fasta("custom_16S.clean.noUNU.sintax.fa"))
 gtax = {r[0]: r[1] for r in table("custom_taxonomy.tsv")}
 check = {r[0]: r[5] for r in table("custom_16S_check.tsv")[1:]}
+root = os.path.join(data, "..", "..")
+with open(os.path.join(root, "docs", "genome16S_decisions.tsv")) as fh:
+    decision = {r["genome"]: r for r in csv.DictReader(fh, delimiter="\t")}
 sintax = {r[0].split(";")[0]: (r[3] if len(r) > 3 else "") for r in table("custom_16S_vs_gtdb.tsv")}
 
 # longest validated copy per genome = the one the tree uses
@@ -55,12 +59,17 @@ for sid in clean:
 
 w = csv.writer(sys.stdout, delimiter="\t", lineterminator="\n")
 w.writerow(["seq", "genome", "group", "length", "longest_valid_copy", "genome_genus", "genome_species",
-            "16S_sintax_genus", "check", "in_clean_noUNU", "flag", "use", "note"])
+            "16S_sintax_genus", "check", "in_clean_noUNU", "flag", "published", "clade_paper", "use", "note"])
 for sid in sorted(seqs, key=lambda x: (group(x.split("__16S_")[0]), x)):
     g = sid.split("__16S_")[0]
     t = gtax.get(g, "")
     is_ref = longest.get(g) == sid
     flag = "short (<1000 bp)" if is_ref and len(seqs[sid]) < 1000 else ""
+    d = decision.get(g, {})
+    pub = d.get("published") or ("public" if group(g) == "public genome" else "no" if g.startswith("UNU_") else "")
+    use = "yes" if is_ref else "no"
+    if is_ref and d.get("use"):
+        use = d["use"]
     w.writerow([sid, g, group(g), len(seqs[sid]), is_ref, rank(t, "g"), rank(t, "s"),
                 rank(sintax.get(sid, ""), "g"), check.get(sid, "not checked"), sid in clean, flag,
-                "yes" if is_ref else "no", ""])
+                pub, d.get("clade_paper", ""), use, d.get("note", "") if is_ref or g not in longest else ""])

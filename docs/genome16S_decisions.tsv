@@ -1,0 +1,24 @@
+genome	published	clade_paper	use	note
+MAG_22_Melli_029	Zenodo 10.5281/zenodo.18446951	2	yes	
+MAG_41_Melli_001	Zenodo 10.5281/zenodo.18446951	2	yes	16S only ~95.5% to other Clade 2 16S (98.3% to MAG_45_Melli_020): check before tree
+MAG_45_Melli_020	Zenodo 10.5281/zenodo.18446951	2	yes	16S only ~95% to other Clade 2 16S (98.3% to MAG_41_Melli_001): check before tree
+MAG_47_Melli_001	Zenodo 10.5281/zenodo.18446951	2	yes	
+MAG_42_Melli_004	Zenodo 10.5281/zenodo.18446951	4	no	16S only 569 bp; Clade 4 represented by recovered T16S_2
+MAG_89_Scapto_001	Zenodo 10.5281/zenodo.18446951	4	no	only 16S copy classifies as Nicoliella (bin contamination)
+MAG_22_Melli_031	Zenodo 10.5281/zenodo.18446951	-	yes	non-LAB (Enterobacteriaceae): SINTAX only, not in LAB tree
+MAG_39_Melli_018	Zenodo 10.5281/zenodo.18446951	-	yes	non-LAB (Enterobacteriaceae): SINTAX only, not in LAB tree
+MAG_43_Scapto_014	Zenodo 10.5281/zenodo.18446951	-	no	16S do not match genome (Rosenbergiella vs Acinetobacter/Bombella)
+MAG_46_Melli_006	Zenodo 10.5281/zenodo.18446951	-	no	16S does not match genome (Fructobacillus vs Blautia)
+MAG_46_Melli_018	Zenodo 10.5281/zenodo.18446951	-	yes	946 bp: keep for SINTAX; drop from tree if unstable
+N_barcode03	PRJNA1235305 (isolate 40_Melli_barcode03)	2	yes	
+N_barcode04	PRJNA1235305 (isolate 39_Melli_barcode04)	2	yes	
+N_barcode20	PRJNA1235305 (isolate 90_Scapto_barcode20)	2	yes	
+barcode07	no	-	no	unpublished isolate (Fructobacillus fructosus)
+barcode08	no	2	no	unpublished isolate (C3_56_A1); 16S >=99.5% to published Clade 2, no loss
+barcode09	no	2	no	unpublished isolate (C3_56_A2); 16S >=99.5% to published Clade 2, no loss
+barcode10	no	2	no	unpublished isolate (C3_56_A3); 16S >=99.5% to published Clade 2, no loss
+barcode11	no	2	no	unpublished isolate (C3_56_A4); 16S >=99.5% to published Clade 2, no loss
+barcode15	no	2	no	unpublished isolate (C29_A1); 16S >=99.5% to published Clade 2, no loss
+barcode17	no	-	no	unpublished isolate (Costa Rica); 16S >=99.5% to published Clade 2, no loss
+CR_A551_006	?	-	yes	Costa Rica MAG: confirm whether published
+F_fructivorans_strainDSM20203	public	-	no	16S classifies as Wolbachia (assembly contamination)

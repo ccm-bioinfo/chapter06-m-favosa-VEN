@@ -103,13 +103,14 @@ def paper_clade(r):  # clade of the Xolalpa 2026 MAG that names the bin (1-4, be
     return f"Clade {m.group(1)}" if m else ""
 
 
+CLADE_GENUS = {v: ("Nicoliella" if "Nicoliella" in v else "Acetilactobacillus") for v in CLADE.values()}  # genus of the clade, else SINTAX genus
 RELATION = {"es el MAG": "bin is the MAG", "misma especie, otro bin": "same species, other bin"}
 with open(f"{out}/recovered_16S.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
     w.writerow(["16S", "assembly", "length_bp", "family_SINTAX", "genus_SINTAX", "samples_with_reads",
                 "Lactobacillaceae_reference", "in_tree", "n_bins_linked", "strongest_bin", "strongest_pairs",
                 "Xolalpa2026_MAG_same_species", "ANI_bin_vs_MAG", "relation", "paper_clade_strongest_link",
-                "clade_assigned", "best_other_paper_clade", "best_other_clade_bin", "best_other_clade_pairs", "note"])
+                "clade_assigned", "genus", "best_other_paper_clade", "best_other_clade_bin", "best_other_clade_pairs", "note"])
     for r in rows("data/ours/mg16S_info.tsv"):
         c = r["cluster"]
         lk = sorted(links.get(c, []), key=lambda x: -int(x["pares"]))
@@ -124,6 +125,6 @@ with open(f"{out}/recovered_16S.tsv", "w") as fh:
                     len({x["bin"] for x in lk}), top["bin"] if top else "-", top["pares"] if top else "0",
                     (top["MAG_articulo"] or "-") if top else "-", (top["ANI"] or "-") if top else "-",
                     RELATION.get(top["relacion"], "no Xolalpa 2026 MAG >= 95 % ANI") if top else "no link",
-                    top_clade or "-", clade, paper_clade(other) if other else "-",
+                    top_clade or "-", clade, CLADE_GENUS.get(clade, r["genero"]), paper_clade(other) if other else "-",
                     other["bin"] if other else "-", other["pares"] if other else "-", notes.get(c, "")])
 print("written", out)

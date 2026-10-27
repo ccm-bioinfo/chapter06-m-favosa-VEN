@@ -1,67 +1,67 @@
-16S	assembly	length_bp	family_SINTAX	genus_SINTAX	samples_with_reads	Lactobacillaceae_reference	in_tree	n_bins_linked	strongest_bin	strongest_pairs	Xolalpa2026_MAG_same_species	ANI_bin_vs_MAG	relation	paper_clade_strongest_link	clade_assigned	best_other_paper_clade	best_other_clade_bin	best_other_clade_pairs	note
-P16S_1	general	1975	-	-	41_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_2	general	1917	Staphylococcaceae	Staphylococcus	89_Scapto,90_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_3	general	1809	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_4	general	1808	-	-	89_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_5	general	1807	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_6	general	1806	Enterobacteriaceae	-	21_Melli,89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_7	general	1806	-	-	43_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_8	general	1806	-	-	47_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_9	general	1806	Enterobacteriaceae	-	51_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_10	general	1806	Enterobacteriaceae	Klebsiella	91_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_11	general	1804	Lachnospiraceae	Blautia	23_Scapto,40_Melli,41_Melli,46_Melli,47_Melli,51_Scapto,91_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_12	general	1804	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_13	general	1802	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_14	general	1799	Rhizobiaceae	Brucella	39_Melli,42_Melli,43_Scapto,45_Melli,92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_15	general	1753	Lactobacillaceae	Levilactobacillus	39_Melli,40_Melli,41_Melli	yes	no (saturated branch)	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_16	general	1707	-	-	93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_17	general	1584	Lactobacillaceae	Apilactobacillus	90_Scapto	yes	yes	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_18	general	1572	Lactobacillaceae	Acetilactobacillus	22_Melli,23_Scapto,43_Scapto,51_Scapto,89_Scapto,91_Scapto,93_Scapto	yes	yes	15	39_Melli.001	3889	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_19	general	1571	Lactobacillaceae	Nicoliella	21_Melli,22_Melli,23_Scapto,39_Melli,41_Melli,42_Melli,43_Scapto,45_Melli,46_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	yes	yes	17	47_Melli.001	24785	MAG_47_Melli_001	100	bin is the MAG	Clade 2	Clade 2 Nicoliella-related	Clade 4	89_Scapto.001	1364	
-P16S_20	general	1571	Lactobacillaceae	Nicoliella	23_Scapto,42_Melli,43_Scapto,45_Melli,46_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	yes	yes	12	51_Scapto.010	825	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_21	general	1571	Lactobacillaceae	Acetilactobacillus	42_Melli	yes	yes	14	22_Melli.031	29574	MAG_22_Melli_031	100	bin is the MAG	-	-	-	-	-	
-P16S_22	general	1571	Lactobacillaceae	Acetilactobacillus	43_Scapto	yes	yes	9	21_Melli.022	109	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_23	general	1571	Lactobacillaceae	Nicoliella	47_Melli	yes	yes	3	43_Scapto.017	59	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_24	general	1571	Lactobacillaceae	Acetilactobacillus	89_Scapto,90_Scapto,91_Scapto	yes	yes	7	91_Scapto.006	450	MAG_89_Scapto_002	99.9	same species, other bin	Clade 3	Clade 3-4 Acetilactobacillus-like	-	-	-	doubtful Clade 3-4 label: weak MarkerMAG link (450 pairs) and 19-24 V4 differences from T16S_1/T16S_2; placed with the common Acetilactobacillus
-P16S_25	general	1570	Lactobacillaceae	Acetilactobacillus	21_Melli,41_Melli,45_Melli,46_Melli	yes	yes	15	45_Melli.022	26499	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_26	general	1570	Lactobacillaceae	Apilactobacillus	89_Scapto,91_Scapto	yes	yes	2	89_Scapto.004	438	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_27	general	1569	Lactobacillaceae	Holzapfeliella	89_Scapto,90_Scapto,91_Scapto	yes	yes	3	90_Scapto.015	143	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_28	general	1562	Lactobacillaceae	Lactobacillus	47_Melli	yes	yes	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_29	general	1561	Lactobacillaceae	Ligilactobacillus	47_Melli	yes	yes	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_30	general	1547	Lactobacillaceae	-	21_Melli,40_Melli,46_Melli,47_Melli,89_Scapto,92_Scapto,93_Scapto	yes	yes	5	21_Melli.013	459	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_31	general	1547	Lactobacillaceae	ESL0723	45_Melli	yes	yes	2	47_Melli.019	244	MAG_46_Melli_018	100	bin is the MAG	-	-	-	-	-	
-P16S_32	general	1547	Lactobacillaceae	Fructobacillus	90_Scapto	yes	yes	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_33	general	1539	-	-	23_Scapto,40_Melli,42_Melli,43_Scapto,47_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_34	general	1539	Enterobacteriaceae	Pantoea	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_35	general	1539	Enterobacteriaceae	-	90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_36	general	1538	Enterobacteriaceae	-	21_Melli,22_Melli,39_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_37	general	1538	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_38	general	1536	Halomonadaceae	-	41_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_39	general	1536	Halomonadaceae	Zymobacter	89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_40	general	1533	Moraxellaceae	Acinetobacter	23_Scapto,39_Melli,40_Melli,41_Melli,42_Melli,43_Scapto,45_Melli,47_Melli,51_Scapto,89_Scapto,90_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_41	general	1533	Pseudomonadaceae	-	43_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_42	general	1533	Pseudomonadaceae	Pseudomonas_E	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_43	general	1525	Sphingobacteriaceae	Sphingobacterium	43_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_44	general	1521	Mycoplasmataceae	Mesoplasma	39_Melli,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_45	general	1516	Arcobacteraceae	Aliarcobacter	46_Melli,47_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_46	general	1516	Arcobacteraceae	Aliarcobacter	92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_47	general	1487	-	-	21_Melli,39_Melli,40_Melli,41_Melli,42_Melli,46_Melli,47_Melli,51_Scapto,89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_48	general	1487	-	-	39_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_49	general	1487	-	-	23_Scapto,43_Scapto,51_Scapto,89_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_50	general	1487	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_51	general	1487	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_52	general	1482	Acetobacteraceae	Bombella	40_Melli,41_Melli,43_Scapto,47_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_53	general	1482	Acetobacteraceae	Asaia	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_54	general	1481	Acetobacteraceae	Bombella	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_55	general	1474	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_56	general	1472	Halomonadaceae	Zymobacter	42_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_57	general	1459	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_58	general	1425	Moraxellaceae	Acinetobacter	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_59	general	1392	Enterobacteriaceae	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_60	general	1312	Gottschalkiaceae	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	
-P16S_61	general	1289	Lactobacillaceae	Acetilactobacillus	42_Melli	yes	yes	17	42_Melli.007	893	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-P16S_62	general	1286	Lactobacillaceae	Levilactobacillus	47_Melli	yes	no (saturated branch)	0	-	0	-	-	no link	-	-	-	-	-	
-T16S_1	targeted to ASV1/ASV2	1178	Lactobacillaceae	-	41_Melli	yes	yes	4	23_Scapto.003	6392	MAG_51_Scapto_004	99.9	same species, other bin	Clade 3	Clade 3-4 Acetilactobacillus-like	Clade 4	43_Scapto.004	2938	Clade 3-4: strongest link to a Clade 3 bin (6392 pairs) but also to Clade 4 bins (4623 pairs)
-T16S_2	targeted to ASV1/ASV2	1046	Lactobacillaceae	-	23_Scapto	yes	yes	2	43_Scapto.004	2189	MAG_23_Scapto_001	99.7	same species, other bin	Clade 4	Clade 3-4 Acetilactobacillus-like	-	-	-	
-T16S_3	targeted to ASV1/ASV2	1011	Lactobacillaceae	Acetilactobacillus	92_Scapto	yes	yes	4	23_Scapto.013	212	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
-T16S_4	targeted to ASV1/ASV2	1010	Lactobacillaceae	Acetilactobacillus	92_Scapto	yes	yes	4	43_Scapto.007	915	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	
+16S	assembly	length_bp	family_SINTAX	genus_SINTAX	samples_with_reads	Lactobacillaceae_reference	in_tree	n_bins_linked	strongest_bin	strongest_pairs	Xolalpa2026_MAG_same_species	ANI_bin_vs_MAG	relation	paper_clade_strongest_link	clade_assigned	genus	best_other_paper_clade	best_other_clade_bin	best_other_clade_pairs	note
+P16S_1	general	1975	-	-	41_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_2	general	1917	Staphylococcaceae	Staphylococcus	89_Scapto,90_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	Staphylococcus	-	-	-	
+P16S_3	general	1809	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_4	general	1808	-	-	89_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_5	general	1807	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_6	general	1806	Enterobacteriaceae	-	21_Melli,89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_7	general	1806	-	-	43_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_8	general	1806	-	-	47_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_9	general	1806	Enterobacteriaceae	-	51_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_10	general	1806	Enterobacteriaceae	Klebsiella	91_Scapto	no	no	0	-	0	-	-	no link	-	-	Klebsiella	-	-	-	
+P16S_11	general	1804	Lachnospiraceae	Blautia	23_Scapto,40_Melli,41_Melli,46_Melli,47_Melli,51_Scapto,91_Scapto	no	no	0	-	0	-	-	no link	-	-	Blautia	-	-	-	
+P16S_12	general	1804	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_13	general	1802	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_14	general	1799	Rhizobiaceae	Brucella	39_Melli,42_Melli,43_Scapto,45_Melli,92_Scapto	no	no	0	-	0	-	-	no link	-	-	Brucella	-	-	-	
+P16S_15	general	1753	Lactobacillaceae	Levilactobacillus	39_Melli,40_Melli,41_Melli	yes	no (saturated branch)	0	-	0	-	-	no link	-	-	Levilactobacillus	-	-	-	
+P16S_16	general	1707	-	-	93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_17	general	1584	Lactobacillaceae	Apilactobacillus	90_Scapto	yes	yes	0	-	0	-	-	no link	-	-	Apilactobacillus	-	-	-	
+P16S_18	general	1572	Lactobacillaceae	Acetilactobacillus	22_Melli,23_Scapto,43_Scapto,51_Scapto,89_Scapto,91_Scapto,93_Scapto	yes	yes	15	39_Melli.001	3889	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	
+P16S_19	general	1571	Lactobacillaceae	Nicoliella	21_Melli,22_Melli,23_Scapto,39_Melli,41_Melli,42_Melli,43_Scapto,45_Melli,46_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	yes	yes	17	47_Melli.001	24785	MAG_47_Melli_001	100	bin is the MAG	Clade 2	Clade 2 Nicoliella-related	Nicoliella	Clade 4	89_Scapto.001	1364	
+P16S_20	general	1571	Lactobacillaceae	Nicoliella	23_Scapto,42_Melli,43_Scapto,45_Melli,46_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	yes	yes	12	51_Scapto.010	825	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Nicoliella	-	-	-	
+P16S_21	general	1571	Lactobacillaceae	Acetilactobacillus	42_Melli	yes	yes	14	22_Melli.031	29574	MAG_22_Melli_031	100	bin is the MAG	-	-	Acetilactobacillus	-	-	-	
+P16S_22	general	1571	Lactobacillaceae	Acetilactobacillus	43_Scapto	yes	yes	9	21_Melli.022	109	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	
+P16S_23	general	1571	Lactobacillaceae	Nicoliella	47_Melli	yes	yes	3	43_Scapto.017	59	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Nicoliella	-	-	-	
+P16S_24	general	1571	Lactobacillaceae	Acetilactobacillus	89_Scapto,90_Scapto,91_Scapto	yes	yes	7	91_Scapto.006	450	MAG_89_Scapto_002	99.9	same species, other bin	Clade 3	Clade 3-4 Acetilactobacillus-like	Acetilactobacillus	-	-	-	doubtful Clade 3-4 label: weak MarkerMAG link (450 pairs) and 19-24 V4 differences from T16S_1/T16S_2; placed with the common Acetilactobacillus
+P16S_25	general	1570	Lactobacillaceae	Acetilactobacillus	21_Melli,41_Melli,45_Melli,46_Melli	yes	yes	15	45_Melli.022	26499	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	
+P16S_26	general	1570	Lactobacillaceae	Apilactobacillus	89_Scapto,91_Scapto	yes	yes	2	89_Scapto.004	438	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Apilactobacillus	-	-	-	
+P16S_27	general	1569	Lactobacillaceae	Holzapfeliella	89_Scapto,90_Scapto,91_Scapto	yes	yes	3	90_Scapto.015	143	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Holzapfeliella	-	-	-	
+P16S_28	general	1562	Lactobacillaceae	Lactobacillus	47_Melli	yes	yes	0	-	0	-	-	no link	-	-	Lactobacillus	-	-	-	
+P16S_29	general	1561	Lactobacillaceae	Ligilactobacillus	47_Melli	yes	yes	0	-	0	-	-	no link	-	-	Ligilactobacillus	-	-	-	
+P16S_30	general	1547	Lactobacillaceae	-	21_Melli,40_Melli,46_Melli,47_Melli,89_Scapto,92_Scapto,93_Scapto	yes	yes	5	21_Melli.013	459	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	-	-	-	-	
+P16S_31	general	1547	Lactobacillaceae	ESL0723	45_Melli	yes	yes	2	47_Melli.019	244	MAG_46_Melli_018	100	bin is the MAG	-	-	ESL0723	-	-	-	
+P16S_32	general	1547	Lactobacillaceae	Fructobacillus	90_Scapto	yes	yes	0	-	0	-	-	no link	-	-	Fructobacillus	-	-	-	
+P16S_33	general	1539	-	-	23_Scapto,40_Melli,42_Melli,43_Scapto,47_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_34	general	1539	Enterobacteriaceae	Pantoea	46_Melli	no	no	0	-	0	-	-	no link	-	-	Pantoea	-	-	-	
+P16S_35	general	1539	Enterobacteriaceae	-	90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_36	general	1538	Enterobacteriaceae	-	21_Melli,22_Melli,39_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_37	general	1538	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_38	general	1536	Halomonadaceae	-	41_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_39	general	1536	Halomonadaceae	Zymobacter	89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	Zymobacter	-	-	-	
+P16S_40	general	1533	Moraxellaceae	Acinetobacter	23_Scapto,39_Melli,40_Melli,41_Melli,42_Melli,43_Scapto,45_Melli,47_Melli,51_Scapto,89_Scapto,90_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	Acinetobacter	-	-	-	
+P16S_41	general	1533	Pseudomonadaceae	-	43_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_42	general	1533	Pseudomonadaceae	Pseudomonas_E	92_Scapto	no	no	0	-	0	-	-	no link	-	-	Pseudomonas_E	-	-	-	
+P16S_43	general	1525	Sphingobacteriaceae	Sphingobacterium	43_Scapto	no	no	0	-	0	-	-	no link	-	-	Sphingobacterium	-	-	-	
+P16S_44	general	1521	Mycoplasmataceae	Mesoplasma	39_Melli,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	Mesoplasma	-	-	-	
+P16S_45	general	1516	Arcobacteraceae	Aliarcobacter	46_Melli,47_Melli	no	no	0	-	0	-	-	no link	-	-	Aliarcobacter	-	-	-	
+P16S_46	general	1516	Arcobacteraceae	Aliarcobacter	92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	Aliarcobacter	-	-	-	
+P16S_47	general	1487	-	-	21_Melli,39_Melli,40_Melli,41_Melli,42_Melli,46_Melli,47_Melli,51_Scapto,89_Scapto,90_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_48	general	1487	-	-	39_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_49	general	1487	-	-	23_Scapto,43_Scapto,51_Scapto,89_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_50	general	1487	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_51	general	1487	-	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_52	general	1482	Acetobacteraceae	Bombella	40_Melli,41_Melli,43_Scapto,47_Melli,51_Scapto,89_Scapto,91_Scapto,92_Scapto,93_Scapto	no	no	0	-	0	-	-	no link	-	-	Bombella	-	-	-	
+P16S_53	general	1482	Acetobacteraceae	Asaia	92_Scapto	no	no	0	-	0	-	-	no link	-	-	Asaia	-	-	-	
+P16S_54	general	1481	Acetobacteraceae	Bombella	46_Melli	no	no	0	-	0	-	-	no link	-	-	Bombella	-	-	-	
+P16S_55	general	1474	-	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_56	general	1472	Halomonadaceae	Zymobacter	42_Melli	no	no	0	-	0	-	-	no link	-	-	Zymobacter	-	-	-	
+P16S_57	general	1459	-	-	45_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_58	general	1425	Moraxellaceae	Acinetobacter	46_Melli	no	no	0	-	0	-	-	no link	-	-	Acinetobacter	-	-	-	
+P16S_59	general	1392	Enterobacteriaceae	-	46_Melli	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_60	general	1312	Gottschalkiaceae	-	92_Scapto	no	no	0	-	0	-	-	no link	-	-	-	-	-	-	
+P16S_61	general	1289	Lactobacillaceae	Acetilactobacillus	42_Melli	yes	yes	17	42_Melli.007	893	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	
+P16S_62	general	1286	Lactobacillaceae	Levilactobacillus	47_Melli	yes	no (saturated branch)	0	-	0	-	-	no link	-	-	Levilactobacillus	-	-	-	
+T16S_1	targeted to ASV1/ASV2	1178	Lactobacillaceae	-	41_Melli	yes	yes	4	23_Scapto.003	6392	MAG_51_Scapto_004	99.9	same species, other bin	Clade 3	Clade 3-4 Acetilactobacillus-like	Acetilactobacillus	Clade 4	43_Scapto.004	2938	Clade 3-4: strongest link to a Clade 3 bin (6392 pairs) but also to Clade 4 bins (4623 pairs)
+T16S_2	targeted to ASV1/ASV2	1046	Lactobacillaceae	-	23_Scapto	yes	yes	2	43_Scapto.004	2189	MAG_23_Scapto_001	99.7	same species, other bin	Clade 4	Clade 3-4 Acetilactobacillus-like	Acetilactobacillus	-	-	-	
+T16S_3	targeted to ASV1/ASV2	1011	Lactobacillaceae	Acetilactobacillus	92_Scapto	yes	yes	4	23_Scapto.013	212	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	
+T16S_4	targeted to ASV1/ASV2	1010	Lactobacillaceae	Acetilactobacillus	92_Scapto	yes	yes	4	43_Scapto.007	915	-	-	no Xolalpa 2026 MAG >= 95 % ANI	-	-	Acetilactobacillus	-	-	-	

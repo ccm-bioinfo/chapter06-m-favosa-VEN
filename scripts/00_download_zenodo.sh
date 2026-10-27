@@ -2,15 +2,15 @@
 # Fill data/ from the Zenodo record instead of symlinks (for anyone outside alnitak).
 # Same layout as scripts/00_link_data.sh, so every later step runs unchanged.
 # Usage: bash scripts/00_download_zenodo.sh
-# SKELETON: set ZENODO_RECORD once the record is published (DOI reserved in the draft).
+# Record 23690055 (DOI 10.5281/zenodo.23690055) is a draft until the archive is uploaded.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-ZENODO_RECORD=${ZENODO_RECORD:-TODO}   # e.g. 23700000 -> https://zenodo.org/records/23700000
+ZENODO_RECORD=${ZENODO_RECORD:-23690055}
 ARCHIVE=chapter06-inputs.tar.gz
 
-if [[ $ZENODO_RECORD == TODO ]]; then
-  echo "No Zenodo record yet; use scripts/00_link_data.sh on the Mac or alnitak." >&2; exit 1
+if [[ $(curl -s -o /dev/null -w '%{http_code}' https://zenodo.org/api/records/$ZENODO_RECORD) != 200 ]]; then
+  echo "Zenodo record $ZENODO_RECORD not published yet; use scripts/00_link_data.sh on the Mac or alnitak." >&2; exit 1
 fi
 
 # 1. Deposited inputs: one archive keeping the vit/ ours/ refs/ layout, checked against Zenodo's md5

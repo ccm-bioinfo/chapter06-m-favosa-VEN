@@ -17,7 +17,8 @@ classification when the references include our full-length 16S recovered from MA
 
 ## Data policy
 No data are committed to GitHub: `data/` holds only symlinks (see `data/manifest.tsv`).
-Inputs and final results will be deposited in a new Zenodo record (draft metadata:
+Inputs and final results will be deposited in Zenodo record
+[10.5281/zenodo.23690055](https://doi.org/10.5281/zenodo.23690055) (DOI reserved, draft; metadata in
 `zenodo/metadata.json`) as `chapter06-inputs.tar.gz`, keeping the `data/` layout.
 Outside the Mac/alnitak, start with `scripts/00_download_zenodo.sh` instead of `00_link_data.sh`;
 later steps are identical. Public references (GTDB r226 SSU) are downloaded from their source.

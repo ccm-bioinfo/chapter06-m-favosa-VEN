@@ -9,8 +9,8 @@ import csv, os, re, sys
 
 data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "ours")
 CLADE_GENUS = {"1": "Nicoliella", "2": "Nicoliella", "3": "Acetilactobacillus", "4": "Acetilactobacillus"}
-CLADE_NAME = {"1": "Clado_1_Nicoliella-related", "2": "Clado_2_Nicoliella-related",
-              "3": "Clado_3-4_Acetilactobacillus-like", "4": "Clado_3-4_Acetilactobacillus-like"}
+CLADE_NAME = {"1": "Clade_1_Nicoliella-related", "2": "Clade_2_Nicoliella-related",
+              "3": "Clade_3-4_Acetilactobacillus-like", "4": "Clade_3-4_Acetilactobacillus-like"}
 # Clades 3 and 4 merged: their 16S are not separable (T16S_1 links to Clade 3 and Clade 4 bins, no clade 3/4
 # genome 16S in the references); the genus is the firm call
 

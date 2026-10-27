@@ -60,13 +60,13 @@ for sid, r in labels.items():
     if acc and any(f"GTDB_{acc[1]}_{acc[2]}.{acc[3]}" == t[0] for t in tips):
         print("skip duplicate of GTDB tip:", g)
         continue
-    clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clado") else ""
+    clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clade") else ""
     tips.append((f"OWN_{g}", "genome", "Lactobacillaceae", r["genus"], clade, g, seqs[sid]))
 for tip, s in fasta(f"{data}/ours/mg16S_LAB.fa"):
     if tip in BAD_MG:
         continue
     r = labels[tip]
-    clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clado") else ""
+    clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clade") else ""
     tips.append((tip, "metagenome", "Lactobacillaceae", r["genus"], clade, tip.replace("MG16S_", ""), s))
 
 with open(f"{out}/refs_full.fa", "w") as fo, open(f"{out}/tip_info.tsv", "w") as ti, open(f"{out}/taxon.tsv", "w") as tx:

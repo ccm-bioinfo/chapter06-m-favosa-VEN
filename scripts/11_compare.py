@@ -23,7 +23,7 @@ def tsv(path):
 def label_from(ranks):
     """ranks: list of (rank, name) to the deepest resolved level -> display label."""
     names = dict(ranks)
-    if names.get("s", "").startswith("Clado"):
+    if names.get("s", "").startswith("Clade"):
         return names["s"].replace("_", " ")
     if "g" in names:
         return names["g"]
@@ -101,7 +101,7 @@ with open(f"{out}/summary_by_method.tsv", "w") as fh:
 # no genus = "Lactobacillaceae (no genus)" or "Unclassified"); the tree only places Lactobacillaceae, the rest keeps GTDB + our 16S
 def genus_label(ranks):
     names = dict(ranks)
-    if names.get("s", "").startswith("Clado"):
+    if names.get("s", "").startswith("Clade"):
         return names["s"].replace("_", " ")
     g = names.get("g", "")
     if not g or "Incertae_Sedis" in g or "uncultured" in g.lower():

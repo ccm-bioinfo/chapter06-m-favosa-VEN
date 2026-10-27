@@ -10,8 +10,8 @@ suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree)
 out <- "results/12_figures"; dir.create(out, showWarnings = FALSE)
 
 # colours shared by both figures for the new assignments (from the VIT tree palette)
-CLADE_COL <- c("Clado 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and 4 merged (not separable by 16S)
-               "Clado 2 Nicoliella-related" = "#CC79A7", "Acetilactobacillus" = "#E69F00")
+CLADE_COL <- c("Clade 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and 4 merged (not separable by 16S)
+               "Clade 2 Nicoliella-related" = "#CC79A7", "Acetilactobacillus" = "#E69F00")
 
 # ---- Figure 1 ---------------------------------------------------------------------------------
 METHODS <- c("RDP (AMPtk)" = "RDP (AMPtk)\nsubmitted, Fig. 6.4B", "SILVA 138.2" = "SILVA 138.2",
@@ -77,7 +77,7 @@ tree <- ladderize(tree)
 epa_last <- sub(".*;", "", cls$EPA_taxopath)
 asv <- data.frame(tip = cls$ASV, type = "ASV", family = "Lactobacillaceae",
                   genus = sapply(strsplit(cls$EPA_taxopath, ";"), function(x) if (length(x) > 1) x[2] else ""),
-                  clade = ifelse(grepl("^Clado", epa_last), epa_last, ""),
+                  clade = ifelse(grepl("^Clade", epa_last), epa_last, ""),
                   label = cls$ASV, pct = cls$pct_LAB_reads)
 d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
   mutate(clade = gsub("_", " ", clade),
@@ -95,7 +95,7 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
            type == "ASV"              ~ {n <- cls$reads[match(label, cls$ASV)]; sprintf("%s (%s read%s)", label, n, ifelse(n == 1, "", "s"))},
            type == "GTDB"             ~ label,
            TRUE ~ paste0(sub("^(MG16S|OWN)_", "", tip),
-                         ifelse(clade != "", paste0(" [", sub("^(Clado [0-9-]+).*", "\\1", clade), "]"), "")))) |>
+                         ifelse(clade != "", paste0(" [", sub("^(Clade [0-9-]+).*", "\\1", clade), "]"), "")))) |>
   rename(name = label)
 
 # Nicoliella sector (zoom in Fig. 3)
@@ -117,7 +117,7 @@ hl_genera <- c(Acetilactobacillus = "#F5DEB3", Nicoliella = "#F2D7E8", Apilactob
                Lactobacillus = "#EDE7F6", Fructilactobacillus = "#E2F0D9")
 hl <- do.call(rbind, lapply(names(hl_genera), function(g) {
   # Acetilactobacillus: all our sequences of the genus too (MG16S and ASVs), as the VIT tree did with its own
-  # genomes; the Clado 3-4 block falls outside the GTDB Acetilactobacillus group in the 16S tree
+  # genomes; the Clade 3-4 block falls outside the GTDB Acetilactobacillus group in the 16S tree
   types <- if (g == "Acetilactobacillus") c("GTDB", "genome", "metagenome", "ASV") else c("GTDB", "genome")
   tips <- intersect(d$tip[d$type %in% types & d$genus == g], tree$tip.label)
   if (length(tips) < 2) return(NULL)
@@ -156,7 +156,7 @@ nic <- keep.tip(tree, nic_tips)
 dn <- d |> filter(tip %in% nic_tips) |>
   mutate(zlab = case_when(type == "ASV" ~ {n <- cls$reads[match(name, cls$ASV)]; sprintf("%s  [favosa ASV, %s read%s]", name, n, ifelse(n == 1, "", "s"))},
                           TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
-                                        ifelse(clade != "", paste0(", ", sub("^(Clado [0-9-]+).*", "\\1", clade)), ""), "]")))
+                                        ifelse(clade != "", paste0(", ", sub("^(Clade [0-9-]+).*", "\\1", clade)), ""), "]")))
 p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
   geom_tippoint(aes(colour = grupo, shape = grupo), size = 3.5) +
   geom_tiplab(aes(label = zlab, colour = grupo), size = 4, offset = 0.2, show.legend = FALSE) +

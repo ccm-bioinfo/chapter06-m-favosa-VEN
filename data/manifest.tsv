@@ -13,6 +13,8 @@ ours/ASV_16S_recuperado_bin.tsv	results/16S_metagenoma/ASV_16S_recuperado_bin.ts
 ours/ligas_16S_resumen.tsv	results/16S_metagenoma/ligas/ligas_16S_resumen.tsv	-	MarkerMAG link summary with clade label (etiqueta_liga)	ours/ligas_16S_resumen.tsv
 ours/ligas_16S_MAG.tsv	results/16S_metagenoma/ligas/ligas_16S_MAG.tsv	-	All MarkerMAG 16S-MAG links	ours/ligas_16S_MAG.tsv
 ours/custom_16S.clean.noUNU.sintax.fa	-	16S_reclass/refs/custom_16S.clean.noUNU.sintax.fa	143 barrnap 16S from MAGs/isolates/public genomes, validated vs GTDB-Tk, UNU excluded	ours/custom_16S.clean.noUNU.sintax.fa
+ours/custom_16S.fa	-	16S_reclass/refs/custom_16S.fa	All 224 barrnap 16S from the 60 custom genomes (includes UNU: review only)	-
+ours/custom_16S_vs_gtdb.tsv	-	16S_reclass/refs/custom_16S_vs_gtdb.tsv	SINTAX of each custom 16S vs GTDB r226 (includes UNU: review only)	-
 ours/custom_taxonomy.tsv	results/16S_reclass_GTDB_custom/custom_taxonomy.tsv	16S_reclass/refs/custom_taxonomy.tsv	GTDB-Tk taxonomy of each custom genome	ours/custom_taxonomy.tsv
 ours/custom_16S_check.tsv	results/16S_reclass_GTDB_custom/custom_16S_check.tsv	16S_reclass/refs/custom_16S_check.tsv	16S vs genome taxonomy check	ours/custom_16S_check.tsv
 refs/ssu_all_r226.fna.gz	-	16S_reclass/refs/ssu_all_r226.fna.gz	GTDB r226 SSU (73 MB)	https://data.gtdb.ecogenomic.org/releases/release226/226.0/genomic_files_all/ssu_all_r226.fna.gz

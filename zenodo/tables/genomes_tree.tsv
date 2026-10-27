@@ -1,29 +1,40 @@
-tip	source	genome_type	record	genus	species	clade_Xolalpa2026	16S_used	16S_length_bp	role
-GTDB_GCF_004359375.1	GTDB r226 representative	-	GCF_004359375.1	Acetilactobacillus	Acetilactobacillus jinshanensis	-	longest GTDB r226 SSU >= 1400 bp	1572	reference
-OWN_A_jinshanensis_subsaerogenes	public genome	isolate	GCA_023612235.1	Acetilactobacillus	Acetilactobacillus jinshanensis	-	A_jinshanensis_subsaerogenes__16S_1	1576	reference
-OWN_A_jinshanensis_brasiliensis	public genome	MAG	GCA_043289735.1	Acetilactobacillus	Acetilactobacillus sp. A jinshanensis brasiliensis	-	A_jinshanensis_brasiliensis__16S_1	1576	reference
-GTDB_GCF_027923585.1	GTDB r226 representative	-	GCF_027923585.1	Philodulcilactobacillus	Philodulcilactobacillus myokonensis	-	longest GTDB r226 SSU >= 1400 bp	1573	reference
-GTDB_GCF_019303535.1	GTDB r226 representative	-	GCF_019303535.1	Nicoliella	Nicoliella sp019303535	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
-GTDB_GCF_023380205.1	GTDB r226 representative	-	GCF_023380205.1	Nicoliella	Nicoliella spurrieriana	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
-GTDB_GCF_037546185.1	GTDB r226 representative	-	GCF_037546185.1	Nicoliella	Nicoliella lavandulae	-	longest GTDB r226 SSU >= 1400 bp	1571	reference
-OWN_ESL1104_GCF_058510645_1	public genome	isolate	GCF_058510645.1	Nicoliella	Nicoliella sp. ESL1104 GCF 058510645 1	-	ESL1104_GCF_058510645_1__16S_1	1576	reference
-OWN_ESL1106_GCF_058509965_1	public genome	isolate	GCF_058509965.1	Nicoliella	Nicoliella sp. ESL1106 GCF 058509965 1	-	ESL1106_GCF_058509965_1__16S_1	1578	reference
-OWN_ESL1113_GCF_058509245_1	public genome	isolate	GCF_058509245.1	Nicoliella	Nicoliella sp. ESL1113 GCF 058509245 1	-	ESL1113_GCF_058509245_1__16S_1	1576	reference
-OWN_ESL1120_GCF_058508515_1	public genome	isolate	GCF_058508515.1	Nicoliella	Nicoliella sp. ESL1120 GCF 058508515 1	-	ESL1120_GCF_058508515_1__16S_1	1576	reference
-OWN_MAG_22_Melli_029	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 22 Melli 029	Clade 2 Nicoliella-related	MAG_22_Melli_029__16S_3	1569	reference
-OWN_N_barcode03	Xolalpa 2026	isolate	PRJNA1235305 (isolate 40_Melli_barcode03)	Nicoliella	Nicoliella sp. N barcode03	Clade 2 Nicoliella-related	N_barcode03__16S_1	1576	reference
-OWN_N_barcode04	Xolalpa 2026	isolate	PRJNA1235305 (isolate 39_Melli_barcode04)	Nicoliella	Nicoliella sp. N barcode04	Clade 2 Nicoliella-related	N_barcode04__16S_1	1576	reference
-OWN_MAG_47_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 47 Melli 001	Clade 2 Nicoliella-related	MAG_47_Melli_001__16S_1	1576	reference
-OWN_N_barcode20	Xolalpa 2026	isolate	PRJNA1235305 (isolate 90_Scapto_barcode20)	Nicoliella	Nicoliella sp. N barcode20	Clade 2 Nicoliella-related	N_barcode20__16S_3	1577	reference
-OWN_ESL1149_GCF_058107265_1	public genome	isolate	GCF_058107265.1	Nicoliella	Nicoliella sp. ESL1149 GCF 058107265 1	-	ESL1149_GCF_058107265_1__16S_1	1577	reference
-OWN_MAG_41_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 41 Melli 001	Clade 2 Nicoliella-related	MAG_41_Melli_001__16S_1	1349	reference
-OWN_MAG_45_Melli_020	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 45 Melli 020	Clade 2 Nicoliella-related	MAG_45_Melli_020__16S_1	1576	reference
-GTDB_GCF_001434095.1	GTDB r226 representative	-	GCF_001434095.1	Fructilactobacillus	Fructilactobacillus fructivorans	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_001436645.1	GTDB r226 representative	-	GCF_001436645.1	Fructilactobacillus	Fructilactobacillus florum	-	longest GTDB r226 SSU >= 1400 bp	1571	outgroup
-GTDB_GCF_024029335.1	GTDB r226 representative	-	GCF_024029335.1	Fructilactobacillus	Fructilactobacillus myrtifloralis	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_024029915.1	GTDB r226 representative	-	GCF_024029915.1	Fructilactobacillus	Fructilactobacillus ixorae	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_024029355.1	GTDB r226 representative	-	GCF_024029355.1	Fructilactobacillus	Fructilactobacillus cliffordii	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_024029675.1	GTDB r226 representative	-	GCF_024029675.1	Fructilactobacillus	Fructilactobacillus carniphilus	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_024029435.1	GTDB r226 representative	-	GCF_024029435.1	Fructilactobacillus	Fructilactobacillus hinvesii	-	longest GTDB r226 SSU >= 1400 bp	1573	outgroup
-GTDB_GCF_002907375.1	GTDB r226 representative	-	GCF_002907375.1	Fructilactobacillus	Fructilactobacillus lindneri	-	longest GTDB r226 SSU >= 1400 bp	1574	outgroup
-GTDB_GCF_021698855.1	GTDB r226 representative	-	GCF_021698855.1	Fructilactobacillus	Fructilactobacillus sp021698855	-	longest GTDB r226 SSU >= 1400 bp	1412	outgroup
+genome	source	genome_type	record	genus	species	same_strain_as	paper_clade_Xolalpa2026	barrnap_16S_copies	16S_used	16S_length_bp	MarkerMAG_16S_linked	in_tree	role	note
+GCF_004359375.1	GTDB r226 representative	-	GCF_004359375.1	Acetilactobacillus	Acetilactobacillus jinshanensis	HSLZ-75 (A_jinshanensis_strainHSLZ75)	-	-	longest GTDB r226 SSU >= 1400 bp	1572	-	yes	reference	
+A_jinshanensis_subsaerogenes	public genome	isolate	GCA_023612235.1	Acetilactobacillus	Acetilactobacillus jinshanensis	-	-	5	A_jinshanensis_subsaerogenes__16S_1	1576	-	yes	reference	registered at NCBI as uncultured bacterium isolate Z-I
+A_jinshanensis_brasiliensis	public genome	MAG	GCA_043289735.1	Acetilactobacillus	Acetilactobacillus sp. A jinshanensis brasiliensis	-	-	5	A_jinshanensis_brasiliensis__16S_1	1576	-	yes	reference	public MAG
+GCF_027923585.1	GTDB r226 representative	-	GCF_027923585.1	Philodulcilactobacillus	Philodulcilactobacillus myokonensis	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	reference	
+GCF_019303535.1	GTDB r226 representative	-	GCF_019303535.1	Nicoliella	Nicoliella sp019303535	Sy-1 (L_Lactobacillus_spSy1)	-	-	longest GTDB r226 SSU >= 1400 bp	1571	-	yes	reference	
+GCF_023380205.1	GTDB r226 representative	-	GCF_023380205.1	Nicoliella	Nicoliella spurrieriana	SGEP1_A5 (SGEP1A5_GCF_023380205_1)	-	-	longest GTDB r226 SSU >= 1400 bp	1571	-	yes	reference	
+GCF_037546185.1	GTDB r226 representative	-	GCF_037546185.1	Nicoliella	Nicoliella lavandulae	Es01 (Es01_GCF_037546185_1)	-	-	longest GTDB r226 SSU >= 1400 bp	1571	-	yes	reference	
+ESL1104_GCF_058510645_1	public genome	isolate	GCF_058510645.1	Nicoliella	Nicoliella sp. ESL1104 GCF 058510645 1	-	-	5	ESL1104_GCF_058510645_1__16S_1	1576	-	yes	reference	
+ESL1106_GCF_058509965_1	public genome	isolate	GCF_058509965.1	Nicoliella	Nicoliella sp. ESL1106 GCF 058509965 1	-	-	5	ESL1106_GCF_058509965_1__16S_1	1578	-	yes	reference	
+ESL1113_GCF_058509245_1	public genome	isolate	GCF_058509245.1	Nicoliella	Nicoliella sp. ESL1113 GCF 058509245 1	-	-	5	ESL1113_GCF_058509245_1__16S_1	1576	-	yes	reference	
+ESL1120_GCF_058508515_1	public genome	isolate	GCF_058508515.1	Nicoliella	Nicoliella sp. ESL1120 GCF 058508515 1	-	-	5	ESL1120_GCF_058508515_1__16S_1	1576	-	yes	reference	
+ESL1149_GCF_058107265_1	public genome	isolate	GCF_058107265.1	Nicoliella	Nicoliella sp. ESL1149 GCF 058107265 1	-	-	5	ESL1149_GCF_058107265_1__16S_1	1577	-	yes	reference	
+GCF_001434095.1	GTDB r226 representative	-	GCF_001434095.1	Fructilactobacillus	Fructilactobacillus fructivorans	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_001436645.1	GTDB r226 representative	-	GCF_001436645.1	Fructilactobacillus	Fructilactobacillus florum	DSM 22689 (F_florum_DSM22689)	-	-	longest GTDB r226 SSU >= 1400 bp	1571	-	yes	outgroup	
+GCF_024029335.1	GTDB r226 representative	-	GCF_024029335.1	Fructilactobacillus	Fructilactobacillus myrtifloralis	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_024029915.1	GTDB r226 representative	-	GCF_024029915.1	Fructilactobacillus	Fructilactobacillus ixorae	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_024029355.1	GTDB r226 representative	-	GCF_024029355.1	Fructilactobacillus	Fructilactobacillus cliffordii	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_024029675.1	GTDB r226 representative	-	GCF_024029675.1	Fructilactobacillus	Fructilactobacillus carniphilus	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_024029435.1	GTDB r226 representative	-	GCF_024029435.1	Fructilactobacillus	Fructilactobacillus hinvesii	-	-	-	longest GTDB r226 SSU >= 1400 bp	1573	-	yes	outgroup	
+GCF_002907375.1	GTDB r226 representative	-	GCF_002907375.1	Fructilactobacillus	Fructilactobacillus lindneri	DSM 20690 (F_lindneri_strainDSM20690)	-	-	longest GTDB r226 SSU >= 1400 bp	1574	-	yes	outgroup	
+GCF_021698855.1	GTDB r226 representative	-	GCF_021698855.1	Fructilactobacillus	Fructilactobacillus sp021698855	-	-	-	longest GTDB r226 SSU >= 1400 bp	1412	-	yes	outgroup	
+MAG_40_Melli_029	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	-	-	Clade 1	0	-	-	P16S_20 (14)	no	searched, no usable 16S	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_45_Melli_016	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	-	-	Clade 1	0	-	-	P16S_20 (76)	no	searched, no usable 16S	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_46_Melli_022	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	-	-	Clade 1	0	-	-	P16S_20 (61)	no	searched, no usable 16S	searched with barrnap, no 16S; only weak MarkerMAG links (P16S_20, 14-76 pairs)
+MAG_22_Melli_029	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 22 Melli 029	-	Clade 2	3	MAG_22_Melli_029__16S_3	1569	P16S_61 (609); P16S_19 (76)	yes	reference	16S 1569 bp in tree; 1 other copy with discordant genus not used
+MAG_41_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 41 Melli 001	-	Clade 2	4	MAG_41_Melli_001__16S_1	1349	P16S_19 (3891); P16S_18 (71)	yes	reference	16S 1349 bp in tree (divergent, sensitivity test); 2 copies with discordant genus not used
+MAG_45_Melli_020	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 45 Melli 020	-	Clade 2	7	MAG_45_Melli_020__16S_1	1576	P16S_19 (1859)	yes	reference	16S 1576 bp in tree (divergent, sensitivity test); 3 copies with discordant genus/family not used
+MAG_47_Melli_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Nicoliella	Nicoliella sp. MAG 47 Melli 001	-	Clade 2	1	MAG_47_Melli_001__16S_1	1576	P16S_19 (24785); P16S_21 (508)	yes	reference	16S 1576 bp in tree; P16S_19 bin is this MAG
+N_barcode03	Xolalpa 2026	isolate	PRJNA1235305 (isolate 40_Melli_barcode03)	Nicoliella	Nicoliella sp. N barcode03	-	Clade 2	5	N_barcode03__16S_1	1576	-	yes	reference	16S in tree (5 concordant copies)
+N_barcode04	Xolalpa 2026	isolate	PRJNA1235305 (isolate 39_Melli_barcode04)	Nicoliella	Nicoliella sp. N barcode04	-	Clade 2	5	N_barcode04__16S_1	1576	-	yes	reference	16S in tree (5 concordant copies)
+N_barcode20	Xolalpa 2026	isolate	PRJNA1235305 (isolate 90_Scapto_barcode20)	Nicoliella	Nicoliella sp. N barcode20	-	Clade 2	5	N_barcode20__16S_3	1577	-	yes	reference	16S in tree (5 concordant copies)
+MAG_51_Scapto_004	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 3	0	-	-	T16S_1 (6392); P16S_18 (426); T16S_4 (109); P16S_22 (76)	no	searched, no usable 16S	searched with barrnap, no 16S; represented by T16S_1 (6392 pairs, names ASV2)
+MAG_89_Scapto_002	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 3	0	-	-	P16S_24 (450); P16S_22 (83)	no	searched, no usable 16S	searched with barrnap, no 16S; represented by P16S_24 (450 pairs), doubtful: 19-24 V4 differences from T16S_1/T16S_2 and placed outside Clade 3-4
+MAG_90_Scapto_012	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 3	0	-	-	P16S_25 (524); P16S_22 (21)	no	searched, no usable 16S	searched with barrnap, no 16S; linked by P16S_25 (524 pairs) but P16S_25 links more strongly to another bin, so it gets no clade
+MAG_92_Scapto_009	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 3	0	-	-	-	no	searched, no usable 16S	searched with barrnap, no 16S; no MarkerMAG link
+MAG_23_Scapto_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 4	0	-	-	T16S_1 (2938); T16S_2 (2189)	no	searched, no usable 16S	searched with barrnap, no 16S; represented by T16S_2 (2189 pairs, names ASV1)
+MAG_42_Melli_004	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 4	1	-	-	-	no	searched, no usable 16S	16S of 569 bp (genus concordant) not used: < 1000 bp and does not cover V4 (no 515F/806R site); overlaps T16S_1 over 177 bp at 93.2 %
+MAG_89_Scapto_001	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 4	1	-	-	P16S_19 (1364)	no	searched, no usable 16S	only 16S (577 bp) classifies as Nicoliella: bin contamination, not used; also linked by the Nicoliella P16S_19 (1364 pairs)
+MAG_92_Scapto_002	Xolalpa 2026	MAG	Zenodo 10.5281/zenodo.18446951	Acetilactobacillus	-	-	Clade 4	0	-	-	T16S_1 (1685); T16S_2 (1508)	no	searched, no usable 16S	searched with barrnap, no 16S; linked by T16S_1 (1685) and T16S_2 (1508), never the strongest link

@@ -17,12 +17,12 @@ MAG_23_Scapto_001	MAG	4	Acetilactobacillus	yes	searched with barrnap, no 16S; re
 MAG_42_Melli_004	MAG	4	Acetilactobacillus	yes	16S of 569 bp (genus concordant) not used: < 1000 bp and does not cover V4 (no 515F/806R site); overlaps T16S_1 over 177 bp at 93.2 %
 MAG_89_Scapto_001	MAG	4	Acetilactobacillus	yes	only 16S (577 bp) classifies as Nicoliella: bin contamination, not used; also linked by the Nicoliella P16S_19 (1364 pairs)
 MAG_92_Scapto_002	MAG	4	Acetilactobacillus	yes	searched with barrnap, no 16S; linked by T16S_1 (1685) and T16S_2 (1508), never the strongest link
-MAG_22_Melli_031	MAG	-	-	pending	
-MAG_39_Melli_018	MAG	-	-	pending	
-MAG_43_Scapto_014	MAG	-	-	pending	
-MAG_43_Scapto_022	MAG	-	-	pending	
-MAG_46_Melli_006	MAG	-	-	pending	
-MAG_46_Melli_018	MAG	-	-	pending	
-MAG_46_Melli_021	MAG	-	-	pending	
-MAG_92_Scapto_020	MAG	-	-	pending	
-MAG_92_Scapto_034	MAG	-	-	pending	
+MAG_22_Melli_031	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_39_Melli_018	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_43_Scapto_014	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_43_Scapto_022	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_46_Melli_006	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_46_Melli_018	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_46_Melli_021	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_92_Scapto_020	MAG	-	-	no	MAG without paper clade: left out of the table
+MAG_92_Scapto_034	MAG	-	-	no	MAG without paper clade: left out of the table

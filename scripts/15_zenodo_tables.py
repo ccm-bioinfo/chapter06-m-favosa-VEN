@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Tables for the Zenodo deposit (zenodo/tables/):
-  genomes_tree.tsv   reference genomes of the Nicoliella-Acetilactobacillus subtree (Fig. 4/4b, rooted on
-                     Fructilactobacillus): GTDB r226 representatives, Xolalpa 2026 MAGs and isolates and public genomes
-                     (docs/public_genomes.tsv), with the 16S used and its length. ASVs and recovered 16S are not genomes
-                     and are left out (the recovered 16S are in recovered_16S.tsv)
+  genomes_tree.tsv   genomes of the Nicoliella-Acetilactobacillus subtree (Fig. 4/4b, rooted on Fructilactobacillus):
+                     GTDB r226 representatives (with the public strain they correspond to) and public genomes
+                     (docs/public_genomes.tsv), plus every Xolalpa 2026 clade genome (docs/xolalpa2026_genomes.tsv),
+                     including those without a usable 16S, with barrnap copies, 16S used and MarkerMAG links received
   recovered_16S.tsv  16S recovered from the Xolalpa 2026 metagenomes (phyloFlash; P16S general, T16S targeted to
                      ASV1/ASV2): strongest MarkerMAG link, the Xolalpa 2026 MAG of the same species by skani
                      (ANI >= 95 %) that names the clade, and the best link to a different paper clade when there is one.
@@ -35,37 +35,60 @@ def fasta_len(path):
 CLADE = {"1": "Clade 1 Nicoliella-related", "2": "Clade 2 Nicoliella-related",
          "3": "Clade 3-4 Acetilactobacillus-like", "4": "Clade 3-4 Acetilactobacillus-like"}
 
-# ---- genomes of the Fig. 4 subtree -----------------------------------------------------------------------
+# ---- genomes: the Fig. 4 subtree plus every Xolalpa 2026 clade genome ----------------------------------------
+# Xolalpa 2026 genomes come from docs/xolalpa2026_genomes.tsv (in_table = yes): all were searched with barrnap and
+# were MarkerMAG link targets, with or without a 16S of their own
 info = {r["tip"]: r for r in rows("results/08_tree/tip_info.tsv")}
 fig4 = [t.strip() for t in open(os.path.join(root, "results/12_figures/fig4_tips.txt")) if t.strip()]
 length = fasta_len("results/08_tree/refs_full.fa")
-review = {r["genome"]: r for r in rows("results/03_genome16S_review.tsv") if r["use"] == "yes"}
+all16S = rows("results/03_genome16S_review.tsv")
+review = {r["genome"]: r for r in all16S if r["use"] == "yes"}
+copies = {}
+for r in all16S:
+    copies[r["genome"]] = copies.get(r["genome"], 0) + 1
 public = {r["genome"]: r for r in rows("docs/public_genomes.tsv")}
+strain_of_gtdb = {r["same_as_GTDB_tip"]: f"{r['strain']} ({r['genome']})" for r in public.values() if r["same_as_GTDB_tip"] != "-"}
+xol = {r["genome"]: r for r in rows("docs/xolalpa2026_genomes.tsv") if r["in_table"] == "yes"}
+mm = {}
+for r in rows("data/ours/ligas_16S_MAG.tsv"):
+    if r["MAG_articulo"]:
+        k = (r["MAG_articulo"], r["16S"])
+        mm[k] = max(mm.get(k, 0), int(r["pares"]))
+linked = {}
+for (g, c), n in sorted(mm.items(), key=lambda x: -x[1]):
+    linked.setdefault(g, []).append(f"{c} ({n})")
 outgroup = {t for t in fig4 if info.get(t, {}).get("genus") == "Fructilactobacillus"}
 with open(f"{out}/genomes_tree.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
-    w.writerow(["tip", "source", "genome_type", "record", "genus", "species", "clade_Xolalpa2026",
-                "16S_used", "16S_length_bp", "role"])
+    w.writerow(["genome", "source", "genome_type", "record", "genus", "species", "same_strain_as",
+                "paper_clade_Xolalpa2026", "barrnap_16S_copies", "16S_used", "16S_length_bp", "MarkerMAG_16S_linked",
+                "in_tree", "role", "note"])
+    done = set()
     for t in fig4:
         r = info.get(t)
         if not r or r["type"] not in ("GTDB", "genome"):
             continue
         role = "outgroup" if t in outgroup else "reference"
         if r["type"] == "GTDB":
-            w.writerow([t, "GTDB r226 representative", "-", t.replace("GTDB_", ""), r["genus"], r["label"], "-",
-                        "longest GTDB r226 SSU >= 1400 bp", length[t], role])
+            acc = t.replace("GTDB_", "")
+            w.writerow([acc, "GTDB r226 representative", "-", acc, r["genus"], r["label"], strain_of_gtdb.get(acc, "-"),
+                        "-", "-", "longest GTDB r226 SSU >= 1400 bp", length[t], "-", "yes", role, ""])
             continue
         g = r["label"]
         v = review[g]
-        if v["group"] == "public genome":
-            p = public[g]
-            src, gtype, rec = "public genome", p["type"], p["assembly"]
-        else:
-            src = "Xolalpa 2026"
-            gtype = "MAG" if v["group"] == "own MAG" else "isolate"
-            rec = v["published"]
-        w.writerow([t, src, gtype, rec, r["genus"], v["genome_species"], CLADE.get(v["clade_paper"], "-"),
-                    v["seq"], length[t], role])
+        if g in xol:
+            continue  # written below with the Xolalpa 2026 genomes
+        p = public[g]
+        w.writerow([g, "public genome", p["type"], p["assembly"], r["genus"], v["genome_species"], "-", "-",
+                    copies.get(g, 0), v["seq"], length[t], "-", "yes", role, p["note"]])
+    for g, x in xol.items():
+        v = review.get(g)
+        t = f"OWN_{g}"
+        rec = "Zenodo 10.5281/zenodo.18446951" if x["type"] == "MAG" else (v["published"] if v else "PRJNA1235305")
+        w.writerow([g, "Xolalpa 2026", x["type"], rec, x["GTDB_genus_paper"], v["genome_species"] if v else "-", "-",
+                    f"Clade {x['clade_paper']}", copies.get(g, 0), v["seq"] if v else "-",
+                    length.get(t, "-") if t in info else (v["length"] if v else "-"), "; ".join(linked.get(g, [])) or "-",
+                    "yes" if t in info else "no", "reference" if t in info else "searched, no usable 16S", x["decision"]])
 
 # ---- recovered 16S ---------------------------------------------------------------------------------------
 labels = {r["cluster"]: r for r in rows("docs/mg16S_labels.tsv")}

@@ -3,7 +3,8 @@
   GTDB   the same GTDB r226 accessions as the previous constrained tree (tips GTDB_* of
          data/refs/constraint_gtdb.tree; rule in /data2/MIEL/vit/scripts/08_lab_tree_inputs.py), longest 16S
          each, minus 3 with defective 16S (saturated terminal branch)
-  OWN_   our genome 16S with use=yes, Lactobacillaceae, >= 1200 bp (one per genome)
+  OWN_   our genome 16S with use=yes, Lactobacillaceae, >= 1200 bp (one per genome); public genomes whose
+         assembly is already a GTDB tip are skipped
   MG16S_ the 23 Lactobacillaceae 16S recovered from our metagenomes (>= 1000 bp), minus 2 with a saturated branch
   ASV    the 69 B-VEN-D9 Lactobacillaceae ASVs (queries, placed with EPA-ng)
 Writes results/08_tree/: refs_full.fa, queries.fa, tip_info.tsv, taxon.tsv (gappa)
@@ -54,6 +55,10 @@ for sid, r in labels.items():
         continue
     g = sid.split("__16S_")[0]
     if "f__Lactobacillaceae" not in gtax[g] or len(seqs[sid]) < 1200:
+        continue
+    acc = re.search(r"(GC[AF])_(\d+)_(\d+)$", g)  # public genome already in the tree as a GTDB tip (e.g. Es01, SGEP1A5)
+    if acc and any(f"GTDB_{acc[1]}_{acc[2]}.{acc[3]}" == t[0] for t in tips):
+        print("skip duplicate of GTDB tip:", g)
         continue
     clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clado") else ""
     tips.append((f"OWN_{g}", "genome", "Lactobacillaceae", r["genus"], clade, g, seqs[sid]))

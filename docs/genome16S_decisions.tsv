@@ -1,7 +1,7 @@
 genome	published	clade_paper	use	note
 MAG_22_Melli_029	Zenodo 10.5281/zenodo.18446951	2	yes	
-MAG_41_Melli_001	Zenodo 10.5281/zenodo.18446951	2	yes	16S only ~95.5% to other Clade 2 16S (98.3% to MAG_45_Melli_020): check before tree
-MAG_45_Melli_020	Zenodo 10.5281/zenodo.18446951	2	yes	16S only ~95% to other Clade 2 16S (98.3% to MAG_41_Melli_001): check before tree
+MAG_41_Melli_001	Zenodo 10.5281/zenodo.18446951	2	yes	kept: passed the a priori genus check. 16S ~95% to other Clade 2 16S (98.3% to MAG_45_Melli_020); sensitivity analysis without it
+MAG_45_Melli_020	Zenodo 10.5281/zenodo.18446951	2	yes	kept: passed the a priori genus check. 16S ~95% to other Clade 2 16S (98.3% to MAG_41_Melli_001); sensitivity analysis without it
 MAG_47_Melli_001	Zenodo 10.5281/zenodo.18446951	2	yes	
 MAG_42_Melli_004	Zenodo 10.5281/zenodo.18446951	4	no	16S only 569 bp; Clade 4 represented by recovered T16S_2
 MAG_89_Scapto_001	Zenodo 10.5281/zenodo.18446951	4	no	only 16S copy classifies as Nicoliella (bin contamination)
@@ -20,5 +20,5 @@ barcode10	no	2	no	unpublished isolate (C3_56_A3); 16S >=99.5% to published Clade
 barcode11	no	2	no	unpublished isolate (C3_56_A4); 16S >=99.5% to published Clade 2, no loss
 barcode15	no	2	no	unpublished isolate (C29_A1); 16S >=99.5% to published Clade 2, no loss
 barcode17	no	-	no	unpublished isolate (Costa Rica); 16S >=99.5% to published Clade 2, no loss
-CR_A551_006	?	-	yes	Costa Rica MAG: confirm whether published
+CR_A551_006	no	-	no	Costa Rica MAG: not published
 F_fructivorans_strainDSM20203	public	-	no	16S classifies as Wolbachia (assembly contamination)

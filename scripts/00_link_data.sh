@@ -14,8 +14,9 @@ esac
 grep -v '^#' data/manifest.tsv | while IFS=$'\t' read -r link src_local src_alnitak desc _zenodo; do
   src=$( [[ $col == 2 ]] && echo "$src_local" || echo "$src_alnitak" )
   if [[ $src == "-" ]]; then echo "skip ($host): $link"; continue; fi
-  if [[ ! -e $base/$src ]]; then echo "MISSING: $base/$src" >&2; continue; fi
+  [[ $src == /* ]] || src=$base/$src   # absolute paths (shared databases) are used as-is
+  if [[ ! -e $src ]]; then echo "MISSING: $src" >&2; continue; fi
   mkdir -p "data/$(dirname "$link")"
-  ln -sfn "$base/$src" "data/$link"
+  ln -sfn "$src" "data/$link"
 done
 echo "links in data/ ($host):"; find data -type l | sort

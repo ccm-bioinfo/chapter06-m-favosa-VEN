@@ -18,4 +18,5 @@ ours/custom_16S_vs_gtdb.tsv	-	16S_reclass/refs/custom_16S_vs_gtdb.tsv	SINTAX of 
 ours/custom_taxonomy.tsv	results/16S_reclass_GTDB_custom/custom_taxonomy.tsv	16S_reclass/refs/custom_taxonomy.tsv	GTDB-Tk taxonomy of each custom genome	ours/custom_taxonomy.tsv
 ours/custom_16S_check.tsv	results/16S_reclass_GTDB_custom/custom_16S_check.tsv	16S_reclass/refs/custom_16S_check.tsv	16S vs genome taxonomy check	ours/custom_16S_check.tsv
 refs/ssu_all_r226.fna.gz	-	16S_reclass/refs/ssu_all_r226.fna.gz	GTDB r226 SSU (73 MB)	https://data.gtdb.ecogenomic.org/releases/release226/226.0/genomic_files_all/ssu_all_r226.fna.gz
+refs/silva_138.2_NR99.fasta	-	/data/database/phyloflash_silva_138.2/138.2/SILVA_SSU.noLSU.masked.trimmed.NR99.fixed.fasta	SILVA 138.2 SSU NR99 (phyloFlash build: masked, trimmed, U->T)	https://www.arb-silva.de/fileadmin/silva_databases/release_138_2/Exports/SILVA_138.2_SSURef_NR99_tax_silva.fasta.gz
 refs/constraint_gtdb.tree	results/16S_LAB_tree/epa_constrained/constraint_gtdb.tree	16S_reclass/tree/epa_constrained/constraint_gtdb.tree	Genome (GTDB) topology used to constrain the 16S tree	refs/constraint_gtdb.tree

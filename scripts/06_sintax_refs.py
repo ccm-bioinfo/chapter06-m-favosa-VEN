@@ -3,7 +3,7 @@
   silva.fa            SILVA 138.2 NR99, Bacteria + Archaea, to genus (SILVA species = organism names, not curated)
   gtdb.fa             GTDB r226 SSU
   gtdb_ours.fa        GTDB + our 16S: genomes with use=yes (results/03_genome16S_review.tsv) and the 23 MG16S
-                      (docs/mg16S_labels.tsv); paper clade as species, e.g. s:Clado_4_Acetilactobacillus-like
+                      (docs/mg16S_labels.tsv); paper clade as species, e.g. s:Clado_3-4_Acetilactobacillus-like (Clades 3 and 4 merged)
   gtdb_ours_sens.fa   same without the divergent Clade 2 16S of MAG_41_Melli_001 / MAG_45_Melli_020
   ours_labels.tsv     id, source, genus, species/clade of each of our references
 Usage (alnitak): python3 scripts/06_sintax_refs.py   ->  results/06_sintax/refs/"""
@@ -67,7 +67,7 @@ gtax = dict(l.rstrip("\n").split("\t") for l in open(f"{data}/ours/custom_taxono
 with open(os.path.join(root, "docs", "genome16S_decisions.tsv")) as fh:
     clade_of = {r["genome"]: r["clade_paper"] for r in csv.DictReader(fh, delimiter="\t")}
 CLADE = {"1": "Clado_1_Nicoliella-related", "2": "Clado_2_Nicoliella-related",
-         "3": "Clado_3_Acetilactobacillus-like", "4": "Clado_4_Acetilactobacillus-like"}
+         "3": "Clado_3-4_Acetilactobacillus-like", "4": "Clado_3-4_Acetilactobacillus-like"}
 with open(os.path.join(root, "results", "03_genome16S_review.tsv")) as fh:
     use = {r["seq"] for r in csv.DictReader(fh, delimiter="\t") if r["use"] == "yes"}
 seqs = dict((h.split(";")[0], s) for h, s in fasta(f"{data}/ours/custom_16S.fa"))

@@ -24,7 +24,7 @@ def label_from(ranks):
     """ranks: list of (rank, name) to the deepest resolved level -> display label."""
     names = dict(ranks)
     if names.get("s", "").startswith("Clado"):
-        return names["s"].replace("_", " ", 2).replace("_", " ")
+        return names["s"].replace("_", " ")
     if "g" in names:
         return names["g"]
     if names.get("f") == "Lactobacillaceae":
@@ -102,7 +102,7 @@ with open(f"{out}/summary_by_method.tsv", "w") as fh:
 def genus_label(ranks):
     names = dict(ranks)
     if names.get("s", "").startswith("Clado"):
-        return names["s"].replace("_", " ", 2).replace("_", " ")
+        return names["s"].replace("_", " ")
     g = names.get("g", "")
     if not g or "Incertae_Sedis" in g or "uncultured" in g.lower():
         return "Lactobacillaceae (no genus)" if names.get("f") == "Lactobacillaceae" else "Unclassified"

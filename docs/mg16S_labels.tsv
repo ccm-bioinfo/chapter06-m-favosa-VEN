@@ -7,7 +7,7 @@ MG16S_P16S_20	P16S_20	1571	Nicoliella		bin 51_Scapto.010 (sin clasificar, 825 pa
 MG16S_P16S_21	P16S_21	1571	Acetilactobacillus		MAG_22_Melli_031 (Enterobacteriaceae) [bin 22_Melli.031, 29574 pares]
 MG16S_P16S_22	P16S_22	1571	Acetilactobacillus		bin 21_Melli.022 (sin clasificar, 109 pares)
 MG16S_P16S_23	P16S_23	1571	Nicoliella		bin 43_Scapto.017 (sin clasificar, 59 pares)
-MG16S_P16S_24	P16S_24	1571	Acetilactobacillus	Clado_3_Acetilactobacillus-like	Clado 3: MAG_89_Scapto_002 [bin 91_Scapto.006, 450 pares]
+MG16S_P16S_24	P16S_24	1571	Acetilactobacillus	Clado_3-4_Acetilactobacillus-like	Clado 3: MAG_89_Scapto_002 [bin 91_Scapto.006, 450 pares]
 MG16S_P16S_25	P16S_25	1570	Acetilactobacillus		bin 45_Melli.022 (sin clasificar, 26499 pares)
 MG16S_P16S_26	P16S_26	1570	Apilactobacillus		bin 89_Scapto.004 (sin clasificar, 438 pares)
 MG16S_P16S_27	P16S_27	1569	Holzapfeliella		bin 90_Scapto.015 (sin clasificar, 143 pares)
@@ -18,7 +18,7 @@ MG16S_P16S_31	P16S_31	1547	ESL0723		MAG_46_Melli_018 (ESL0723) [bin 47_Melli.019
 MG16S_P16S_32	P16S_32	1547	Fructobacillus		no link
 MG16S_P16S_61	P16S_61	1289	Acetilactobacillus		bin 42_Melli.007 (sin clasificar, 893 pares)
 MG16S_P16S_62	P16S_62	1286	Levilactobacillus		no link
-MG16S_T16S_1	T16S_1	1178	Acetilactobacillus	Clado_3_Acetilactobacillus-like	Clado 3: MAG_51_Scapto_004 [bin 23_Scapto.003, 6392 pares]
-MG16S_T16S_2	T16S_2	1046	Acetilactobacillus	Clado_4_Acetilactobacillus-like	Clado 4: MAG_23_Scapto_001 [bin 43_Scapto.004, 2189 pares]
+MG16S_T16S_1	T16S_1	1178	Acetilactobacillus	Clado_3-4_Acetilactobacillus-like	Clado 3: MAG_51_Scapto_004 [bin 23_Scapto.003, 6392 pares]
+MG16S_T16S_2	T16S_2	1046	Acetilactobacillus	Clado_3-4_Acetilactobacillus-like	Clado 4: MAG_23_Scapto_001 [bin 43_Scapto.004, 2189 pares]
 MG16S_T16S_3	T16S_3	1011	Acetilactobacillus		bin 23_Scapto.013 (sin clasificar, 212 pares)
 MG16S_T16S_4	T16S_4	1010	Acetilactobacillus		bin 43_Scapto.007 (Nicoliella, 915 pares)

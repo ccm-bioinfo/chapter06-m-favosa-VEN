@@ -10,7 +10,7 @@ suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree)
 out <- "results/12_figures"; dir.create(out, showWarnings = FALSE)
 
 # colours shared by both figures for the new assignments (from the VIT tree palette)
-CLADE_COL <- c("Clado 3 Acetilactobacillus-like" = "#D55E00", "Clado 4 Acetilactobacillus-like" = "#009E73",
+CLADE_COL <- c("Clado 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and 4 merged (not separable by 16S)
                "Clado 2 Nicoliella-related" = "#CC79A7", "Acetilactobacillus" = "#E69F00")
 
 # ---- Figure 1 ---------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ p1 <- ggplot(s, aes(method, pct, fill = genus)) +
   geom_text(data = subset(s, pct >= 0.05), aes(y = 1 - mid, label = sprintf("%.0f%%", 100 * pct)),
             size = 4.5, colour = "grey15") +
   scale_fill_manual(values = pal, breaks = lev, name = "Genus / paper clade",   # genera in italics
-                    labels = lapply(lev, function(l) if (l %in% c(special, names(CLADE_COL)[1:3])) l else bquote(italic(.(l))))) +
+                    labels = lapply(lev, function(l) if (l %in% c(special, names(CLADE_COL)[1:2])) l else bquote(italic(.(l))))) +
   scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0), limits = c(0, 1.0001),
                      breaks = seq(0, 1, 0.25)) +
   theme_bw(base_size = 13) +
@@ -95,7 +95,7 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
            type == "ASV"              ~ {n <- cls$reads[match(label, cls$ASV)]; sprintf("%s (%s read%s)", label, n, ifelse(n == 1, "", "s"))},
            type == "GTDB"             ~ label,
            TRUE ~ paste0(sub("^(MG16S|OWN)_", "", tip),
-                         ifelse(clade != "", paste0(" [", sub("^(Clado \\d).*", "\\1", clade), "]"), "")))) |>
+                         ifelse(clade != "", paste0(" [", sub("^(Clado [0-9-]+).*", "\\1", clade), "]"), "")))) |>
   rename(name = label)
 
 # Nicoliella sector (zoom in Fig. 3)
@@ -156,7 +156,7 @@ nic <- keep.tip(tree, nic_tips)
 dn <- d |> filter(tip %in% nic_tips) |>
   mutate(zlab = case_when(type == "ASV" ~ {n <- cls$reads[match(name, cls$ASV)]; sprintf("%s  [favosa ASV, %s read%s]", name, n, ifelse(n == 1, "", "s"))},
                           TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
-                                        ifelse(clade != "", paste0(", ", sub("^(Clado \\d).*", "\\1", clade)), ""), "]")))
+                                        ifelse(clade != "", paste0(", ", sub("^(Clado [0-9-]+).*", "\\1", clade)), ""), "]")))
 p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
   geom_tippoint(aes(colour = grupo, shape = grupo), size = 3.5) +
   geom_tiplab(aes(label = zlab, colour = grupo), size = 4, offset = 0.2, show.legend = FALSE) +

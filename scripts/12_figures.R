@@ -83,9 +83,10 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
   mutate(clade = gsub("_", " ", clade),
          grupo = case_when(
            type == "GTDB"       ~ "GTDB r226 reference",
-           type == "genome" & grepl("^(MAG_|N_barcode)", label) ~ "Our genome (published)",
+           type == "genome" & grepl("^MAG_", label)       ~ "Xolalpa 2026 MAG",
+           type == "genome" & grepl("^N_barcode", label)  ~ "Xolalpa 2026 isolate",
            type == "genome"     ~ "Public bee-LAB genome (custom set)",
-           type == "metagenome" ~ "16S recovered from our metagenomes",
+           type == "metagenome" ~ "16S recovered from Xolalpa 2026 metagenomes",
            clade != ""          ~ paste0("ASV: ", clade),
            genus == "Acetilactobacillus" ~ "ASV: Acetilactobacillus",
            TRUE                 ~ "ASV: other / family only"),
@@ -105,10 +106,12 @@ d <- d |> mutate(tiplab = ifelse(tip %in% nic_tips & type == "ASV",
 
 cols <-c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
           "ASV: other / family only" = "#999999",
-          "Our genome (published)" = "#0072B2", "Public bee-LAB genome (custom set)" = "#7F7FBF",
-          "16S recovered from our metagenomes" = "#56B4E9",
+          "Xolalpa 2026 MAG" = "#0072B2", "Xolalpa 2026 isolate" = "#0072B2", "Public bee-LAB genome (custom set)" = "#7F7FBF",
+          "16S recovered from Xolalpa 2026 metagenomes" = "#56B4E9",
           "GTDB r226 reference" = "grey55")
 cols <- cols[names(cols) %in% d$grupo]
+# Xolalpa 2026 MAGs as triangles, isolates as squares, everything else as circles (shared legend with colour)
+shapes <- setNames(ifelse(names(cols) == "Xolalpa 2026 MAG", 17, ifelse(names(cols) == "Xolalpa 2026 isolate", 15, 16)), names(cols))
 
 # genus sectors: MRCA of the GTDB and genome references of each genus (constrained to the genome topology)
 hl_genera <- c(Acetilactobacillus = "#F5DEB3", Nicoliella = "#F2D7E8", Apilactobacillus = "#D9EAD3",
@@ -126,13 +129,14 @@ hl <- do.call(rbind, lapply(names(hl_genera), function(g) {
 p2 <- ggtree(tree, layout = "circular", branch.length = "none", size = 0.25) %<+% d +
   geom_hilight(data = hl, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 6) +
   scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
-  geom_tippoint(aes(colour = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), 0.4)), alpha = 0.9) +
+  geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.2, 0.4))),
+                alpha = 0.9) +
   geom_tiplab(aes(label = tiplab, colour = grupo), size = 1.7, offset = 0.4, show.legend = FALSE) +
-  scale_colour_manual(values = cols, name = "Sequence") +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
   scale_size_continuous(range = c(0.5, 6), name = "% of Lactobacillaceae reads (ASV)",
                         breaks = c(0.1, 1, 5, 20, 60)) +
   theme(legend.position = "right", legend.text = element_text(size = 8)) +
-  labs(title = "16S Lactobacillaceae: Melipona favosa honey ASVs (10MFH) on GTDB r226 + our published genomes and recovered 16S",
+  labs(title = "16S Lactobacillaceae: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026 genomes and recovered 16S",
        subtitle = paste("Reference tree constrained to the GTDB genome topology (bac120); ASVs placed with EPA-ng;",
                         "cladogram (no branch lengths). ASV colour = EPA-ng assignment; label if >= 0.5 %.",
                         if (length(drop) > 0) paste("\nLeft out for anomalous branch (> 0.3):", paste(drop, collapse = ", ")) else ""))
@@ -140,22 +144,23 @@ ggsave(file.path(out, "fig2_placement_tree.pdf"), p2, width = 18, height = 16, l
 ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 18, height = 16, dpi = 200, bg = "white")
 
 # ---- Figure 3: zoom on the Nicoliella sector, every tip with its origin ---------------------------
-origin <- c("GTDB r226 reference" = "GTDB", "Our genome (published)" = "ours, published",
-            "Public bee-LAB genome (custom set)" = "public genome", "16S recovered from our metagenomes" = "ours, metagenome 16S")
+origin <- c("GTDB r226 reference" = "GTDB", "Xolalpa 2026 MAG" = "Xolalpa 2026, MAG",
+            "Xolalpa 2026 isolate" = "Xolalpa 2026, isolate", "Public bee-LAB genome (custom set)" = "public genome",
+            "16S recovered from Xolalpa 2026 metagenomes" = "Xolalpa 2026, metagenome 16S")
 nic <- keep.tip(tree, nic_tips)
 dn <- d |> filter(tip %in% nic_tips) |>
   mutate(zlab = case_when(type == "ASV" ~ sprintf("%s  [favosa ASV, %s reads]", name, cls$reads[match(name, cls$ASV)]),
                           TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
                                         ifelse(clade != "", paste0(", ", sub("^(Clado \\d).*", "\\1", clade)), ""), "]")))
 p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
-  geom_tippoint(aes(colour = grupo), size = 3) +
+  geom_tippoint(aes(colour = grupo, shape = grupo), size = 3.5) +
   geom_tiplab(aes(label = zlab, colour = grupo), size = 4, offset = 0.2, show.legend = FALSE) +
-  scale_colour_manual(values = cols, name = "Sequence") +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
   xlim(0, max(node.depth(nic, method = 2)) + 9) +
   theme(legend.position = "bottom", legend.text = element_text(size = 11)) +
   guides(colour = guide_legend(ncol = 2)) +
   labs(title = "Nicoliella sector of Fig. 2: all tips",
-       subtitle = "Cladogram (same topology as Fig. 2); only the published barcode03/04/20 isolates of our Nicoliella genomes are included")
+       subtitle = "Cladogram (same topology as Fig. 2); of the Xolalpa 2026 Nicoliella isolates only the published barcode03/04/20 are included")
 ggsave(file.path(out, "fig3_nicoliella_clade.pdf"), p3, width = 11, height = 8)
 ggsave(file.path(out, "fig3_nicoliella_clade.png"), p3, width = 11, height = 8, dpi = 300, bg = "white")
 message("figures in ", out)

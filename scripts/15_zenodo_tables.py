@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Tables for the Zenodo deposit (results/15_zenodo/):
-  genomes_used.tsv   genomes whose barrnap 16S entered the references (use=yes in results/03_genome16S_review.tsv;
-                     every use=no genome, including UNU, is left out), with the copy used and whether it is in the tree
+"""Tables for the Zenodo deposit (zenodo/tables/):
+  genomes_tree.tsv   reference genomes of the Nicoliella-Acetilactobacillus subtree (Fig. 4/4b, rooted on
+                     Fructilactobacillus): GTDB r226 representatives, Xolalpa 2026 MAGs and isolates and public genomes
+                     (docs/public_genomes.tsv), with the 16S used and its length. ASVs and recovered 16S are not genomes
+                     and are left out (the recovered 16S are in recovered_16S.tsv)
   recovered_16S.tsv  16S recovered from the Xolalpa 2026 metagenomes (phyloFlash; P16S general, T16S targeted to
                      ASV1/ASV2): strongest MarkerMAG link, the Xolalpa 2026 MAG of the same species by skani
-                     (ANI >= 95 %) that names the clade, and the best link to a different clade when there is one.
+                     (ANI >= 95 %) that names the clade, and the best link to a different paper clade when there is one.
                      Bin species labels from unpublished genomes are not included.
-Usage (Mac, after 03, 05, 08): python3 scripts/15_zenodo_tables.py"""
+Usage (Mac, after 12_figures.R): python3 scripts/15_zenodo_tables.py"""
 import csv, os, re
 
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-out = os.path.join(root, "results", "15_zenodo")
+out = os.path.join(root, "zenodo", "tables")
 os.makedirs(out, exist_ok=True)
 
 
@@ -19,33 +21,57 @@ def rows(path):
         return list(csv.DictReader(fh, delimiter="\t"))
 
 
-tips = {r["tip"] for r in rows("results/08_tree/tip_info.tsv")}
+def fasta_len(path):
+    n, h = {}, None
+    for line in open(os.path.join(root, path)):
+        if line.startswith(">"):
+            h = line[1:].split()[0]
+            n[h] = 0
+        else:
+            n[h] += len(line.strip())
+    return n
+
+
 CLADE = {"1": "Clade 1 Nicoliella-related", "2": "Clade 2 Nicoliella-related",
          "3": "Clade 3-4 Acetilactobacillus-like", "4": "Clade 3-4 Acetilactobacillus-like"}
 
-# ---- genomes ---------------------------------------------------------------------------------------------
-SOURCE = {"own MAG": "Xolalpa 2026 MAG", "own isolate": "Xolalpa 2026 isolate", "public genome": "public isolate genome"}
-with open(f"{out}/genomes_used.tsv", "w") as fh:
+# ---- genomes of the Fig. 4 subtree -----------------------------------------------------------------------
+info = {r["tip"]: r for r in rows("results/08_tree/tip_info.tsv")}
+fig4 = [t.strip() for t in open(os.path.join(root, "results/12_figures/fig4_tips.txt")) if t.strip()]
+length = fasta_len("results/08_tree/refs_full.fa")
+review = {r["genome"]: r for r in rows("results/03_genome16S_review.tsv") if r["use"] == "yes"}
+public = {r["genome"]: r for r in rows("docs/public_genomes.tsv")}
+outgroup = {t for t in fig4 if info.get(t, {}).get("genus") == "Fructilactobacillus"}
+with open(f"{out}/genomes_tree.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
-    w.writerow(["genome", "source", "record", "genus_GTDB-Tk", "species", "clade_Xolalpa2026", "16S_copy_used",
-                "16S_length_bp", "in_SINTAX_reference", "in_tree", "not_in_tree_because"])
-    for r in rows("results/03_genome16S_review.tsv"):
-        if r["use"] != "yes":
+    w.writerow(["tip", "source", "genome_type", "record", "genus", "species", "clade_Xolalpa2026",
+                "16S_used", "16S_length_bp", "role"])
+    for t in fig4:
+        r = info.get(t)
+        if not r or r["type"] not in ("GTDB", "genome"):
             continue
-        g = r["genome"]
-        acc = re.search(r"(GC[AF])_(\d+)_(\d+)$", g)
-        record = r["published"] if r["published"] != "public" else (f"{acc[1]}_{acc[2]}.{acc[3]}" if acc else "NCBI (public isolate)")
-        in_tree = f"OWN_{g}" in tips
-        why = "" if in_tree else "16S < 1200 bp" if int(r["length"]) < 1200 else "not Lactobacillaceae"  # tree rule of 08
-        w.writerow([g, SOURCE[r["group"]], record, r["genome_genus"] or "-", r["genome_species"],
-                    CLADE.get(r["clade_paper"], "-"), r["seq"], r["length"], "yes", "yes" if in_tree else "no", why])
+        role = "outgroup" if t in outgroup else "reference"
+        if r["type"] == "GTDB":
+            w.writerow([t, "GTDB r226 representative", "-", t.replace("GTDB_", ""), r["genus"], r["label"], "-",
+                        "longest GTDB r226 SSU >= 1400 bp", length[t], role])
+            continue
+        g = r["label"]
+        v = review[g]
+        if v["group"] == "public genome":
+            p = public[g]
+            src, gtype, rec = "public genome", p["type"], p["assembly"]
+        else:
+            src = "Xolalpa 2026"
+            gtype = "MAG" if v["group"] == "own MAG" else "isolate"
+            rec = v["published"]
+        w.writerow([t, src, gtype, rec, r["genus"], v["genome_species"], CLADE.get(v["clade_paper"], "-"),
+                    v["seq"], length[t], role])
 
 # ---- recovered 16S ---------------------------------------------------------------------------------------
 labels = {r["cluster"]: r for r in rows("docs/mg16S_labels.tsv")}
 links = {}
 for r in rows("data/ours/ligas_16S_MAG.tsv"):
     links.setdefault(r["16S"], []).append(r)
-BAD_TREE = {"P16S_15", "P16S_62"}  # saturated terminal branch (08_tree_inputs.py)
 
 
 def paper_clade(r):  # clade of the Xolalpa 2026 MAG that names the bin (1-4, before merging 3 and 4)
@@ -54,8 +80,6 @@ def paper_clade(r):  # clade of the Xolalpa 2026 MAG that names the bin (1-4, be
 
 
 RELATION = {"es el MAG": "bin is the MAG", "misma especie, otro bin": "same species, other bin"}
-
-
 with open(f"{out}/recovered_16S.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
     w.writerow(["16S", "assembly", "length_bp", "family_SINTAX", "genus_SINTAX", "samples_with_reads",
@@ -70,12 +94,12 @@ with open(f"{out}/recovered_16S.tsv", "w") as fh:
         clade = lab["clade"].replace("_", " ") if lab and lab["clade"] else "-"
         top_clade = paper_clade(top) if top else ""
         other = next((x for x in lk if paper_clade(x) and paper_clade(x) != top_clade), None) if top_clade else None
+        in_tree = "yes" if r["tip"] in info else ("no (saturated branch)" if lab else "no")
         w.writerow([c, "targeted to ASV1/ASV2" if c.startswith("T16S") else "general", r["longitud"], r["familia"],
-                    r["genero"], r["muestras_origen"], "yes" if lab else "no",
-                    "no (saturated branch)" if c in BAD_TREE else ("yes" if lab else "no"),
+                    r["genero"], r["muestras_origen"], "yes" if lab else "no", in_tree,
                     len({x["bin"] for x in lk}), top["bin"] if top else "-", top["pares"] if top else "0",
                     (top["MAG_articulo"] or "-") if top else "-", (top["ANI"] or "-") if top else "-",
                     RELATION.get(top["relacion"], "no Xolalpa 2026 MAG >= 95 % ANI") if top else "no link",
-                    top_clade or "-", clade, paper_clade(other) if other else "-", other["bin"] if other else "-",
-                    other["pares"] if other else "-"])
+                    top_clade or "-", clade, paper_clade(other) if other else "-",
+                    other["bin"] if other else "-", other["pares"] if other else "-"])
 print("written", out)

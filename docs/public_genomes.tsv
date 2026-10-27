@@ -1,0 +1,22 @@
+genome	assembly	strain	type	source	same_as_GTDB_tip	note
+A_apinorum_strainFhon13	GCA_001281175.1	Fhon13	isolate	bee	GCF_001281175.1	same strain as GTDB reference
+A_jinshanensis_brasiliensis	GCA_043289735.1	AJITA	MAG	stingless bee larval food (Brazil)	-	public MAG
+A_jinshanensis_strainHSLZ75	GCA_004359375.1	HSLZ-75	isolate	vinegar	GCF_004359375.1	same assembly as GTDB reference
+A_jinshanensis_subsaerogenes	GCA_023612235.1	Z-I	isolate	vinegar	-	registered at NCBI as uncultured bacterium isolate Z-I
+A_kunkeei_DSM12361	-	DSM 12361	isolate	bee	GCF_001281265.1	same strain as GTDB reference (DSM 12361 = YH-15), other assembly
+A_micheneri_strainHlig3	GCA_002993975.1	Hlig3	isolate	bee	GCF_002993975.1	same assembly as GTDB reference
+A_micheneri_strainNBRC113063	GCA_003112615.1	NBRC 113063	isolate	bee	-	
+A_ozensis_DSM23829	GCA_001435995.1	DSM 23829	isolate	flower	GCF_001435995.1	same assembly as GTDB reference
+A_quenuiae_strainHV6	GCA_002994005.1	HV_6	isolate	bee	GCF_002994005.1	same assembly as GTDB reference
+A_timberlakei_strainHV12	GCA_002993965.1	HV_12	isolate	bee	-	
+ESL1104_GCF_058510645_1	GCF_058510645.1	ESL1104	isolate	bee	-	
+ESL1106_GCF_058509965_1	GCF_058509965.1	ESL1106	isolate	bee	-	
+ESL1113_GCF_058509245_1	GCF_058509245.1	ESL1113	isolate	bee	-	
+ESL1120_GCF_058508515_1	GCF_058508515.1	ESL1120	isolate	bee	-	
+ESL1149_GCF_058107265_1	GCF_058107265.1	ESL1149	isolate	bee	-	
+Es01_GCF_037546185_1	GCF_037546185.1	Es01	isolate	flower	GCF_037546185.1	same assembly as GTDB reference
+F_florum_DSM22689	GCA_001436645.1	DSM 22689	isolate	flower	GCF_001436645.1	same strain as GTDB reference
+F_lindneri_strainDSM20690	-	DSM 20690	isolate	beer	GCF_002907375.1	same strain as GTDB reference (DSM 20690 = TMW 1.88), other assembly
+L_Lactobacillus_spSy1	GCA_019303535.1	Sy-1	isolate	stingless bee honey (Malaysia)	GCF_019303535.1	same assembly as GTDB reference
+L_senioris_DSM24302	GCA_001436555.1	DSM 24302	isolate	-	-	
+SGEP1A5_GCF_023380205_1	GCF_023380205.1	SGEP1_A5	isolate	stingless bee honey (Australia)	GCF_023380205.1	same assembly as GTDB reference

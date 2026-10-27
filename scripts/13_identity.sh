@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Step 6: why our 16S resolve the favosa LAB: best-hit V4 identity of each Lactobacillaceae ASV to
 # our 16S (OWN_*) versus GTDB r226 alone. Top hits only (an all-hits output fills the disk).
-# Usage (alnitak, after 06_sintax_refs.py): bash scripts/13_identity.sh  ->  results/13_identity/
+# Usage (alnitak, after 07_sintax.sh): bash scripts/13_identity.sh  ->  results/13_identity/
 set -euo pipefail
 cd "$(dirname "$0")/../results"
 export PATH=/data/nselem/envs/vit/bin:$PATH
@@ -13,6 +13,7 @@ for db in ours gtdb_only; do
     --top_hits_only --userout $O/best_$db.tsv --userfields query+target+id --quiet --threads 32
 done
 rm $O/ours.fa $O/gtdb_only.fa
+rm -f 06_sintax/refs/gtdb_ours.fa   # last user of the 1.2 GB reference; 06_sintax_refs.py rebuilds it
 python3 -I - <<PY
 import csv
 reads = {r[0]: int(r[1]) for r in csv.reader(open("04_queries/favosa_counts.tsv"), delimiter="\t") if r[0] != "ASV"}

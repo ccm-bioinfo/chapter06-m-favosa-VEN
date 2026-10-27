@@ -22,3 +22,6 @@ barcode15	no	2	no	unpublished isolate (C29_A1); 16S >=99.5% to published Clade 2
 barcode17	no	-	no	unpublished isolate (Costa Rica); 16S >=99.5% to published Clade 2, no loss
 CR_A551_006	no	-	no	Costa Rica MAG: not published
 F_fructivorans_strainDSM20203	public	-	no	16S classifies as Wolbachia (assembly contamination)
+Es01_GCF_037546185_1	public	-	no	same assembly as GTDB r226 reference GCF_037546185.1 (Nicoliella lavandulae)
+SGEP1A5_GCF_023380205_1	public	-	no	same assembly as GTDB r226 reference GCF_023380205.1 (Nicoliella spurrieriana)
+A_jinshanensis_strainHSLZ75	public	-	no	same assembly as GTDB r226 reference GCF_004359375.1 (Acetilactobacillus jinshanensis HSLZ-75, checked at NCBI)

@@ -18,7 +18,8 @@ url=https://zenodo.org/records/$ZENODO_RECORD/files/$ARCHIVE
 md5=$(curl -s https://zenodo.org/api/records/$ZENODO_RECORD |
       python3 -I -c "import json,sys; print([f['checksum'] for f in json.load(sys.stdin)['files'] if f['key']=='$ARCHIVE'][0].split(':')[1])")
 curl -L --fail -o data/$ARCHIVE "$url?download=1"
-echo "$md5  data/$ARCHIVE" | md5sum -c -
+if command -v md5sum > /dev/null; then echo "$md5  data/$ARCHIVE" | md5sum -c -
+else [ "$(md5 -q data/$ARCHIVE)" = "$md5" ] || { echo "md5 mismatch: data/$ARCHIVE" >&2; exit 1; }; fi   # macOS has md5, not md5sum
 tar -xzf data/$ARCHIVE -C data && rm data/$ARCHIVE
 
 # 2. Public references: downloaded from their source (manifest column 5 is a URL), not redeposited

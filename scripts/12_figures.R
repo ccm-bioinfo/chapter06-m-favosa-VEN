@@ -213,11 +213,13 @@ p4b <- ggtree(sub, layout = "circular", branch.length = "none", size = 0.3) %<+%
   scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
   scale_size_continuous(range = c(0.8, 7), name = "% of Lactobacillaceae reads (ASV)", breaks = c(0.1, 1, 5, 20, 60)) +
   xlim(0, max(node.depth(sub, method = 2)) + 8) +
-  theme(legend.position = "right", legend.text = element_text(size = 10)) +
+  theme(legend.position = "bottom", legend.box = "vertical", legend.text = element_text(size = 10)) +
+  guides(fill = guide_legend(order = 1), colour = guide_legend(order = 2, ncol = 3), shape = guide_legend(order = 2, ncol = 3),
+         size = guide_legend(order = 3, nrow = 1)) +
   labs(title = "16S Nicoliella and Acetilactobacillus: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026",
        subtitle = "Subtree of Fig. 2 (same EPA-ng placement), rooted on Fructilactobacillus; cladogram (no branch lengths)")
-ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.pdf"), p4b, width = 14, height = 12)
-ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.png"), p4b, width = 14, height = 12, dpi = 250, bg = "white")
+ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.pdf"), p4b, width = 12, height = 14)
+ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.png"), p4b, width = 12, height = 14, dpi = 250, bg = "white")
 
 # ---- Figure 5: pairwise differences in the V4 region among the Fig. 4 sequences (outgroup excluded) -----------
 # alignment of the tree (MAFFT + trimAl); V4 window = alignment columns covered by the ASVs (>= half of them).

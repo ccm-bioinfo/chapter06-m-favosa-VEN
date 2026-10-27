@@ -3,8 +3,8 @@
   GTDB   the same GTDB r226 accessions as the previous constrained tree (tips GTDB_* of
          data/refs/constraint_gtdb.tree; rule in /data2/MIEL/vit/scripts/08_lab_tree_inputs.py), longest 16S
          each, minus 3 with defective 16S (saturated terminal branch)
-  OWN_   our genome 16S with use=yes, Lactobacillaceae, >= 1200 bp (one per genome); public genomes whose
-         assembly is already a GTDB tip are skipped
+  OWN_   our genome 16S with use=yes, Lactobacillaceae, >= 1200 bp (one per genome); public genomes that
+         duplicate a GTDB tip are use=no in docs/genome16S_decisions.tsv, so SINTAX and the tree share one set
   MG16S_ the 23 Lactobacillaceae 16S recovered from our metagenomes (>= 1000 bp), minus 2 with a saturated branch
   ASV    the 69 B-VEN-D9 Lactobacillaceae ASVs (queries, placed with EPA-ng)
 Writes results/08_tree/: refs_full.fa, queries.fa, tip_info.tsv, taxon.tsv (gappa)
@@ -14,8 +14,6 @@ import csv, gzip, os, re
 BAD = {"GTDB_GCF_016861915.1", "GTDB_GCF_016861695.1", "GTDB_GCF_005405165.1"}
 # same rule for our MG16S: saturated branch (IQ-TREE upper bound 10) in the first run of this tree
 BAD_MG = {"MG16S_P16S_15", "MG16S_P16S_62"}
-# public genomes whose name carries no accession but are the same assembly as a GTDB tip (checked at NCBI)
-SAME_AS_GTDB = {"A_jinshanensis_strainHSLZ75": "GTDB_GCF_004359375.1"}
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 data = os.path.join(root, "data")
 out = os.path.join(root, "results", "08_tree")
@@ -57,11 +55,6 @@ for sid, r in labels.items():
         continue
     g = sid.split("__16S_")[0]
     if "f__Lactobacillaceae" not in gtax[g] or len(seqs[sid]) < 1200:
-        continue
-    acc = re.search(r"(GC[AF])_(\d+)_(\d+)$", g)  # public genome already in the tree as a GTDB tip (e.g. Es01, SGEP1A5)
-    dup = f"GTDB_{acc[1]}_{acc[2]}.{acc[3]}" if acc else SAME_AS_GTDB.get(g, "")
-    if any(dup == t[0] for t in tips):
-        print("skip duplicate of GTDB tip:", g)
         continue
     clade = r["species_or_clade"] if r["species_or_clade"].startswith("Clade") else ""
     tips.append((f"OWN_{g}", "genome", "Lactobacillaceae", r["genus"], clade, g, seqs[sid]))

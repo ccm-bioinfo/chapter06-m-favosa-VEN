@@ -91,18 +91,16 @@ d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
            genus == "Acetilactobacillus" ~ "ASV: Acetilactobacillus",
            TRUE                 ~ "ASV: other / family only"),
          tiplab = case_when(
-           type == "ASV" & pct >= 0.5 ~ sprintf("%s (%.1f%%)", label, pct),
-           type == "ASV"              ~ "",
+           type == "ASV" & pct >= 0.1 ~ sprintf("%s (%.1f%%)", label, pct),
+           type == "ASV"              ~ {n <- cls$reads[match(label, cls$ASV)]; sprintf("%s (%s read%s)", label, n, ifelse(n == 1, "", "s"))},
            type == "GTDB"             ~ label,
            TRUE ~ paste0(sub("^(MG16S|OWN)_", "", tip),
                          ifelse(clade != "", paste0(" [", sub("^(Clado \\d).*", "\\1", clade), "]"), "")))) |>
   rename(name = label)
 
-# Nicoliella sector: every tip labelled (ASVs too, whatever their abundance)
+# Nicoliella sector (zoom in Fig. 3)
 nic_tips <- extract.clade(tree, getMRCA(tree, intersect(d$tip[d$type %in% c("GTDB", "genome") &
                                                               d$genus == "Nicoliella"], tree$tip.label)))$tip.label
-d <- d |> mutate(tiplab = ifelse(tip %in% nic_tips & type == "ASV",
-                                 sprintf("%s (%s reads)", name, cls$reads[match(name, cls$ASV)]), tiplab))
 
 cols <-c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
           "ASV: other / family only" = "#999999",
@@ -138,7 +136,7 @@ p2 <- ggtree(tree, layout = "circular", branch.length = "none", size = 0.25) %<+
   theme(legend.position = "right", legend.text = element_text(size = 8)) +
   labs(title = "16S Lactobacillaceae: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026 genomes and recovered 16S",
        subtitle = paste("Reference tree constrained to the GTDB genome topology (bac120); ASVs placed with EPA-ng;",
-                        "cladogram (no branch lengths). ASV colour = EPA-ng assignment; label if >= 0.5 %.",
+                        "cladogram (no branch lengths). ASV colour = EPA-ng assignment; every ASV labelled (% of Lactobacillaceae reads, or reads if < 0.1 %).",
                         if (length(drop) > 0) paste("\nLeft out for anomalous branch (> 0.3):", paste(drop, collapse = ", ")) else ""))
 ggsave(file.path(out, "fig2_placement_tree.pdf"), p2, width = 18, height = 16, limitsize = FALSE)
 ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 18, height = 16, dpi = 200, bg = "white")
@@ -149,7 +147,7 @@ origin <- c("GTDB r226 reference" = "GTDB", "Xolalpa 2026 MAG" = "Xolalpa 2026, 
             "16S recovered from Xolalpa 2026 metagenomes" = "Xolalpa 2026, metagenome 16S")
 nic <- keep.tip(tree, nic_tips)
 dn <- d |> filter(tip %in% nic_tips) |>
-  mutate(zlab = case_when(type == "ASV" ~ sprintf("%s  [favosa ASV, %s reads]", name, cls$reads[match(name, cls$ASV)]),
+  mutate(zlab = case_when(type == "ASV" ~ {n <- cls$reads[match(name, cls$ASV)]; sprintf("%s  [favosa ASV, %s read%s]", name, n, ifelse(n == 1, "", "s"))},
                           TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
                                         ifelse(clade != "", paste0(", ", sub("^(Clado \\d).*", "\\1", clade)), ""), "]")))
 p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +

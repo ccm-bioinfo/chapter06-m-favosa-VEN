@@ -124,14 +124,19 @@ hl <- do.call(rbind, lapply(names(hl_genera), function(g) {
   data.frame(node = getMRCA(tree, tips), genus_hl = g)
 }))
 
+acet_tips <- extract.clade(tree, hl$node[hl$genus_hl == "Acetilactobacillus"])$tip.label
 p2 <- ggtree(tree, layout = "circular", branch.length = "none", size = 0.25) %<+% d +
   geom_hilight(data = hl, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 6) +
   scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
   geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.2, 0.4))),
                 alpha = 0.9) +
-  # all labels written from the tip outwards (geom_tiplab flips the left half of the circle)
-  geom_text(data = function(x) subset(x, isTip), aes(x = x + 0.4, label = tiplab, colour = grupo, angle = angle),
-            hjust = 0, size = 1.7, show.legend = FALSE) +
+  # left half of the circle flipped so it reads upright (text ends at the tip), except the whole
+  # Acetilactobacillus sector, kept outwards so that one clade has a single label direction
+  geom_text(data = function(x) {
+    x <- subset(x, isTip)
+    flip <- x$angle > 90 & x$angle < 270 & !x$label %in% acet_tips
+    transform(x, ang = ifelse(flip, angle + 180, angle), hj = ifelse(flip, 1, 0))
+  }, aes(x = x + 0.4, label = tiplab, colour = grupo, angle = ang, hjust = hj), size = 1.7, show.legend = FALSE) +
   scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
   scale_size_continuous(range = c(0.5, 6), name = "% of Lactobacillaceae reads (ASV)",
                         breaks = c(0.1, 1, 5, 20, 60)) +

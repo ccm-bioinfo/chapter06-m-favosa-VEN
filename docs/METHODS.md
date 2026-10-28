@@ -126,3 +126,18 @@ The GTDB set excludes every sequence with an ambiguous base (N). vsearch counts 
 
 vsearch 2.32.0, MAFFT 7.526, trimAl 1.5, IQ-TREE 3.1.4, RAxML-NG 2.0.3, EPA-ng 0.3.8, gappa 0.9.0, seqkit 2.14; R 4.5.1 with
 ape 5.8, ggtree 3.16, ggplot2 4.0, patchwork, RColorBrewer, dplyr. References for each tool are in the chapter.
+
+## 10. Authorship and use of AI
+
+Claude Code (Anthropic; model Claude Opus 5.5) was used as a programming and writing assistant.
+
+- **N. Sélem-Mojica**: designed the analysis; provided the 16S recovered from the metagenomes with their MarkerMAG and
+  skani links; decided which genomes, 16S and clades are used (Tables S1 and S2, `docs/*.tsv`); reviewed each step and
+  figure; wrote the methods.
+- **Claude**: wrote and ran the scripts in `exploration/` (classification, placement, comparisons, figures), built
+  Tables S1 and S2 and the Zenodo package, and drafted parts of the methods, results and discussion, revised by the authors.
+- **Reproducibility check**: a separate Claude session with access only to this text and the Zenodo package repeated the
+  analysis and obtained the expected results of section 8. Its scripts, with parametrised paths, are `pipeline/`.
+
+Percentages of 16S reads in the chapter (Fig. 6.4B, Table 6.5) are of all 23,491 reads, including the 614 reads without
+an RDP hit.

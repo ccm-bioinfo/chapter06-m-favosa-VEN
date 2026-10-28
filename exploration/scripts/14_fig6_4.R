@@ -66,6 +66,7 @@ p <- a + b + plot_layout(widths = c(1, 4.2)) &
                   theme = theme(plot.caption = element_text(size = 10, hjust = 0)))
 ggsave(file.path(out, "fig6_4_ITS_16S.pdf"), p, width = 15, height = 9)
 ggsave(file.path(out, "fig6_4_ITS_16S.png"), p, width = 15, height = 9, dpi = 300, bg = "white")
+ggsave(file.path(out, "fig6_4_ITS_16S.svg"), p, width = 15, height = 9, device = svglite::svglite)
 
 # fungal genus table (counts behind Table 6.4)
 cnt <- read.delim("data/vit/ITS_genus_counts_Mfav.tsv", stringsAsFactors = FALSE)

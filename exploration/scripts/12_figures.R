@@ -205,6 +205,8 @@ ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.png"), p4, width 
 # Acetilactobacillus (right) from the tip outwards, elsewhere the left half flipped so it reads upright; legend at the side
 acet4 <- extract.clade(sub, hl4$node[hl4$genus_hl == "Acetilactobacillus"])$tip.label
 c34 <- extract.clade(sub, getMRCA(sub, intersect(d$tip[d$grupo == "ASV: Clade 3-4 Acetilactobacillus-like"], sub$tip.label)))$tip.label
+saveRDS(list(sub = sub, d = d, hl4 = hl4, acet4 = acet4, c34 = c34, cols = cols, shapes = shapes, hl_genera = hl_genera),
+        file.path(out, "fig4b_parts.rds"))   # panel C of the full Fig. 6.4 (17_fig6_4_full.R)
 p4b <- ggtree(sub, layout = "circular", branch.length = "none", size = 0.3) %<+% d +
   geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 13) +
   scale_fill_manual(values = hl_genera, name = "Genus (shading)") +

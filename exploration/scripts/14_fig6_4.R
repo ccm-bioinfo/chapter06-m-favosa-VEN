@@ -45,6 +45,7 @@ panel <- function(d, tag, title) {
 }
 
 a <- panel(panel_data("data/vit/ITS_genus_relabund_Mfav.tsv"), "A", "Fungi (ITS1)")
+saveRDS(a, file.path(out, "fig6_4A.rds"))   # panel A of the full Fig. 6.4 (17_fig6_4_full.R)
 b <- readRDS("results/12_figures/fig1_genus_by_method.rds") +
   labs(tag = "B", title = "Bacteria (16S rRNA) by classification reference", subtitle = NULL) +
   guides(fill = guide_legend(ncol = 3, byrow = TRUE, title.position = "top"))

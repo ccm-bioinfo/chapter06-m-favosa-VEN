@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """ASVs present in the only M. favosa sample (B-VEN-D9, 10MFH) with their previous
 classifications and the recovered 16S / MAG clade they link to.
-Usage: python3 scripts/02_favosa_asvs.py > results/favosa_ASVs.tsv  (Mac: needs Mac-only links)"""
+Usage: python3 exploration/scripts/02_favosa_asvs.py > results/favosa_ASVs.tsv  (Mac: needs Mac-only links)"""
 import csv, os, sys
 
 SAMPLE = "B-VEN-D9"
-data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
+data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data")
 
 
 def rows(name):

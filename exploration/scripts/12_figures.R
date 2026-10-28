@@ -1,0 +1,268 @@
+#!/usr/bin/env Rscript
+# Step 5 (Mac): figures for the chapter.
+#  fig1_genus_by_method  whole 10MFH bacterial community by genus, one stacked bar per classification method,
+#                        in the style and colours of chapter Fig. 6.4B (amplicon/scripts/microbiome_plots.R:
+#                        RColorBrewer Paired in alphabetical order, Other grey65, Unclassified grey88)
+#  fig2_placement_tree   circular 16S cladogram with genus sectors and the favosa ASVs grafted at their
+#                        EPA-ng placement, in the style of amplicon/scripts/plot_lab_tree_circular.R
+# Usage: Rscript exploration/scripts/12_figures.R   (needs results/11_compare and results/08_tree)
+suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(dplyr) })
+out <- "results/12_figures"; dir.create(out, showWarnings = FALSE)
+
+# colours shared by both figures for the new assignments (from the VIT tree palette)
+CLADE_COL <- c("Clade 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and 4 merged (not separable by 16S)
+               "Clade 2 Nicoliella-related" = "#CC79A7", "Acetilactobacillus" = "#E69F00")
+
+# ---- Figure 1 ---------------------------------------------------------------------------------
+METHODS <- c("RDP (AMPtk)" = "RDP (AMPtk)\nsubmitted, Fig. 6.4B", "SILVA 138.2" = "SILVA 138.2",
+             "GTDB r226" = "GTDB r226", "GTDB + our 16S" = "GTDB r226\n+ our 16S",
+             "Tree placement (EPA-ng)" = "Tree placement\n(EPA-ng)")
+s <- read.delim("results/11_compare/summary_genus_all.tsv", stringsAsFactors = FALSE)
+keep <- unique(s$genus[s$pct_reads >= 0.3])                  # shown in at least one bar, as in Fig. 6.4B
+s$genus[!s$genus %in% keep] <- "Other"
+s <- s |> group_by(method, genus) |> summarise(pct = sum(pct_reads) / 100, .groups = "drop")
+s$method <- factor(METHODS[s$method], levels = METHODS)
+
+special <- c("Other", "Lactobacillaceae (no genus)", "Unclassified")
+genera  <- sort(setdiff(unique(s$genus), c(special, names(CLADE_COL))))
+# Fig. 6.4B colours for the genera it shows; Paired order continues for the rest
+fig64 <- c(Bacteroides = "#A6CEE3", Comamonas = "#1F78B4", Dysgonomonas = "#B2DF8A", Fusobacterium = "#33A02C",
+           Haemophilus = "#FB9A99", Lactobacillus = "#E31A1C", Neisseria = "#FDBF6F", Rothia = "#FF7F00",
+           Sphingobacterium = "#CAB2D6", Streptococcus = "#6A3D9A", Veillonella = "#FFFF99")
+extra <- c("#B15928", "#8DD3C7", "#BC80BD", "#80B1D3", "#FCCDE5")
+new_g <- setdiff(genera, names(fig64))
+pal <- c(fig64[intersect(genera, names(fig64))], setNames(extra[seq_along(new_g)], new_g),
+         CLADE_COL[intersect(names(CLADE_COL), s$genus)], Other = "grey65",
+         "Lactobacillaceae (no genus)" = "#E3D3B0", Unclassified = "grey88")
+lev <- c(names(CLADE_COL)[names(CLADE_COL) %in% s$genus], genera, special)
+s$genus <- factor(s$genus, levels = rev(lev))
+s <- s |> arrange(method, genus) |> group_by(method) |> mutate(mid = cumsum(pct) - pct / 2) |> ungroup()
+
+p1 <- ggplot(s, aes(method, pct, fill = genus)) +
+  geom_col(width = 0.75) +
+  geom_text(data = subset(s, pct >= 0.05), aes(y = 1 - mid, label = sprintf("%.0f%%", 100 * pct)),
+            size = 4.5, colour = "grey15") +
+  scale_fill_manual(values = pal, breaks = lev, name = "Genus / paper clade",   # genera in italics
+                    labels = lapply(lev, function(l) if (l %in% c(special, names(CLADE_COL)[1:2])) l else bquote(italic(.(l))))) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0), limits = c(0, 1.0001),
+                     breaks = seq(0, 1, 0.25)) +
+  theme_bw(base_size = 13) +
+  theme(legend.position = "bottom", legend.title.position = "top", legend.text.align = 0,
+        legend.text = element_text(size = 12), legend.title = element_text(size = 13, face = "bold"),
+        legend.key.size = unit(0.55, "cm"),
+        panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 11)) +
+  guides(fill = guide_legend(ncol = 4, byrow = TRUE)) +
+  labs(title = "16S Genus Composition: Melipona favosa honey (10MFH) by reference",
+       subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n", sep = "",
+                         "Genera < 0.3% in every bar are grouped as Other."),
+       x = NULL, y = "Relative Abundance")
+saveRDS(p1, file.path(out, "fig1_genus_by_method.rds"))   # reused as panel B of Fig. 6.4 (14_fig6_4.R)
+ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 10, height = 8.5)
+ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 10, height = 8.5, dpi = 300, bg = "white")
+
+# ---- Figure 2 ---------------------------------------------------------------------------------
+tree <- read.tree("results/08_tree/graft/epa_result.newick")
+info <- read.delim("results/08_tree/tip_info.tsv", stringsAsFactors = FALSE)
+cls  <- read.delim("results/11_compare/favosa_LAB_classification.tsv", stringsAsFactors = FALSE)
+total_lab <- sum(cls$reads)
+
+out_tips <- info$tip[info$family %in% c("Streptococcaceae", "Enterococcaceae")]
+tree <- root(tree, outgroup = intersect(out_tips, tree$tip.label), resolve.root = TRUE)
+# ASVs with an anomalous terminal branch (> 0.3 subst/site) are left out of the drawing, as in the VIT tree
+tl   <- setNames(tree$edge.length[match(seq_len(Ntip(tree)), tree$edge[, 2])], tree$tip.label)
+drop <- names(tl)[tl > 0.3 & grepl("^ASV", names(tl))]
+if (length(drop) > 0) tree <- drop.tip(tree, drop)
+tree <- ladderize(tree)
+
+epa_last <- sub(".*;", "", cls$EPA_taxopath)
+asv <- data.frame(tip = cls$ASV, type = "ASV", family = "Lactobacillaceae",
+                  genus = sapply(strsplit(cls$EPA_taxopath, ";"), function(x) if (length(x) > 1) x[2] else ""),
+                  clade = ifelse(grepl("^Clade", epa_last), epa_last, ""),
+                  label = cls$ASV, pct = cls$pct_LAB_reads)
+pub_type <- with(read.delim("docs/public_genomes.tsv", stringsAsFactors = FALSE), setNames(type, genome))  # isolate / MAG
+d <- bind_rows(mutate(info, pct = NA_real_), asv) |>
+  mutate(clade = gsub("_", " ", clade),
+         grupo = case_when(
+           type == "GTDB"       ~ "GTDB r226 reference",
+           type == "genome" & grepl("^MAG_", label)       ~ "Xolalpa 2026 MAG",
+           type == "genome" & grepl("^N_barcode", label)  ~ "Xolalpa 2026 isolate",
+           type == "genome" & pub_type[label] %in% "MAG" ~ "Public MAG (custom set)",
+           type == "genome"     ~ "Public bee-LAB isolate genome (custom set)",
+           type == "metagenome" ~ "16S recovered from Xolalpa 2026 metagenomes",
+           clade != ""          ~ paste0("ASV: ", clade),
+           genus == "Acetilactobacillus" ~ "ASV: Acetilactobacillus",
+           TRUE                 ~ "ASV: other / family only"),
+         tiplab = case_when(
+           type == "ASV" & pct >= 0.1 ~ sprintf("%s (%.1f%%)", label, pct),
+           type == "ASV"              ~ {n <- cls$reads[match(label, cls$ASV)]; sprintf("%s (%s read%s)", label, n, ifelse(n == 1, "", "s"))},
+           type == "GTDB"             ~ label,
+           TRUE ~ paste0(sub("^(MG16S|OWN)_", "", tip),
+                         ifelse(clade != "", paste0(" [", sub("^(Clade [0-9-]+).*", "\\1", clade), "]"), "")))) |>
+  rename(name = label)
+
+# Nicoliella sector (zoom in Fig. 3)
+nic_tips <- extract.clade(tree, getMRCA(tree, intersect(d$tip[d$type %in% c("GTDB", "genome") &
+                                                              d$genus == "Nicoliella"], tree$tip.label)))$tip.label
+
+cols <-c(setNames(CLADE_COL, paste0("ASV: ", names(CLADE_COL))),
+          "ASV: other / family only" = "#999999",
+          "Xolalpa 2026 MAG" = "#0072B2", "Xolalpa 2026 isolate" = "#0072B2", "Public bee-LAB isolate genome (custom set)" = "#7F7FBF", "Public MAG (custom set)" = "#7F7FBF",
+          "16S recovered from Xolalpa 2026 metagenomes" = "#56B4E9",
+          "GTDB r226 reference" = "grey55")
+cols <- cols[names(cols) %in% d$grupo]
+# MAGs as triangles; isolate genomes (Xolalpa 2026 and public) as squares; everything else as circles (shared legend)
+shapes <- setNames(ifelse(names(cols) %in% c("Xolalpa 2026 MAG", "Public MAG (custom set)"), 17, ifelse(names(cols) %in% c("Xolalpa 2026 isolate", "Public bee-LAB isolate genome (custom set)"), 15, 16)), names(cols))
+
+# genus sectors: MRCA of the GTDB and genome references of each genus (constrained to the genome topology)
+hl_genera <- c(Acetilactobacillus = "#F5DEB3", Nicoliella = "#F2D7E8", Apilactobacillus = "#D9EAD3",
+               Philodulcilactobacillus = "#E8E8E8", Fructobacillus = "#DDEBF7", Bombilactobacillus = "#FFF2CC",
+               Lactobacillus = "#EDE7F6", Fructilactobacillus = "#E2F0D9")
+hl <- do.call(rbind, lapply(names(hl_genera), function(g) {
+  # Acetilactobacillus: all our sequences of the genus too (MG16S and ASVs), as the VIT tree did with its own
+  # genomes; the Clade 3-4 block falls outside the GTDB Acetilactobacillus group in the 16S tree
+  types <- if (g == "Acetilactobacillus") c("GTDB", "genome", "metagenome", "ASV") else c("GTDB", "genome")
+  tips <- intersect(d$tip[d$type %in% types & d$genus == g], tree$tip.label)
+  if (length(tips) < 2) return(NULL)
+  data.frame(node = getMRCA(tree, tips), genus_hl = g)
+}))
+
+acet_tips <- extract.clade(tree, hl$node[hl$genus_hl == "Acetilactobacillus"])$tip.label
+p2 <- ggtree(tree, layout = "circular", branch.length = "none", size = 0.25) %<+% d +
+  geom_hilight(data = hl, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 6) +
+  scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
+  geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.2, 0.4))),
+                alpha = 0.9) +
+  # left half of the circle flipped so it reads upright (text ends at the tip), except the whole
+  # Acetilactobacillus sector, kept outwards so that one clade has a single label direction
+  geom_text(data = function(x) {
+    x <- subset(x, isTip)
+    flip <- x$angle > 90 & x$angle < 270 & !x$label %in% acet_tips
+    transform(x, ang = ifelse(flip, angle + 180, angle), hj = ifelse(flip, 1, 0))
+  }, aes(x = x + 0.4, label = tiplab, colour = grupo, angle = ang, hjust = hj), size = 1.7, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
+  scale_size_continuous(range = c(0.5, 6), name = "% of Lactobacillaceae reads (ASV)",
+                        breaks = c(0.1, 1, 5, 20, 60)) +
+  theme(legend.position = "right", legend.text = element_text(size = 8)) +
+  labs(title = "16S Lactobacillaceae: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026 genomes and recovered 16S",
+       subtitle = paste("Reference tree constrained to the GTDB genome topology (bac120); ASVs placed with EPA-ng;",
+                        "cladogram (no branch lengths). ASV colour = EPA-ng assignment; every ASV labelled (% of Lactobacillaceae reads, or reads if < 0.1 %).",
+                        if (length(drop) > 0) paste("\nLeft out for anomalous branch (> 0.3):", paste(drop, collapse = ", ")) else ""))
+ggsave(file.path(out, "fig2_placement_tree.pdf"), p2, width = 18, height = 16, limitsize = FALSE)
+ggsave(file.path(out, "fig2_placement_tree.png"), p2, width = 18, height = 16, dpi = 200, bg = "white")
+
+# ---- Figure 3: zoom on the Nicoliella sector, every tip with its origin ---------------------------
+origin <- c("GTDB r226 reference" = "GTDB", "Xolalpa 2026 MAG" = "Xolalpa 2026, MAG",
+            "Xolalpa 2026 isolate" = "Xolalpa 2026, isolate", "Public bee-LAB isolate genome (custom set)" = "public isolate", "Public MAG (custom set)" = "public MAG",
+            "16S recovered from Xolalpa 2026 metagenomes" = "Xolalpa 2026, metagenome 16S")
+nic <- keep.tip(tree, nic_tips)
+dn <- d |> filter(tip %in% nic_tips) |>
+  mutate(zlab = case_when(type == "ASV" ~ {n <- cls$reads[match(name, cls$ASV)]; sprintf("%s  [favosa ASV, %s read%s]", name, n, ifelse(n == 1, "", "s"))},
+                          TRUE ~ paste0(ifelse(type == "GTDB", paste(name, sub("^GTDB_", "", tip)), sub("^(MG16S|OWN)_", "", tip)), "  [", origin[grupo],
+                                        ifelse(clade != "", paste0(", ", sub("^(Clade [0-9-]+).*", "\\1", clade)), ""), "]")))
+p3 <- ggtree(nic, branch.length = "none", size = 0.4) %<+% dn +
+  geom_tippoint(aes(colour = grupo, shape = grupo), size = 3.5) +
+  geom_tiplab(aes(label = zlab, colour = grupo), size = 4, offset = 0.2, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
+  xlim(0, max(node.depth(nic, method = 2)) + 9) +
+  theme(legend.position = "bottom", legend.text = element_text(size = 11)) +
+  guides(colour = guide_legend(ncol = 2)) +
+  labs(title = "Nicoliella sector of Fig. 2: all tips",
+       subtitle = "Cladogram (same topology as Fig. 2); of the Xolalpa 2026 Nicoliella isolates only the published barcode03/04/20 are included")
+ggsave(file.path(out, "fig3_nicoliella_clade.pdf"), p3, width = 11, height = 8)
+ggsave(file.path(out, "fig3_nicoliella_clade.png"), p3, width = 11, height = 8, dpi = 300, bg = "white")
+
+# ---- Figure 4: Nicoliella-Acetilactobacillus block of Fig. 2, rooted on Fructilactobacillus ------------
+# block = tips of the circle from the Acetilactobacillus sector to the end of the Nicoliella sector (monophyletic)
+ord <- tree$tip.label[tree$edge[tree$edge[, 2] <= Ntip(tree), 2]]
+gen <- setNames(d$genus, d$tip)
+blk <- ord[seq_len(max(which(gen[ord] == "Nicoliella" & !grepl("^ASV", ord))))]
+stopifnot(length(extract.clade(tree, getMRCA(tree, blk))$tip.label) == length(blk))
+fru <- intersect(d$tip[d$genus == "Fructilactobacillus" & d$type %in% c("GTDB", "genome")], tree$tip.label)
+sub <- ladderize(root(keep.tip(tree, c(blk, fru)), outgroup = fru, resolve.root = TRUE))
+writeLines(sub$tip.label, file.path(out, "fig4_tips.txt"))   # read by 15_zenodo_tables.py
+hl4 <- do.call(rbind, lapply(c("Acetilactobacillus", "Nicoliella", "Fructilactobacillus"), function(g) {
+  types <- if (g == "Acetilactobacillus") c("GTDB", "genome", "metagenome", "ASV") else c("GTDB", "genome")
+  tips <- intersect(d$tip[d$type %in% types & d$genus == g], sub$tip.label)
+  data.frame(node = getMRCA(sub, tips), genus_hl = g)
+}))
+p4 <- ggtree(sub, branch.length = "none", size = 0.3) %<+% d +
+  geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 8) +
+  scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
+  geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.6, 0.8))),
+                alpha = 0.9) +
+  geom_tiplab(aes(label = ifelse(type == "GTDB", name, tiplab), colour = grupo), size = 2.6, offset = 0.3, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
+  scale_size_continuous(range = c(0.8, 7), name = "% of Lactobacillaceae reads (ASV)", breaks = c(0.1, 1, 5, 20, 60)) +
+  xlim(0, max(node.depth(sub, method = 2)) + 9) +
+  theme(legend.position = "right", legend.text = element_text(size = 10)) +
+  labs(title = "16S Nicoliella and Acetilactobacillus: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026",
+       subtitle = "Subtree of Fig. 2 (same EPA-ng placement), rooted on Fructilactobacillus; cladogram (no branch lengths)")
+ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.pdf"), p4, width = 12, height = 18)
+ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.png"), p4, width = 12, height = 18, dpi = 250, bg = "white")
+
+# Fig. 4b: the same subtree as a circle; labels of the whole Acetilactobacillus sector point inwards (text ends at the
+# tip), elsewhere the left half is flipped so it reads upright; legend at the side
+acet4 <- extract.clade(sub, hl4$node[hl4$genus_hl == "Acetilactobacillus"])$tip.label
+p4b <- ggtree(sub, layout = "circular", branch.length = "none", size = 0.3) %<+% d +
+  geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 7) +
+  scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
+  geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.6, 0.8))),
+                alpha = 0.9) +
+  geom_text(data = function(x) {
+    x <- subset(x, isTip)
+    x$tl <- ifelse(x$type == "GTDB", x$name, x$tiplab)
+    flip <- x$label %in% acet4 | (x$angle > 90 & x$angle < 270)
+    transform(x, ang = ifelse(flip, angle + 180, angle), hj = ifelse(flip, 1, 0))
+  }, aes(x = x + 0.4, label = tl, colour = grupo, angle = ang, hjust = hj), size = 2.4, show.legend = FALSE) +
+  scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
+  scale_size_continuous(range = c(0.8, 7), name = "% of Lactobacillaceae reads (ASV)", breaks = c(0.1, 1, 5, 20, 60)) +
+  xlim(0, max(node.depth(sub, method = 2)) + 8) +
+  theme(legend.position = "right", legend.box = "vertical", legend.text = element_text(size = 10)) +
+  guides(fill = guide_legend(order = 1), colour = guide_legend(order = 2, ncol = 1), shape = guide_legend(order = 2, ncol = 1),
+         size = guide_legend(order = 3, ncol = 1)) +
+  labs(title = "16S Nicoliella and Acetilactobacillus: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026",
+       subtitle = "Subtree of Fig. 2 (same EPA-ng placement), rooted on Fructilactobacillus; cladogram (no branch lengths)")
+ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.pdf"), p4b, width = 15, height = 11)
+ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.png"), p4b, width = 15, height = 11, dpi = 250, bg = "white")
+ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.svg"), p4b, width = 15, height = 11)   # editable
+
+# ---- Figure 5: pairwise differences in the V4 region among the Fig. 4 sequences (outgroup excluded) -----------
+# alignment of the tree (MAFFT + trimAl); V4 window = alignment columns covered by the ASVs (>= half of them).
+# difference = alignment column inside the window where both sequences have a base and the bases differ, or one
+# has a base and the other an internal gap (indel); N and ambiguity codes are not counted
+aln <- toupper(as.character(read.dna("results/08_tree/all.trim.aln", format = "fasta", as.matrix = TRUE)))
+asv_cov <- colMeans(aln[grepl("^ASV", rownames(aln)), , drop = FALSE] != "-")
+win <- range(which(asv_cov >= 0.5))
+a <- aln[blk, win[1]:win[2]]
+nd <- matrix(0L, length(blk), length(blk), dimnames = list(blk, blk))
+for (i in seq_along(blk)) for (j in seq_len(i - 1)) {
+  x <- a[i, ]; y <- a[j, ]
+  ok <- (x %in% c("A", "C", "G", "T", "-")) & (y %in% c("A", "C", "G", "T", "-")) & !(x == "-" & y == "-")
+  nd[i, j] <- nd[j, i] <- sum(x[ok] != y[ok])
+}
+tl5 <- setNames(ifelse(d$type == "GTDB", d$name, d$tiplab), d$tip)[blk]
+tl5 <- ifelse(tl5 == "" | is.na(tl5), blk, tl5)
+tord <- rev(intersect(get_taxa_name(ggtree(sub)), blk))   # tree order, top to bottom
+write.table(cbind(seq = tl5[tord], nd[tord, tord]), file.path(out, "fig5_V4_differences.tsv"), sep = "\t",
+            quote = FALSE, row.names = FALSE)
+hm <- expand.grid(r = tord, c = tord, stringsAsFactors = FALSE)
+hm$n <- nd[cbind(hm$r, hm$c)]
+hm$r <- factor(tl5[hm$r], levels = tl5[tord]); hm$c <- factor(tl5[hm$c], levels = rev(tl5[tord]))
+lab_col <- cols[d$grupo[match(tord, d$tip)]]
+p5 <- ggplot(hm, aes(c, r, fill = n)) +
+  geom_tile(colour = "white", linewidth = 0.1) +
+  geom_text(aes(label = n, colour = n > max(n) / 2), size = 1.1, show.legend = FALSE) +
+  scale_colour_manual(values = c("FALSE" = "grey20", "TRUE" = "white")) +
+  scale_fill_gradient(low = "#F7FBFF", high = "#08306B", name = "Differences\n(V4, bp)") +
+  scale_x_discrete(position = "top") +
+  coord_fixed() +
+  theme_minimal(base_size = 9) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, size = 4.5, colour = rev(lab_col)),
+        axis.text.y = element_text(size = 4.5, colour = lab_col), panel.grid = element_blank()) +
+  labs(x = NULL, y = NULL,
+       title = "Pairwise differences in the 16S V4 region (515F-806R) among the sequences of Fig. 4",
+       subtitle = sprintf("Alignment columns %d-%d of the tree alignment (%d columns); order as in Fig. 4; label colour as in Fig. 4",
+                          win[1], win[2], diff(win) + 1))
+ggsave(file.path(out, "fig5_V4_differences_heatmap.pdf"), p5, width = 16, height = 16.5)
+ggsave(file.path(out, "fig5_V4_differences_heatmap.png"), p5, width = 16, height = 16.5, dpi = 250, bg = "white")
+message("figures in ", out)

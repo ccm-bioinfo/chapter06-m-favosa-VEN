@@ -1,8 +1,12 @@
 # data/ only holds symlinks to shared inputs; never commit data
 data/*
-!data/manifest.tsv
 !data/README.md
+!data/manifest.tsv
 results/
-.DS_Store
+run/
+logs/
+zenodo_package/
 *.pdf
 *.png
+*.rds
+.DS_Store

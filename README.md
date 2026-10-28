@@ -44,3 +44,6 @@ See [`pipeline/README.md`](pipeline/README.md) for the steps.
 ## Exploration steps
 Scripts in `exploration/scripts/`, run from the repository root. Order:
 00 → 03 → 04 → 05 (Mac) → 06 → 07 → 13 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac) → 14 (Mac) → 15 (Mac) → 16.
+
+Chapter Fig. 6.4: `14_fig6_4.R` (panels A, B), `12_figures.R` (Fig. 4b, panel C) and
+`17_fig6_4_full.R` (the three panels on one page, Arial, editable SVG) → `results/17_fig6_4_full/`.

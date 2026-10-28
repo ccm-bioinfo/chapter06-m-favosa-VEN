@@ -2,8 +2,7 @@
 # Full chapter Fig. 6.4 on one page (panels of the author's Illustrator draft fig4b_fullv2.ai):
 #  (A) ITS1 genus bar and (B) 16S genus bars by classification reference, top left;
 #  (C) circular placement tree of Fig. 4b (Acetilactobacillus at the top), full height on the right, because at
-#      10 pt its 109 tip labels need a ~9.8 in circle; shading legend in its top-left corner, sequence and size
-#      legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
+#      10 pt its 109 tip labels need a ~9.8 in circle; its legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
 # Arial; tree tip labels 10 pt, every other text 14 pt; genera and species in italics (GTDB species with the genus abbreviated, as the shading
 # legend names the genera), little white space; editable SVG.
 # Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/
@@ -74,8 +73,8 @@ p <- p +
   # coord_polar draws the radius limit at 80% of the panel; values past it (labels, shading) are kept and fill
   # the outer 20%, so the tree uses the whole panel
   scale_x_continuous(limits = c(0, 1.4 * dep), oob = scales::oob_keep, expand = c(0, 0)) +
-  # shading legend in the empty top-left corner of the circle; sequence and size legends to the right of the tree
-  guides(fill = guide_legend(position = "inside", theme = theme(legend.position.inside = c(0, 1), legend.justification.inside = c(0, 1))),
+  # all tree legends (shading, sequence, size) to the right of the tree
+  guides(fill = guide_legend(order = 0),
          size = guide_legend(ncol = 1, order = 2),
          colour = guide_legend(ncol = 1, order = 1), shape = guide_legend(ncol = 1, order = 1)) +
   labs(tag = "C") +
@@ -87,18 +86,21 @@ acet_mid <- mean(range(subset(p$data, isTip & label %in% acet4)$angle))
 p <- rotate_tree(p, 90 - acet_mid)
 
 # ---- page ------------------------------------------------------------------------------------------
-# wide and short (landscape letter with room for the caption): A and B with the A legend | tree | B and tree legends
-W <- 20.1; H <- 9.8
+# wide and short (landscape letter with room for the caption): A and B with their legends | tree | tree legends
+W <- 20.9; H <- 9.8
+sc$name <- "Bacterial genus"
+sa <- a$scales$get_scales("fill"); sa$name <- "Fungal genus"
 leg <- function(x) cowplot::get_plot_component(x, "guide-box-right")
-legA <- leg(a + guides(fill = guide_legend(ncol = 2)))
+legA <- leg(a + guides(fill = guide_legend(ncol = 1)))
 legB <- leg(b + guides(fill = guide_legend(ncol = 1)))
-legC <- leg(p + guides(fill = "none"))
+legC <- leg(p)
 a <- a + theme(legend.position = "none")
 b <- b + theme(legend.position = "none")
-p <- p + guides(colour = "none", shape = "none", size = "none")
-left <- (a + b + plot_layout(widths = c(1, 3.2))) / wrap_elements(full = legA) + plot_layout(heights = c(6.6, 3.2))
-right <- wrap_elements(full = legB) / wrap_elements(full = legC) + plot_layout(heights = c(4.9, 4.9))
-fig <- wrap_plots(left, wrap_elements(full = p), right, widths = c(5.4, 9.8, 4.9))
+p <- p + theme(legend.position = "none")
+# left: short stacked bars over the fungal and bacterial genus legends (bacterial next to the tree); right: tree legends
+left <- (a + b + plot_layout(widths = c(1, 3.2))) / (wrap_elements(full = legA) | wrap_elements(full = legB)) +
+  plot_layout(heights = c(5, 4.8))
+fig <- wrap_plots(left, wrap_elements(full = p), wrap_elements(full = legC), widths = c(6.2, 9.8, 4.9))
 ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
 ggsave(file.path(out, "fig6_4_full.png"), fig, width = W, height = H, dpi = 250, bg = "white")
 ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text

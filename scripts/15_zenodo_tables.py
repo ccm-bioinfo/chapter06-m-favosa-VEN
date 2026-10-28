@@ -119,7 +119,9 @@ with open(f"{out}/recovered_16S.tsv", "w") as fh:
         clade = lab["clade"].replace("_", " ") if lab and lab["clade"] else "-"
         top_clade = paper_clade(top) if top else ""
         other = next((x for x in lk if paper_clade(x) and paper_clade(x) != top_clade), None) if top_clade else None
-        in_tree = "yes" if r["tip"] in info else ("no (saturated branch)" if lab else "no")
+        genus = CLADE_GENUS.get(clade, r["genero"])
+        # tree of the methods: recovered Lactobacillaceae 16S whose genus is Nicoliella or Acetilactobacillus
+        in_tree = "yes" if lab and genus in ("Nicoliella", "Acetilactobacillus") else "no"
         w.writerow([c, "targeted to ASV1/ASV2" if c.startswith("T16S") else "general", r["longitud"], r["familia"],
                     r["genero"], r["muestras_origen"], "yes" if lab else "no", in_tree,
                     len({x["bin"] for x in lk}), top["bin"] if top else "-", top["pares"] if top else "0",

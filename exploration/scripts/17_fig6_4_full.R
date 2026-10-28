@@ -99,7 +99,7 @@ p <- p + guides(colour = "none", shape = "none")
 left <- (a + b + plot_layout(widths = c(1, 3.6))) / wrap_elements(full = legA) / wrap_elements(full = legB) /
   wrap_elements(full = legC) + plot_layout(heights = c(4.4, 1.9, 2.1, 2.2))
 fig <- wrap_plots(left, wrap_elements(full = p), widths = c(4.4, 10.6))
-ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = grDevices::pdf, useDingbats = FALSE)
+ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
 ggsave(file.path(out, "fig6_4_full.png"), fig, width = W, height = H, dpi = 250, bg = "white")
-ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite)   # editable
+ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text
 message("written ", out)

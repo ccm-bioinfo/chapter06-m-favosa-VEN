@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
-# Full chapter Fig. 6.4 on one 15 x 11 in page (panels of the author's Illustrator draft fig4b_fullv2.ai):
+# Full chapter Fig. 6.4 on one page (panels of the author's Illustrator draft fig4b_fullv2.ai):
 #  (A) ITS1 genus bar and (B) 16S genus bars by classification reference, top left;
 #  (C) circular placement tree of Fig. 4b (Acetilactobacillus at the top), full height on the right, because at
-#      10 pt its 109 tip labels need a ~10 in circle; shading and size legends in its corners, the other legends
-#      below A and B.
+#      10 pt its 109 tip labels need a ~9.8 in circle; shading legend in its top-left corner, sequence and size
+#      legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
 # All text is Arial 10 pt, genera and species in italics (GTDB species with the genus abbreviated, as the shading
 # legend names the genera), little white space; editable SVG.
 # Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/
@@ -74,31 +74,31 @@ p <- p +
   # coord_polar draws the radius limit at 80% of the panel; values past it (labels, shading) are kept and fill
   # the outer 20%, so the tree uses the whole panel
   scale_x_continuous(limits = c(0, 1.4 * dep), oob = scales::oob_keep, expand = c(0, 0)) +
-  # shading and size legends in the empty corners of the circle; the sequence legend goes to the right column
+  # shading legend in the empty top-left corner of the circle; sequence and size legends to the right of the tree
   guides(fill = guide_legend(position = "inside", theme = theme(legend.position.inside = c(0, 1), legend.justification.inside = c(0, 1))),
-         size = guide_legend(position = "inside", ncol = 1, theme = theme(legend.position.inside = c(1, 0), legend.justification.inside = c(1, 0))),
-         colour = guide_legend(ncol = 1), shape = guide_legend(ncol = 1)) +
+         size = guide_legend(ncol = 1, order = 2),
+         colour = guide_legend(ncol = 1, order = 1), shape = guide_legend(ncol = 1, order = 1)) +
   labs(tag = "C") +
   theme(text = element_text(size = FS, family = FONT), legend.text = element_text(size = FS),
         legend.title = element_text(size = FS, face = "bold"), plot.tag = element_text(size = FS, face = "bold"),
         legend.position = "right", legend.key.size = unit(0.35, "cm"), legend.text.align = 0,
-        legend.box.spacing = unit(0, "pt"), plot.margin = margin(0, 0, 0, 0))
+        legend.box.spacing = unit(0, "pt"), legend.background = element_blank(), plot.margin = margin(0, 0, 0, 0))
 acet_mid <- mean(range(subset(p$data, isTip & label %in% acet4)$angle))
 p <- rotate_tree(p, 90 - acet_mid)
 
 # ---- page ------------------------------------------------------------------------------------------
-# left: A and B, then the legends of A, B and the tree sequences; right: the tree, full height
-W <- 15; H <- 11
+# wide and short (landscape letter with room for the caption): A and B with their legends | tree | tree legends
+W <- 17.4; H <- 9.8
 leg <- function(x) cowplot::get_plot_component(x, "guide-box-right")
 legA <- leg(a + guides(fill = guide_legend(ncol = 2)))
 legB <- leg(b + guides(fill = guide_legend(ncol = 2)))
-legC <- leg(p + guides(fill = "none", size = "none"))
+legC <- leg(p + guides(fill = "none"))
 a <- a + theme(legend.position = "none")
 b <- b + theme(legend.position = "none")
-p <- p + guides(colour = "none", shape = "none")
-left <- (a + b + plot_layout(widths = c(1, 3.6))) / wrap_elements(full = legA) / wrap_elements(full = legB) /
-  wrap_elements(full = legC) + plot_layout(heights = c(4.4, 1.9, 2.1, 2.2))
-fig <- wrap_plots(left, wrap_elements(full = p), widths = c(4.4, 10.6))
+p <- p + guides(colour = "none", shape = "none", size = "none")
+left <- (a + b + plot_layout(widths = c(1, 3.6))) / wrap_elements(full = legA) / wrap_elements(full = legB) +
+  plot_layout(heights = c(4.6, 2.0, 2.4))
+fig <- wrap_plots(left, wrap_elements(full = p), wrap_elements(full = legC), widths = c(4.4, 9.8, 3.2))
 ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
 ggsave(file.path(out, "fig6_4_full.png"), fig, width = W, height = H, dpi = 250, bg = "white")
 ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text

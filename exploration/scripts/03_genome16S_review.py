@@ -2,10 +2,10 @@
 """One row per barrnap 16S from the custom genomes, for manual review before building references.
 Decisions per genome (published, paper clade, use, note) come from docs/genome16S_decisions.tsv
 and override the default (use = longest validated copy).
-Usage (alnitak): python3 scripts/03_genome16S_review.py > results/03_genome16S_review.tsv"""
+Usage (alnitak): python3 exploration/scripts/03_genome16S_review.py > results/03_genome16S_review.tsv"""
 import csv, os, re, sys
 
-data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "ours")
+data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "ours")
 
 
 def table(name):

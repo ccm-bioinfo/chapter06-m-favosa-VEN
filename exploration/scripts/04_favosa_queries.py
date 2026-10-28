@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Step 1: ASVs of the only M. favosa sample (B-VEN-D9, 10MFH), as query sequences.
 LAB = AMPtk taxonomy contains f:Lactobacillaceae (Patricia's classification, independent of our 16S).
-Usage: python3 scripts/04_favosa_queries.py   ->  results/04_queries/
+Usage: python3 exploration/scripts/04_favosa_queries.py   ->  results/04_queries/
   favosa_all.fa       every ASV with reads in B-VEN-D9 (SINTAX input)
   favosa_LAB.fa       Lactobacillaceae ASVs only (tree placement input)
   favosa_counts.tsv   ASV, reads, pct, is_LAB, AMPtk taxonomy"""
 import csv, gzip, os
 
 SAMPLE = "B-VEN-D9"
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 data = os.path.join(root, "data", "vit")
 out = os.path.join(root, "results", "04_queries")
 os.makedirs(out, exist_ok=True)

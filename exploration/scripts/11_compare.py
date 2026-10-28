@@ -5,10 +5,10 @@ sensitivity run without the MAG_41/45 16S, and EPA-ng placement on the constrain
 Writes results/11_compare/:
   favosa_LAB_classification.tsv  one row per ASV (label = deepest resolved rank; conf = SINTAX confidence)
   summary_by_method.tsv          % of LAB reads per method and label (input of the figures)
-Usage: python3 scripts/11_compare.py   (Mac or alnitak, after steps 2 and 3)"""
+Usage: python3 exploration/scripts/11_compare.py   (Mac or alnitak, after steps 2 and 3)"""
 import csv, os, re
 
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 res = os.path.join(root, "results")
 out = os.path.join(res, "11_compare")
 os.makedirs(out, exist_ok=True)

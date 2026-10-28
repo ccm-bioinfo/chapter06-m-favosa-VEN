@@ -8,13 +8,13 @@
   MG16S_ the 23 Lactobacillaceae 16S recovered from our metagenomes (>= 1000 bp), minus 2 with a saturated branch
   ASV    the 69 B-VEN-D9 Lactobacillaceae ASVs (queries, placed with EPA-ng)
 Writes results/08_tree/: refs_full.fa, queries.fa, tip_info.tsv, taxon.tsv (gappa)
-Usage (alnitak): python3 scripts/08_tree_inputs.py"""
+Usage (alnitak): python3 exploration/scripts/08_tree_inputs.py"""
 import csv, gzip, os, re
 
 BAD = {"GTDB_GCF_016861915.1", "GTDB_GCF_016861695.1", "GTDB_GCF_005405165.1"}
 # same rule for our MG16S: saturated branch (IQ-TREE upper bound 10) in the first run of this tree
 BAD_MG = {"MG16S_P16S_15", "MG16S_P16S_62"}
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 data = os.path.join(root, "data")
 out = os.path.join(root, "results", "08_tree")
 os.makedirs(out, exist_ok=True)

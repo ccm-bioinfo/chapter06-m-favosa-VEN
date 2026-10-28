@@ -15,42 +15,32 @@ Do the Lactobacillaceae ASVs of the only *M. favosa* sample (B-VEN-D9, 10MFH) ge
 classification when the references include our full-length 16S recovered from MAGs/genomes
 (Clades 1–4, Xolalpa-Aroche et al. 2026) instead of GTDB/AMPtk alone?
 
-Final results, methods and caveats: [`docs/summary.md`](docs/summary.md).
-
-## Data policy
-No data are committed to GitHub: `data/` holds only symlinks (see `data/manifest.tsv`).
-Inputs and final results will be deposited in Zenodo record
-[10.5281/zenodo.23690055](https://doi.org/10.5281/zenodo.23690055) (DOI reserved, draft; metadata in
-`zenodo/metadata.json`) as `chapter06-inputs.tar.gz`, keeping the `data/` layout.
-Outside the Mac/alnitak, start with `scripts/00_download_zenodo.sh` instead of `00_link_data.sh`;
-later steps are identical. Public references (GTDB r226 SSU) are downloaded from their source.
-Related records: MAGs 10.5281/zenodo.18446951 (Xolalpa-Aroche et al. 2026, 10.1093/ismeco/ycag063);
-full APIBA 16S dataset 10.5281/zenodo.20481566.
+Methods: [`docs/METHODS.md`](docs/METHODS.md). Summary of the exploration: [`docs/summary.md`](docs/summary.md).
 
 ## Layout
-- `data/`     symlinks to shared inputs (`manifest.tsv`; recreate with `scripts/00_link_data.sh`)
-- `docs/inputs_overview.tsv`  what each input is, where it lives (Mac/alnitak), size and record count
-- `scripts/`  numbered steps
-- `results/`  outputs (not tracked)
+| Folder | What it is |
+|---|---|
+| [`pipeline/`](pipeline) | **clean pipeline**: reproduces the analysis from the Zenodo input package, following [`docs/METHODS.md`](docs/METHODS.md) |
+| [`docs/METHODS.md`](docs/METHODS.md) | complete methods (the chapter has a shorter version) |
+| [`exploration/`](exploration) | the exploratory analysis that led to the decisions (genome selection, clade labels, duplicates, figures tried) |
+| `docs/` | decision tables used by the exploration (`genome16S_decisions.tsv`, `public_genomes.tsv`, `xolalpa2026_genomes.tsv`, `mg16S_labels.tsv`, `mg16S_notes.tsv`) and the summary of the exploration (`summary.md`) |
+| `zenodo/tables/` | Tables S1 and S2 as deposited in Zenodo |
 
-## Steps
-| Script | Host | Output |
-|---|---|---|
-| `00_link_data.sh` | both | `data/` symlinks |
-| `00_download_zenodo.sh` | anywhere | `data/` from Zenodo (once the record is published) |
-| `01_inputs_overview.py <host>` | both | input counts (merged into `docs/inputs_overview.tsv`) |
-| `02_favosa_asvs.py` | Mac | `results/favosa_ASVs.tsv`: first look at B-VEN-D9 ASVs and earlier classifications |
-| `03_genome16S_review.py` | alnitak | `results/03_genome16S_review.tsv`: barrnap 16S per genome + decisions in `docs/genome16S_decisions.tsv` (the single place where genomes enter or leave: unpublished isolates, Costa Rica MAG, contaminated 16S and public genomes that duplicate a GTDB reference are `use=no`) |
-| `04_favosa_queries.py` | both | `results/04_queries/`: B-VEN-D9 ASVs (all 273; 69 Lactobacillaceae by AMPtk) |
-| `05_mg16S_labels.py` | Mac | `docs/mg16S_labels.tsv`: genus and paper clade of each recovered 16S (strongest MarkerMAG link; Clades 3 and 4 merged as Clade 3-4) |
-| `06_sintax_refs.py` | alnitak | `results/06_sintax/refs/`: SILVA 138.2, GTDB r226, GTDB + our 16S, sensitivity (no MAG_41/45 16S) |
-| `07_sintax.sh` | alnitak | `results/06_sintax/*.tsv`: SINTAX (cutoff 0.8, seed 1) of the 273 ASVs per reference |
-| `08_tree_inputs.py` | alnitak | `results/08_tree/`: GTDB + our genome 16S + MG16S references, ASV queries, tip table |
-| `09_constraint.R` | Mac | `results/08_tree/constraint.tree`: GTDB genome topology, our 16S at their genus MRCA |
-| `10_tree.sh` | alnitak | constrained IQ-TREE, EPA-ng placement, gappa assignment and grafted tree |
-| `11_compare.py` | both | `results/11_compare/`: per-ASV classification by method, LAB summary, whole-community genus summary |
-| `13_identity.sh` | alnitak | `results/13_identity/`: best-hit identity of each LAB ASV to our 16S vs GTDB (then deletes the 1.2 GB `gtdb_ours.fa`) |
-| `14_fig6_4.R` | Mac | `results/14_fig6_4/`: chapter Fig. 6.4 (A ITS1 from VIT tables, B 16S by reference = fig1) + fungal genus table behind Table 6.4 |
-| `12_figures.R` | Mac | `results/12_figures/`: fig1 genus composition per method (style of chapter Fig. 6.4B); fig2 circular placement tree (style of VIT lab16S_circular); fig3 Nicoliella zoom; fig4/fig4b Nicoliella–Acetilactobacillus subtree rooted on Fructilactobacillus (rectangular / circular); fig5 pairwise V4 differences heatmap (+ TSV) |
+## Data policy
+No data are committed to GitHub. The inputs of the clean pipeline are in Zenodo
+[10.5281/zenodo.23690055](https://doi.org/10.5281/zenodo.23690055) (`chapter06-inputs.tar.gz`); public references
+(GTDB r226, SILVA 138.2) are downloaded from their source. Related records: MAGs 10.5281/zenodo.18446951
+(Xolalpa-Aroche et al. 2026, 10.1093/ismeco/ycag063); isolate genomes NCBI BioProject PRJNA1235305; full APIBA 16S/ITS
+dataset 10.5281/zenodo.20481566. The exploration reads the shared inputs through symlinks in `data/`
+(`data/manifest.tsv`, `exploration/scripts/00_link_data.sh`).
 
-Order: 00 → 03 → 04 → 05 (Mac) → 06 → 07 → 13 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac) → 14 (Mac).
+## Run the clean pipeline
+```bash
+CH06_WORK=/data2/<PROJECT>/run SILVA_NR99=/path/to/SILVA_138.2_NR99.fasta source pipeline/config.sh
+setsid nohup bash pipeline/run_all.sh > $CH06_WORK/run.log 2>&1 &
+```
+See [`pipeline/README.md`](pipeline/README.md) for the steps.
+
+## Exploration steps
+Scripts in `exploration/scripts/`, run from the repository root. Order:
+00 → 03 → 04 → 05 (Mac) → 06 → 07 → 13 → 08 → 09 (Mac) → 10 → 11 → 12 (Mac) → 14 (Mac) → 15 (Mac) → 16.

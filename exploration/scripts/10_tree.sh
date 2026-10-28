@@ -2,9 +2,9 @@
 # Step 3c: 16S reference tree constrained to the GTDB genome topology + EPA-ng placement of the
 # B-VEN-D9 Lactobacillaceae ASVs (same recipe as /data2/MIEL/vit/scripts/31_tree_mg16S.sh).
 # Needs results/08_tree/{refs_full.fa,queries.fa,taxon.tsv,constraint.tree}.
-# Usage (alnitak, ~16 threads): setsid nohup bash scripts/10_tree.sh > logs/10_tree.log 2>&1 &
+# Usage (alnitak, ~16 threads): setsid nohup bash exploration/scripts/10_tree.sh > logs/10_tree.log 2>&1 &
 set -euo pipefail
-cd "$(dirname "$0")/../results/08_tree"
+cd "$(dirname "$0")/../../results/08_tree"
 export PATH=/data/nselem/envs/vit/bin:$PATH
 T=16
 

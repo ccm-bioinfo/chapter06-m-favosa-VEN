@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Count records and size of every input linked in data/ (run on each host).
-Usage: python3 scripts/01_inputs_overview.py <host> > overview_<host>.tsv"""
+Usage: python3 exploration/scripts/01_inputs_overview.py <host> > overview_<host>.tsv"""
 import csv, gzip, os, sys
 
 host = sys.argv[1]
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 print("link\thost\tn_records\tunit\tsize_MB")
 with open(os.path.join(root, "data", "manifest.tsv")) as fh:
     for row in csv.reader((l for l in fh if not l.startswith("#")), delimiter="\t"):

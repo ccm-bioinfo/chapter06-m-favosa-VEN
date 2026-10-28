@@ -5,7 +5,7 @@
 #                        RColorBrewer Paired in alphabetical order, Other grey65, Unclassified grey88)
 #  fig2_placement_tree   circular 16S cladogram with genus sectors and the favosa ASVs grafted at their
 #                        EPA-ng placement, in the style of amplicon/scripts/plot_lab_tree_circular.R
-# Usage: Rscript scripts/12_figures.R   (needs results/11_compare and results/08_tree)
+# Usage: Rscript exploration/scripts/12_figures.R   (needs results/11_compare and results/08_tree)
 suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(dplyr) })
 out <- "results/12_figures"; dir.create(out, showWarnings = FALSE)
 

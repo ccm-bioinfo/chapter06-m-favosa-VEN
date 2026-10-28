@@ -3,9 +3,9 @@
 # repeated without the slow steps (AMPtk, phyloFlash/EMIRGE, MarkerMAG, skani). Public references (GTDB r226,
 # SILVA 138.2) are not redistributed; README.txt gives their versions and URLs. No UNU rows or sequences.
 # Usage (alnitak, after 15_zenodo_tables.py and with the ITS tables copied to data/vit/):
-#   bash scripts/16_zenodo_package.sh   ->  zenodo_package/chapter06-inputs.tar.gz
+#   bash exploration/scripts/16_zenodo_package.sh   ->  zenodo_package/chapter06-inputs.tar.gz
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 export PATH=/data/nselem/envs/vit/bin:$PATH
 P=zenodo_package/chapter06-inputs
 rm -rf "$P" && mkdir -p $P/{tables,asv,its,recovered_16S,genome_16S}

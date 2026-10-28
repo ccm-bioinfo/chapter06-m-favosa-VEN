@@ -8,10 +8,10 @@
                      ASV1/ASV2): strongest MarkerMAG link, the Xolalpa 2026 MAG of the same species by skani
                      (ANI >= 95 %) that names the clade, and the best link to a different paper clade when there is one.
                      Bin species labels from unpublished genomes are not included.
-Usage (Mac, after 12_figures.R): python3 scripts/15_zenodo_tables.py"""
+Usage (Mac, after 12_figures.R): python3 exploration/scripts/15_zenodo_tables.py"""
 import csv, os, re
 
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 out = os.path.join(root, "zenodo", "tables")
 os.makedirs(out, exist_ok=True)
 

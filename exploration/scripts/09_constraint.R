@@ -3,7 +3,7 @@
 # GTDB r226 genome topology (GTDB_* tips of data/refs/constraint_gtdb.tree). Our genome 16S and the MG16S with a
 # paper clade are added as a polytomy at the MRCA of their genus (free within the genus); MG16S without a
 # clade link stay unconstrained.
-# Usage: Rscript scripts/09_constraint.R   (needs results/08_tree/tip_info.tsv from alnitak)
+# Usage: Rscript exploration/scripts/09_constraint.R   (needs results/08_tree/tip_info.tsv from alnitak)
 suppressPackageStartupMessages(library(ape))
 dir  <- "results/08_tree"
 info <- read.delim(file.path(dir, "tip_info.tsv"), stringsAsFactors = FALSE)

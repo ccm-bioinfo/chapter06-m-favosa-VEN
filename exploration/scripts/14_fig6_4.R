@@ -6,7 +6,7 @@
 #  (B) 16S genus composition per classification reference (fig1 of 12_figures.R, replaces the original 16S bar)
 # Also writes table6_4_fungi_genus.tsv: fungal genera as % of all ITS reads, of genus-assigned reads and of the
 # 15 listed genera (the denominator of the submitted Table 6.4).
-# Usage (Mac, after 12_figures.R): Rscript scripts/14_fig6_4.R   ->  results/14_fig6_4/
+# Usage (Mac, after 12_figures.R): Rscript exploration/scripts/14_fig6_4.R   ->  results/14_fig6_4/
 suppressPackageStartupMessages({ library(ggplot2); library(dplyr); library(patchwork); library(RColorBrewer) })
 out <- "results/14_fig6_4"; dir.create(out, showWarnings = FALSE)
 TOP <- 15

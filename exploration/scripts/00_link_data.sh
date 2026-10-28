@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Create data/ symlinks from data/manifest.tsv. Works on the Mac and on alnitak.
-# Usage: bash scripts/00_link_data.sh [local|alnitak]   (auto-detected if omitted)
+# Usage: bash exploration/scripts/00_link_data.sh [local|alnitak]   (auto-detected if omitted)
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
 host=${1:-$( [[ -d /data2/MIEL/vit ]] && echo alnitak || echo local )}
 case $host in

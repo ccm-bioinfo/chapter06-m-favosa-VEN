@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Step 6: why our 16S resolve the favosa LAB: best-hit V4 identity of each Lactobacillaceae ASV to
 # our 16S (OWN_*) versus GTDB r226 alone. Top hits only (an all-hits output fills the disk).
-# Usage (alnitak, after 07_sintax.sh): bash scripts/13_identity.sh  ->  results/13_identity/
+# Usage (alnitak, after 07_sintax.sh): bash exploration/scripts/13_identity.sh  ->  results/13_identity/
 set -euo pipefail
-cd "$(dirname "$0")/../results"
+cd "$(dirname "$0")/../../results"
 export PATH=/data/nselem/envs/vit/bin:$PATH
 O=13_identity; mkdir -p $O; export TMPDIR=$PWD/$O
 seqkit grep -r -p "^OWN_" 06_sintax/refs/gtdb_ours.fa > $O/ours.fa

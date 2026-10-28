@@ -4,10 +4,10 @@ Rule fixed before any classification:
   clade = paper clade only if the STRONGEST MarkerMAG link of that 16S goes to a paper MAG (etiqueta_liga);
   genus = genus of that clade (Clades 1-2 Nicoliella, 3-4 Acetilactobacillus); otherwise the 16S's own
           SINTAX genus (not the bin's: some bins are mixed); '-' = family level only.
-Usage (Mac, needs Mac-only link tables): python3 scripts/05_mg16S_labels.py > docs/mg16S_labels.tsv"""
+Usage (Mac, needs Mac-only link tables): python3 exploration/scripts/05_mg16S_labels.py > docs/mg16S_labels.tsv"""
 import csv, os, re, sys
 
-data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "ours")
+data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "ours")
 CLADE_GENUS = {"1": "Nicoliella", "2": "Nicoliella", "3": "Acetilactobacillus", "4": "Acetilactobacillus"}
 CLADE_NAME = {"1": "Clade_1_Nicoliella-related", "2": "Clade_2_Nicoliella-related",
               "3": "Clade_3-4_Acetilactobacillus-like", "4": "Clade_3-4_Acetilactobacillus-like"}

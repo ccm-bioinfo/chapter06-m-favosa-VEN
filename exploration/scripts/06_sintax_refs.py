@@ -6,13 +6,13 @@
                       (docs/mg16S_labels.tsv); paper clade as species, e.g. s:Clade_3-4_Acetilactobacillus-like (Clades 3 and 4 merged)
   gtdb_ours_sens.fa   same without the divergent Clade 2 16S of MAG_41_Melli_001 / MAG_45_Melli_020
   ours_labels.tsv     id, source, genus, species/clade of each of our references
-Usage (alnitak): python3 scripts/06_sintax_refs.py   ->  results/06_sintax/refs/"""
+Usage (alnitak): python3 exploration/scripts/06_sintax_refs.py   ->  results/06_sintax/refs/"""
 import csv, gzip, os, re
 
 MINLEN = 1200
 SENS_DROP = {"MAG_41_Melli_001", "MAG_45_Melli_020"}
 LAB = "d:Bacteria,p:Bacillota,c:Bacilli,o:Lactobacillales,f:Lactobacillaceae"
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
 data = os.path.join(root, "data")
 out = os.path.join(root, "results", "06_sintax", "refs")
 os.makedirs(out, exist_ok=True)

@@ -4,12 +4,12 @@
 #  (C) circular placement tree of Fig. 4b (Acetilactobacillus at the top), full height on the right, because at
 #      10 pt its 109 tip labels need a ~9.8 in circle; shading legend in its top-left corner, sequence and size
 #      legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
-# All text is Arial 10 pt, genera and species in italics (GTDB species with the genus abbreviated, as the shading
+# Arial; tree tip labels 10 pt, every other text 14 pt; genera and species in italics (GTDB species with the genus abbreviated, as the shading
 # legend names the genera), little white space; editable SVG.
 # Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/
 suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(patchwork) })
 out <- "results/17_fig6_4_full"; dir.create(out, showWarnings = FALSE)
-FS <- 10; FONT <- "Arial"
+FS <- 14; TIP_PT <- 10; FONT <- "Arial"   # legends, axes and titles at 14 pt; tree tip labels at 10 pt
 GENERA <- c("Acetilactobacillus", "Nicoliella", "Fructilactobacillus")
 
 # legend label with the genus in italics, e.g. "ASV: Clade 3-4 Acetilactobacillus-like"
@@ -29,7 +29,7 @@ th <- theme_bw(base_size = FS, base_family = FONT) +
   theme(text = element_text(size = FS), axis.text = element_text(size = FS, colour = "black"),
         legend.text = element_text(size = FS), legend.title = element_text(size = FS, face = "bold"),
         plot.title = element_text(size = FS, face = "bold"), plot.tag = element_text(size = FS, face = "bold"),
-        legend.text.align = 0, legend.key.size = unit(0.35, "cm"), legend.margin = margin(0, 0, 0, 0),
+        legend.text.align = 0, legend.key.size = unit(0.5, "cm"), legend.margin = margin(0, 0, 0, 0),
         legend.box.spacing = unit(2, "pt"), plot.margin = margin(2, 2, 2, 2), panel.grid.major.x = element_blank())
 
 # ---- A and B --------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ sc$labels <- lapply(sc$breaks, function(l)
 # ---- C ---------------------------------------------------------------------------------------------
 k <- readRDS("results/12_figures/fig4b_parts.rds")
 sub <- k$sub; acet4 <- k$acet4; c34 <- k$c34
-TIP <- FS / .pt
+TIP <- TIP_PT / .pt
 p <- ggtree(sub, layout = "circular", branch.length = "none", size = 0.3) %<+% k$d
 dep <- max(p$data$x)
 p <- p +
@@ -81,24 +81,24 @@ p <- p +
   labs(tag = "C") +
   theme(text = element_text(size = FS, family = FONT), legend.text = element_text(size = FS),
         legend.title = element_text(size = FS, face = "bold"), plot.tag = element_text(size = FS, face = "bold"),
-        legend.position = "right", legend.key.size = unit(0.35, "cm"), legend.text.align = 0,
+        legend.position = "right", legend.key.size = unit(0.5, "cm"), legend.text.align = 0,
         legend.box.spacing = unit(0, "pt"), legend.background = element_blank(), plot.margin = margin(0, 0, 0, 0))
 acet_mid <- mean(range(subset(p$data, isTip & label %in% acet4)$angle))
 p <- rotate_tree(p, 90 - acet_mid)
 
 # ---- page ------------------------------------------------------------------------------------------
-# wide and short (landscape letter with room for the caption): A and B with their legends | tree | tree legends
-W <- 17.4; H <- 9.8
+# wide and short (landscape letter with room for the caption): A and B with the A legend | tree | B and tree legends
+W <- 20.1; H <- 9.8
 leg <- function(x) cowplot::get_plot_component(x, "guide-box-right")
 legA <- leg(a + guides(fill = guide_legend(ncol = 2)))
-legB <- leg(b + guides(fill = guide_legend(ncol = 2)))
+legB <- leg(b + guides(fill = guide_legend(ncol = 1)))
 legC <- leg(p + guides(fill = "none"))
 a <- a + theme(legend.position = "none")
 b <- b + theme(legend.position = "none")
 p <- p + guides(colour = "none", shape = "none", size = "none")
-left <- (a + b + plot_layout(widths = c(1, 3.6))) / wrap_elements(full = legA) / wrap_elements(full = legB) +
-  plot_layout(heights = c(4.6, 2.0, 2.4))
-fig <- wrap_plots(left, wrap_elements(full = p), wrap_elements(full = legC), widths = c(4.4, 9.8, 3.2))
+left <- (a + b + plot_layout(widths = c(1, 3.2))) / wrap_elements(full = legA) + plot_layout(heights = c(6.6, 3.2))
+right <- wrap_elements(full = legB) / wrap_elements(full = legC) + plot_layout(heights = c(4.9, 4.9))
+fig <- wrap_plots(left, wrap_elements(full = p), right, widths = c(5.4, 9.8, 4.9))
 ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
 ggsave(file.path(out, "fig6_4_full.png"), fig, width = W, height = H, dpi = 250, bg = "white")
 ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text

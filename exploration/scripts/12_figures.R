@@ -200,28 +200,34 @@ p4 <- ggtree(sub, branch.length = "none", size = 0.3) %<+% d +
 ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.pdf"), p4, width = 12, height = 18)
 ggsave(file.path(out, "fig4_nicoliella_acetilactobacillus_tree.png"), p4, width = 12, height = 18, dpi = 250, bg = "white")
 
-# Fig. 4b: the same subtree as a circle; labels of the whole Acetilactobacillus sector point inwards (text ends at the
-# tip), elsewhere the left half is flipped so it reads upright; legend at the side
+# Fig. 4b: the same subtree as a circle, rotated with Acetilactobacillus at the top and the shading extended past the
+# labels; one label direction per clade: Clade 3-4 (upper left) flipped so its text ends at the tip, the rest of
+# Acetilactobacillus (right) from the tip outwards, elsewhere the left half flipped so it reads upright; legend at the side
 acet4 <- extract.clade(sub, hl4$node[hl4$genus_hl == "Acetilactobacillus"])$tip.label
+c34 <- extract.clade(sub, getMRCA(sub, intersect(d$tip[d$grupo == "ASV: Clade 3-4 Acetilactobacillus-like"], sub$tip.label)))$tip.label
 p4b <- ggtree(sub, layout = "circular", branch.length = "none", size = 0.3) %<+% d +
-  geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 7) +
+  geom_hilight(data = hl4, aes(node = node, fill = genus_hl), alpha = 0.6, extend = 13) +
   scale_fill_manual(values = hl_genera, name = "Genus (shading)") +
   geom_tippoint(aes(colour = grupo, shape = grupo, size = ifelse(type == "ASV", pmax(pct, 0.05), ifelse(type == "genome", 1.6, 0.8))),
                 alpha = 0.9) +
   geom_text(data = function(x) {
     x <- subset(x, isTip)
     x$tl <- ifelse(x$type == "GTDB", x$name, x$tiplab)
-    flip <- x$label %in% acet4 | (x$angle > 90 & x$angle < 270)
+    a <- x$angle %% 360
+    flip <- x$label %in% c34 | (!x$label %in% acet4 & a > 90 & a < 270)
     transform(x, ang = ifelse(flip, angle + 180, angle), hj = ifelse(flip, 1, 0))
   }, aes(x = x + 0.4, label = tl, colour = grupo, angle = ang, hjust = hj), size = 2.4, show.legend = FALSE) +
   scale_colour_manual(values = cols, name = "Sequence") + scale_shape_manual(values = shapes, name = "Sequence") +
   scale_size_continuous(range = c(0.8, 7), name = "% of Lactobacillaceae reads (ASV)", breaks = c(0.1, 1, 5, 20, 60)) +
-  xlim(0, max(node.depth(sub, method = 2)) + 8) +
+  xlim(0, max(node.depth(sub, method = 2)) + 14) +
   theme(legend.position = "right", legend.box = "vertical", legend.text = element_text(size = 10)) +
   guides(fill = guide_legend(order = 1), colour = guide_legend(order = 2, ncol = 1), shape = guide_legend(order = 2, ncol = 1),
          size = guide_legend(order = 3, ncol = 1)) +
   labs(title = "16S Nicoliella and Acetilactobacillus: Melipona favosa honey ASVs (10MFH) on GTDB r226 + Xolalpa 2026",
        subtitle = "Subtree of Fig. 2 (same EPA-ng placement), rooted on Fructilactobacillus; cladogram (no branch lengths)")
+# rotate so the middle of the Acetilactobacillus sector is at the top (90 degrees)
+acet_mid <- mean(range(subset(p4b$data, isTip & label %in% acet4)$angle))
+p4b <- rotate_tree(p4b, 90 - acet_mid)
 ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.pdf"), p4b, width = 15, height = 11)
 ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.png"), p4b, width = 15, height = 11, dpi = 250, bg = "white")
 ggsave(file.path(out, "fig4b_nicoliella_acetilactobacillus_circular.svg"), p4b, width = 15, height = 11)   # editable

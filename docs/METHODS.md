@@ -127,7 +127,7 @@ The GTDB set excludes every sequence with an ambiguous base (N). vsearch counts 
 |---|---|
 | Clade 3-4 (GTDB + ours), % of all 16S reads | 88.84 |
 | Organelle 16S (SILVA), ASVs / reads / % of all 16S reads | 21 / 589 / 2.51 |
-| Final classification, % of all 16S reads | Clade 3-4 88.84, *Dysgonomonas* 1.50, *Haemophilus* 0.99, *Comamonas* 0.60, *Acetilactobacillus* 0.52, Unclassified 0.55 |
+| Final classification, % of all 16S reads | Clade 3-4 88.84, *Dysgonomonas* 1.50, *Haemophilus* 0.99, *Comamonas* 0.60, *Acetilactobacillus* 0.52, Unclassified 0.60 (3 Enterobacteriaceae ASVs, 13 reads, change genus between SILVA runs; 0.55 in the exploration) |
 | Clade 3-4, % of Lactobacillaceae reads (SINTAX and tree) | 99.39 |
 | SINTAX vs tree, same label | 99.98–99.99 % of Lactobacillaceae reads |
 | Sensitivity run | only ASV83 (2 reads) changes |

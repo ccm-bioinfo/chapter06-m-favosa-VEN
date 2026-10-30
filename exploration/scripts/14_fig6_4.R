@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 # Chapter Fig. 6.4 redrawn for Melipona favosa honey (10MFH, B-VEN-D9), panels with the same height and fonts:
-#  (A) ITS1 genus composition, same data and rule as the original panel (amplicon/scripts/microbiome_plots.R,
-#      plot_taxa_bar): top 15 genus-level taxa, the rest "Other", no genus "Unclassified"; RColorBrewer Paired
+#  (A) ITS1 genus composition, same data as the original panel (amplicon/scripts/microbiome_plots.R, plot_taxa_bar);
+#      top 15 named genera, other genera "Other", all reads without genus (Unclassified_N) pooled as "Unclassified"
+#      (as in panel B; the original rule ranked each Unclassified_N apart and hid them in Other); RColorBrewer Paired
 #      in alphabetical order (interpolated if > 12 genera)
 #  (B) 16S genus composition per classification reference (fig1 of 12_figures.R, replaces the original 16S bar)
 # Also writes table6_4_fungi_genus.tsv: fungal genera as % of all ITS reads, of genus-assigned reads and of the
@@ -14,8 +15,9 @@ TOP <- 15
 panel_data <- function(file) {
   d <- read.delim(file, stringsAsFactors = FALSE)
   d$ab <- d[[ncol(d)]]
-  top <- d$GenusLabel[order(-d$ab)][seq_len(TOP)]
-  d$taxon <- ifelse(!d$GenusLabel %in% top, "Other", ifelse(is.na(d$Genus) | d$Genus == "NA", "Unclassified", d$Genus))
+  unc <- is.na(d$Genus) | d$Genus == "NA"                    # Unclassified_N rows: one Unclassified bar segment
+  top <- d$Genus[!unc][order(-d$ab[!unc])][seq_len(TOP)]     # top 15 among named genera only, as in Fig. 6.4B
+  d$taxon <- ifelse(unc, "Unclassified", ifelse(d$Genus %in% top, d$Genus, "Other"))
   d |> group_by(taxon) |> summarise(ab = sum(ab), .groups = "drop")
 }
 
@@ -45,7 +47,7 @@ panel <- function(d, tag, title) {
 }
 
 a <- panel(panel_data("data/vit/ITS_genus_relabund_Mfav.tsv"), "A", "Fungi (ITS1)")
-saveRDS(a, file.path(out, "fig6_4A.rds"))   # panel A of the full Fig. 6.4 (17_fig6_4_full.R)
+saveRDS(a, file.path(out, "fig6_4A_v2.rds"))   # panel A of the full Fig. 6.4 (17_fig6_4_full.R)
 b <- readRDS("results/12_figures/fig1_genus_by_method.rds") +
   labs(tag = "B", title = "Bacteria (16S rRNA) by classification reference", subtitle = NULL) +
   guides(fill = guide_legend(ncol = 3, byrow = TRUE, title.position = "top"))
@@ -60,14 +62,14 @@ common <- theme_bw(base_size = 12) +
 a <- a + common + guides(fill = guide_legend(ncol = 2, title.position = "top"))
 b <- b + common
 p <- a + b + plot_layout(widths = c(1, 4.2)) &
-  plot_annotation(caption = paste("Melipona favosa pot-honey (10MFH). (A) The 15 most abundant fungal taxa; the rest as Other.",
+  plot_annotation(caption = paste("Melipona favosa pot-honey (10MFH). (A) The 15 most abundant fungal genera; other genera as Other, reads without genus as Unclassified.",
                                   "(B) The same 16S ASVs classified with RDP (submitted), SILVA 138.2, GTDB r226, GTDB r226 + our 16S",
                                   "from stingless bee MAGs and genomes, and EPA-ng tree placement; genera < 0.3% in every bar as Other.",
                                   sep = "\n"),
                   theme = theme(plot.caption = element_text(size = 10, hjust = 0)))
-ggsave(file.path(out, "fig6_4_ITS_16S.pdf"), p, width = 15, height = 9)
-ggsave(file.path(out, "fig6_4_ITS_16S.png"), p, width = 15, height = 9, dpi = 300, bg = "white")
-ggsave(file.path(out, "fig6_4_ITS_16S.svg"), p, width = 15, height = 9, device = svglite::svglite)
+ggsave(file.path(out, "fig6_4_ITS_16S_v2.pdf"), p, width = 15, height = 9)
+ggsave(file.path(out, "fig6_4_ITS_16S_v2.png"), p, width = 15, height = 9, dpi = 300, bg = "white")
+ggsave(file.path(out, "fig6_4_ITS_16S_v2.svg"), p, width = 15, height = 9, device = svglite::svglite)
 
 # fungal genus table (counts behind Table 6.4)
 cnt <- read.delim("data/vit/ITS_genus_counts_Mfav.tsv", stringsAsFactors = FALSE)

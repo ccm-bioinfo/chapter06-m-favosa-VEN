@@ -5,7 +5,7 @@
 #      10 pt its 109 tip labels need a ~9.8 in circle; its legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
 # Arial; tree tip labels 10 pt, every other text 14 pt; genera and species in italics (GTDB species with the genus abbreviated, as the shading
 # legend names the genera), little white space; editable SVG.
-# Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/
+# Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/*_v2
 suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(patchwork) })
 out <- "results/17_fig6_4_full"; dir.create(out, showWarnings = FALSE)
 FS <- 14; TIP_PT <- 10; FONT <- "Arial"   # legends, axes and titles at 14 pt; tree tip labels at 10 pt
@@ -32,7 +32,7 @@ th <- theme_bw(base_size = FS, base_family = FONT) +
         legend.box.spacing = unit(2, "pt"), plot.margin = margin(2, 2, 2, 2), panel.grid.major.x = element_blank())
 
 # ---- A and B --------------------------------------------------------------------------------------
-a <- txt10(readRDS("results/14_fig6_4/fig6_4A.rds")) + th +
+a <- txt10(readRDS("results/14_fig6_4/fig6_4A_v2.rds")) + th +
   labs(tag = "A", title = "Fungi (ITS1)") +
   theme(legend.position = "right") + guides(fill = guide_legend(ncol = 1))
 b <- txt10(readRDS("results/12_figures/fig1_genus_by_method.rds")) + th +
@@ -101,7 +101,7 @@ p <- p + theme(legend.position = "none")
 left <- (a + b + plot_layout(widths = c(1, 3.2))) / (wrap_elements(full = legA) | wrap_elements(full = legB)) +
   plot_layout(heights = c(5, 4.8))
 fig <- wrap_plots(left, wrap_elements(full = p), wrap_elements(full = legC), widths = c(6.2, 9.8, 4.9))
-ggsave(file.path(out, "fig6_4_full.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
-ggsave(file.path(out, "fig6_4_full.png"), fig, width = W, height = H, dpi = 250, bg = "white")
-ggsave(file.path(out, "fig6_4_full.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text
+ggsave(file.path(out, "fig6_4_full_v2.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
+ggsave(file.path(out, "fig6_4_full_v2.png"), fig, width = W, height = H, dpi = 250, bg = "white")
+ggsave(file.path(out, "fig6_4_full_v2.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text
 message("written ", out)

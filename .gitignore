@@ -10,3 +10,4 @@ zenodo_package/
 *.png
 *.rds
 .DS_Store
+!docs/figures/*.png

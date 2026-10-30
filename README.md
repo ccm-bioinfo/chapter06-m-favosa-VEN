@@ -47,3 +47,7 @@ Scripts in `exploration/scripts/`, run from the repository root. Order:
 
 Chapter Fig. 6.4: `14_fig6_4.R` (panels A, B), `12_figures.R` (Fig. 4b, panel C) and
 `17_fig6_4_full.R` (the three panels on one page, Arial, editable SVG) → `results/17_fig6_4_full/`.
+Final classification of Table 6.5 (`11_compare.py`): organelle 16S set apart with SILVA, Lactobacillaceae named
+with GTDB + our 16S, every other ASV with SILVA. `18_non_acetilactobacillus_bar.R` (community without
+Acetilactobacillus) and `19_rdp_gtdb_alluvial.R` (RDP genus → final genus) are exploratory views (Mac, after 11).
+Both, with the V4 differences heatmap, are explained in [`docs/exploratory_figures.md`](docs/exploratory_figures.md).

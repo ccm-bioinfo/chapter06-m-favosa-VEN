@@ -5,6 +5,10 @@ sensitivity run without the MAG_41/45 16S, and EPA-ng placement on the constrain
 Writes results/11_compare/:
   favosa_LAB_classification.tsv  one row per ASV (label = deepest resolved rank; conf = SINTAX confidence)
   summary_by_method.tsv          % of LAB reads per method and label (input of the figures)
+  summary_genus_all.tsv          whole community by genus per method, plus the chapter's final classification:
+                                 organelle 16S removed with SILVA, Lactobacillaceae named with GTDB + our 16S,
+                                 every other ASV with SILVA 138.2
+  genus_by_asv.tsv               the same genus labels per ASV
 Usage: python3 exploration/scripts/11_compare.py   (Mac or alnitak, after steps 2 and 3)"""
 import csv, os, re
 
@@ -13,6 +17,7 @@ res = os.path.join(root, "results")
 out = os.path.join(res, "11_compare")
 os.makedirs(out, exist_ok=True)
 METHODS = ["RDP (AMPtk)", "SILVA 138.2", "GTDB r226", "GTDB + our 16S", "Tree placement (EPA-ng)"]
+FINAL = "Final (SILVA + GTDB + our 16S)"
 
 
 def tsv(path):
@@ -115,24 +120,47 @@ def ranks_of(tax):
 
 raw = {k: {r[0]: (r[3] if len(r) > 3 else "") for r in tsv(f"{res}/06_sintax/{k}.tsv")}
        for k in ("silva", "gtdb", "gtdb_ours")}
-genus = {"RDP (AMPtk)": {a: genus_label(ranks_of(counts[a][2])) for a in counts},
-         "SILVA 138.2": {a: genus_label(ranks_of(raw["silva"][a])) for a in counts},
-         "GTDB r226": {a: genus_label(ranks_of(raw["gtdb"][a])) for a in counts},
-         "GTDB + our 16S": {a: genus_label(ranks_of(raw["gtdb_ours"][a])) for a in counts}}
+# organelle 16S (SILVA f:Mitochondria or o:Chloroplast at 0.8) is removed before the other references: GTDB has no
+# organelles and SINTAX forces them onto bacteria (e.g. the Aspergillus-like mitochondrial ASVs as Microbacterium)
+ORGANELLE = "Organelles (mitochondria, chloroplast)"
+organelle = {a for a in counts if re.search(r"f:Mitochondria|o:Chloroplast", raw["silva"][a])}
+
+
+def no_organelle(lab_of):
+    return {a: (ORGANELLE if a in organelle else lab_of(a)) for a in counts}
+
+
+genus = {"RDP (AMPtk)": {a: genus_label(ranks_of(counts[a][2])) for a in counts},   # submitted, unchanged
+         "SILVA 138.2": no_organelle(lambda a: genus_label(ranks_of(raw["silva"][a]))),
+         "GTDB r226": no_organelle(lambda a: genus_label(ranks_of(raw["gtdb"][a]))),
+         "GTDB + our 16S": no_organelle(lambda a: genus_label(ranks_of(raw["gtdb_ours"][a])))}
 genus["Tree placement (EPA-ng)"] = {a: (genus_label([(r, n) for r, n in [("f", "")] + [
     (("g", "s")[i], p) for i, p in enumerate(epa[a][1].split(";")[1:3]) if p != "unresolved"]])
     if a in epa else genus["GTDB + our 16S"][a]) for a in counts}
+assert not organelle & set(epa), "an organelle ASV was placed on the Lactobacillaceae tree"
+# final classification: organelles first (SILVA), then Lactobacillaceae with GTDB + our 16S, the rest with SILVA
+lacto = {a for a in counts if "f:Lactobacillaceae" in raw["gtdb_ours"][a]}
+assert not lacto & organelle and lacto == set(lab), "Lactobacillaceae (GTDB + our 16S) differs from the LAB ASVs"
+genus[FINAL] = {a: genus["GTDB + our 16S"][a] if a in lacto else genus["SILVA 138.2"][a] for a in counts}
+GENUS_METHODS = METHODS + [FINAL]
 all_reads = sum(c[0] for c in counts.values())
 with open(f"{out}/summary_genus_all.tsv", "w") as fh:
     w = csv.writer(fh, delimiter="\t", lineterminator="\n")
     w.writerow(["method", "genus", "n_ASVs", "reads", "pct_reads"])
-    for m in METHODS:
+    for m in GENUS_METHODS:
         agg = {}
         for a in counts:
             agg.setdefault(genus[m][a], []).append(a)
         for g, asvs in sorted(agg.items(), key=lambda x: -sum(counts[a][0] for a in x[1])):
             n = sum(counts[a][0] for a in asvs)
             w.writerow([m, g, len(asvs), n, f"{100 * n / all_reads:.2f}"])
+
+# the same genus labels per ASV (input of the RDP -> GTDB + our 16S alluvial, 19_rdp_gtdb_alluvial.R)
+with open(f"{out}/genus_by_asv.tsv", "w") as fh:
+    w = csv.writer(fh, delimiter="\t", lineterminator="\n")
+    w.writerow(["ASV", "reads", "RDP_taxonomy"] + GENUS_METHODS)
+    for a in sorted(counts, key=lambda a: -counts[a][0]):
+        w.writerow([a, counts[a][0], counts[a][2]] + [genus[m][a] for m in GENUS_METHODS])
 
 sens_diff = [a for a in lab if runs["gtdb_ours"][a][0] != runs["gtdb_ours_sens"][a][0]]
 print(f"{len(lab)} LAB ASVs, {total} reads; EPA placements: {len(epa)}; "

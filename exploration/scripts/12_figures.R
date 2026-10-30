@@ -2,10 +2,12 @@
 # Step 5 (Mac): figures for the chapter.
 #  fig1_genus_by_method  whole 10MFH bacterial community by genus, one stacked bar per classification method,
 #                        in the style and colours of chapter Fig. 6.4B (amplicon/scripts/microbiome_plots.R:
-#                        RColorBrewer Paired in alphabetical order, Other grey65, Unclassified grey88)
+#                        RColorBrewer Paired in alphabetical order, Other grey65, Unclassified grey88);
+#                        organelle 16S (SILVA mitochondria/chloroplast) as its own grey40 segment except in RDP
 #  fig2_placement_tree   circular 16S cladogram with genus sectors and the favosa ASVs grafted at their
 #                        EPA-ng placement, in the style of amplicon/scripts/plot_lab_tree_circular.R
-# Usage: Rscript exploration/scripts/12_figures.R   (needs results/11_compare and results/08_tree)
+# Usage: Rscript exploration/scripts/12_figures.R [fig1]   (needs results/11_compare and results/08_tree;
+#        "fig1" writes only fig1_genus_by_method_v2, leaving the tree figures untouched)
 suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(dplyr) })
 out <- "results/12_figures"; dir.create(out, showWarnings = FALSE)
 
@@ -16,14 +18,15 @@ CLADE_COL <- c("Clade 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and
 # ---- Figure 1 ---------------------------------------------------------------------------------
 METHODS <- c("RDP (AMPtk)" = "RDP (AMPtk)\nsubmitted, Fig. 6.4B", "SILVA 138.2" = "SILVA 138.2",
              "GTDB r226" = "GTDB r226", "GTDB + our 16S" = "GTDB r226\n+ our 16S",
-             "Tree placement (EPA-ng)" = "Tree placement\n(EPA-ng)")
+             "Tree placement (EPA-ng)" = "Tree placement\n(EPA-ng)",
+             "Final (SILVA + GTDB + our 16S)" = "Final: SILVA,\nLactobacillaceae\nGTDB + our 16S")
 s <- read.delim("results/11_compare/summary_genus_all.tsv", stringsAsFactors = FALSE)
 keep <- unique(s$genus[s$pct_reads >= 0.3])                  # shown in at least one bar, as in Fig. 6.4B
 s$genus[!s$genus %in% keep] <- "Other"
 s <- s |> group_by(method, genus) |> summarise(pct = sum(pct_reads) / 100, .groups = "drop")
 s$method <- factor(METHODS[s$method], levels = METHODS)
 
-special <- c("Other", "Lactobacillaceae (no genus)", "Unclassified")
+special <- c("Other", "Lactobacillaceae (no genus)", "Unclassified", "Organelles (mitochondria, chloroplast)")
 genera  <- sort(setdiff(unique(s$genus), c(special, names(CLADE_COL))))
 # Fig. 6.4B colours for the genera it shows; Paired order continues for the rest
 fig64 <- c(Bacteroides = "#A6CEE3", Comamonas = "#1F78B4", Dysgonomonas = "#B2DF8A", Fusobacterium = "#33A02C",
@@ -33,7 +36,8 @@ extra <- c("#B15928", "#8DD3C7", "#BC80BD", "#80B1D3", "#FCCDE5")
 new_g <- setdiff(genera, names(fig64))
 pal <- c(fig64[intersect(genera, names(fig64))], setNames(extra[seq_along(new_g)], new_g),
          CLADE_COL[intersect(names(CLADE_COL), s$genus)], Other = "grey65",
-         "Lactobacillaceae (no genus)" = "#E3D3B0", Unclassified = "grey88")
+         "Lactobacillaceae (no genus)" = "#E3D3B0", Unclassified = "grey88",
+         "Organelles (mitochondria, chloroplast)" = "grey40")
 lev <- c(names(CLADE_COL)[names(CLADE_COL) %in% s$genus], genera, special)
 s$genus <- factor(s$genus, levels = rev(lev))
 s <- s |> arrange(method, genus) |> group_by(method) |> mutate(mid = cumsum(pct) - pct / 2) |> ungroup()
@@ -54,11 +58,12 @@ p1 <- ggplot(s, aes(method, pct, fill = genus)) +
   guides(fill = guide_legend(ncol = 4, byrow = TRUE)) +
   labs(title = "16S Genus Composition: Melipona favosa honey (10MFH) by reference",
        subtitle = paste("Same ASVs; only the classification reference changes (SINTAX 0.8; tree = EPA-ng).\n", sep = "",
-                         "Genera < 0.3% in every bar are grouped as Other."),
+                         "Genera < 0.3% in every bar are grouped as Other; organelle 16S removed first (SILVA) except in RDP."),
        x = NULL, y = "Relative Abundance")
-saveRDS(p1, file.path(out, "fig1_genus_by_method.rds"))   # reused as panel B of Fig. 6.4 (14_fig6_4.R)
-ggsave(file.path(out, "fig1_genus_by_method.pdf"), p1, width = 10, height = 8.5)
-ggsave(file.path(out, "fig1_genus_by_method.png"), p1, width = 10, height = 8.5, dpi = 300, bg = "white")
+saveRDS(p1, file.path(out, "fig1_genus_by_method_v2.rds"))   # reused as panel B of Fig. 6.4 (14_fig6_4.R)
+ggsave(file.path(out, "fig1_genus_by_method_v2.pdf"), p1, width = 11.5, height = 8.5)
+ggsave(file.path(out, "fig1_genus_by_method_v2.png"), p1, width = 11.5, height = 8.5, dpi = 300, bg = "white")
+if (identical(commandArgs(trailingOnly = TRUE), "fig1")) quit(save = "no")
 
 # ---- Figure 2 ---------------------------------------------------------------------------------
 tree <- read.tree("results/08_tree/graft/epa_result.newick")

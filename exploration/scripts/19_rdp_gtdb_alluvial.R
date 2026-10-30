@@ -60,7 +60,7 @@ p <- ggplot(f, aes(axis1 = rdp, axis2 = gtdb, y = reads)) +
   geom_text_repel(data = subset(labs_df, x > 1.5), aes(x, y, label = label), inherit.aes = FALSE, hjust = 0,
                   nudge_x = 0.12, direction = "y", size = 3.6, segment.colour = "grey50", min.segment.length = 0,
                   box.padding = 0.12, lineheight = 0.85) +
-  scale_x_discrete(limits = c("RDP (AMPtk)\nsubmitted", "Final: SILVA,\nLactobacillaceae\nGTDB + our 16S"), expand = c(0.45, 0)) +
+  scale_x_discrete(limits = c("RDP (AMPtk)\nsubmitted", "SILVA + GTDB\n+ curated 16S\n(final)"), expand = c(0.45, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
   scale_fill_manual(values = pal, guide = "none") +
   theme_void(base_size = 13) +

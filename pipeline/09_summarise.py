@@ -35,7 +35,7 @@ for r in lab:
     r["best_ours"], r["id_ours"] = bo.get(a, ("", ""))
     r["best_gtdb"], r["id_gtdb"] = bg.get(a, ("", ""))
 
-cols = ["RDP", "SILVA", "GTDB", "GTDB+ours", "tree"]
+cols = ["RDP", "SILVA", "GTDB", "GTDB+ours", "tree", "final"]
 with open(O + "09_asv_labels_full.tsv", "w") as o:
     keys = ["ASV", "reads", "amptk_lacto"] + cols + ["GTDB+ours_sens", "placed", "tree_LWR",
             "best_ours", "id_ours", "best_gtdb", "id_gtdb"]
@@ -57,6 +57,9 @@ agree = sum(int(r["reads"]) for r in lac if r["tree"] == r["GTDB+ours"])
 print(f"SINTAX(GTDB+ours) vs tree agreement: {100*agree/ltot:.2f}% of Lactobacillaceae reads")
 ch = [r["ASV"] + f"({r['GTDB+ours']}->{r['GTDB+ours_sens']},{r['reads']})" for r in lab if r["GTDB+ours"] != r["GTDB+ours_sens"]]
 print("sensitivity changes:", len(ch), ch)
+org = [r for r in lab if r["final"].startswith("Organelles")]
+print(f"organelle 16S (SILVA): {len(org)} ASVs, {sum(int(r['reads']) for r in org)} reads; "
+      f"final = tree for every Lactobacillaceae ASV placed: {all(r['final'] == r['GTDB+ours'] for r in lab if r['placed'] == 'yes')}")
 for nm, k in (("ours", "id_ours"), ("GTDB", "id_gtdb")):
     v = sum(int(r["reads"]) for r in lac if r[k] and float(r[k]) >= 99)
     print(f"best hit >=99% to {nm}: {100*v/ltot:.2f}% of Lactobacillaceae reads")

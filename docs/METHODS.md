@@ -57,6 +57,15 @@ the decisions recorded in Tables S1 and S2.
 
 RDP labels come from the AMPtk taxonomy of the package with the same rule. *Lactobacillaceae ASVs* are the 69 that AMPtk assigned to that family (20,998 of 23,491 reads).
 
+**Organelle 16S (pipeline 07).** GTDB has no mitochondrial or chloroplast 16S, so SINTAX against GTDB puts organelle reads on the closest bacterium (473 reads of two ASVs became *Microbacterium*; by BLAST they are 93 % identical to the *Aspergillus niger* mitochondrion, see `docs/exploratory_figures.md`). Before any other label, ASVs whose SILVA classification passing the cutoff has `f:Mitochondria` or `o:Chloroplast` are labelled "Organelles (mitochondria, chloroplast)" in the SILVA, GTDB, GTDB + ours and sensitivity columns (21 ASVs, 589 reads). RDP keeps the submitted labels.
+
+**Final classification (Table 6.5; pipeline 07, column `final`):**
+1. organelle 16S as above;
+2. ASVs whose GTDB + ours classification passing the cutoff is in Lactobacillaceae (the same 69 ASVs) take the GTDB + ours label;
+3. every other ASV takes the SILVA label.
+
+GTDB + ours is used only for Lactobacillaceae, where placement and identity back it up. For the other bacteria SILVA agrees with RDP and with BLAST, while GTDB sent *Haemophilus* (ASV59, 100 % to *H. parainfluenzae*) to *Escherichia* and *Fusobacterium* (ASV112) to *Rothia*. No Lactobacillaceae ASV is an organelle; the pipeline stops if one is.
+
 ## 4. Best-hit identity (pipeline 03–04)
 
 Each of the 69 Lactobacillaceae ASVs was compared with our 16S and with GTDB r226 alone using an exhaustive search: `vsearch --usearch_global --maxaccepts 0 --maxrejects 0 --top_hits_only --id 0.5`.
@@ -100,7 +109,8 @@ The GTDB set excludes every sequence with an ambiguous base (N). vsearch counts 
 **Fungi.** The 15 most abundant ITS1 genera are shown; the rest are grouped as Other, and reads without genus as Unclassified.
 
 **Bacteria.**
-- One stacked bar per classification (RDP, SILVA, GTDB, GTDB + ours, tree placement), with all 23,491 reads.
+- One stacked bar per classification (RDP, SILVA, GTDB, GTDB + ours, tree placement, and the final SILVA + GTDB + curated), with all 23,491 reads.
+- Organelle 16S is its own dark grey segment (all bars except RDP).
 - Labels below 0.3 % of the reads in every bar are grouped as Other; Unclassified stays separate.
 - Colours are RColorBrewer Paired in alphabetical order, Other grey and Unclassified light grey.
 
@@ -116,6 +126,8 @@ The GTDB set excludes every sequence with an ambiguous base (N). vsearch counts 
 | Quantity | Value |
 |---|---|
 | Clade 3-4 (GTDB + ours), % of all 16S reads | 88.84 |
+| Organelle 16S (SILVA), ASVs / reads / % of all 16S reads | 21 / 589 / 2.51 |
+| Final classification, % of all 16S reads | Clade 3-4 88.84, *Dysgonomonas* 1.50, *Haemophilus* 0.99, *Comamonas* 0.60, *Acetilactobacillus* 0.52, Unclassified 0.55 |
 | Clade 3-4, % of Lactobacillaceae reads (SINTAX and tree) | 99.39 |
 | SINTAX vs tree, same label | 99.98–99.99 % of Lactobacillaceae reads |
 | Sensitivity run | only ASV83 (2 reads) changes |

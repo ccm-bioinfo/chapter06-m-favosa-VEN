@@ -37,12 +37,15 @@ a <- txt10(readRDS("results/14_fig6_4/fig6_4A_v2.rds")) + th +
   theme(legend.position = "right") + guides(fill = guide_legend(ncol = 1))
 b <- txt10(readRDS("results/12_figures/fig1_genus_by_method_v2.rds")) + th +
   labs(tag = "B", title = "Bacteria (16S rRNA) by reference", subtitle = NULL) +
-  scale_x_discrete(labels = c("RDP\n(AMPtk)", "SILVA\n138.2", "GTDB\nr226", "GTDB\n+ our\n16S", "Tree\n(EPA-ng)")) +
-  theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+  scale_x_discrete(labels = c("RDP (AMPtk)", "SILVA 138.2", "GTDB r226", "GTDB + our 16S", "Tree (EPA-ng)",
+                              "SILVA + GTDB + curated")) +
+  theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+        axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1)) +   # six methods: slanted, one line each
   theme(legend.position = "right") + guides(fill = guide_legend(ncol = 2, byrow = FALSE))
 sc <- b$scales$get_scales("fill")
 sc$labels <- lapply(sc$breaks, function(l)
   if (l %in% c("Other", "Unclassified", "Lactobacillaceae (no genus)")) l
+  else if (grepl("^Organelles", l)) "Organelles (mitochondria,\nchloroplast)"
   else if (grepl("Clade", l)) ital(l) else bquote(italic(.(l))))
 
 # ---- C ---------------------------------------------------------------------------------------------

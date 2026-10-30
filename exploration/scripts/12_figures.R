@@ -19,7 +19,7 @@ CLADE_COL <- c("Clade 3-4 Acetilactobacillus-like" = "#D55E00",   # Clades 3 and
 METHODS <- c("RDP (AMPtk)" = "RDP (AMPtk)\nsubmitted, Fig. 6.4B", "SILVA 138.2" = "SILVA 138.2",
              "GTDB r226" = "GTDB r226", "GTDB + our 16S" = "GTDB r226\n+ our 16S",
              "Tree placement (EPA-ng)" = "Tree placement\n(EPA-ng)",
-             "Final (SILVA + GTDB + our 16S)" = "Final: SILVA,\nLactobacillaceae\nGTDB + our 16S")
+             "Final (SILVA + GTDB + our 16S)" = "SILVA + GTDB\n+ curated 16S\n(final)")
 s <- read.delim("results/11_compare/summary_genus_all.tsv", stringsAsFactors = FALSE)
 keep <- unique(s$genus[s$pct_reads >= 0.3])                  # shown in at least one bar, as in Fig. 6.4B
 s$genus[!s$genus %in% keep] <- "Other"

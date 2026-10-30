@@ -4,10 +4,11 @@ suppressPackageStartupMessages({library(ape); library(ggtree); library(ggplot2);
   library(RColorBrewer); library(dplyr)})
 D <- Sys.getenv("CH06_WORK"); I <- Sys.getenv("CH06_INPUTS")
 F <- file.path(D, "figures"); dir.create(F, showWarnings = FALSE)
-pal_for <- function(labs) {           # Paired in alphabetical order; Other grey, Unclassified light grey
-  g <- sort(setdiff(labs, c("Other", "Unclassified")))
+ORG <- "Organelles (mitochondria, chloroplast)"
+pal_for <- function(labs) {           # Paired in alphabetical order; Other grey, Unclassified light grey, organelles dark grey
+  g <- sort(setdiff(labs, c("Other", "Unclassified", ORG)))
   cols <- if (length(g) <= 12) brewer.pal(12, "Paired")[seq_along(g)] else colorRampPalette(brewer.pal(12, "Paired"))(length(g))
-  c(setNames(cols, g), Other = "grey50", Unclassified = "grey85")
+  c(setNames(cols, g), Other = "grey50", Unclassified = "grey85", setNames("grey30", ORG))
 }
 # ---- fungi ----
 its <- read.delim(file.path(I, "its/ITS_genus_counts_Mfav.tsv"), check.names = FALSE)
@@ -21,14 +22,15 @@ pf <- ggplot(fz, aes(bar, p, fill = lab)) + geom_col(width = 0.6) + scale_fill_m
   labs(x = NULL, y = "% of reads", fill = "Fungal genus", title = "Fungal composition (ITS1)") + theme_bw()
 # ---- bacteria ----
 L <- read.delim(file.path(D, "results/09_asv_labels_full.tsv"), check.names = FALSE)
-cls <- c("RDP", "SILVA", "GTDB", "GTDB+ours", "tree")
+cls <- c("RDP", "SILVA", "GTDB", "GTDB+ours", "tree", "final")
 long <- do.call(rbind, lapply(cls, function(c) data.frame(bar = c, lab = L[[c]], reads = L$reads)))
 long <- long %>% group_by(bar, lab) %>% summarise(n = sum(reads), .groups = "drop") %>% group_by(bar) %>%
   mutate(p = 100 * n / sum(n)) %>% ungroup()
-keep <- long %>% group_by(lab) %>% summarise(m = max(p)) %>% filter(m >= 0.3 | lab == "Unclassified") %>% pull(lab)
+keep <- long %>% group_by(lab) %>% summarise(m = max(p)) %>% filter(m >= 0.3 | lab %in% c("Unclassified", ORG)) %>% pull(lab)
 long <- long %>% mutate(lab = ifelse(lab %in% keep, lab, "Other")) %>% group_by(bar, lab) %>% summarise(p = sum(p), .groups = "drop")
-long$bar <- factor(long$bar, levels = cls, labels = c("RDP", "SILVA", "GTDB", "GTDB + our 16S", "Tree placement"))
-bl <- c(sort(setdiff(unique(long$lab), c("Other", "Unclassified"))), "Other", "Unclassified")
+long$bar <- factor(long$bar, levels = cls, labels = c("RDP", "SILVA", "GTDB", "GTDB + our 16S", "Tree placement",
+                                                   "SILVA + GTDB + curated"))
+bl <- c(sort(setdiff(unique(long$lab), c("Other", "Unclassified", ORG))), "Other", "Unclassified", ORG)
 long$lab <- factor(long$lab, levels = bl)
 pb <- ggplot(long, aes(bar, p, fill = lab)) + geom_col(width = 0.7) + scale_fill_manual(values = pal_for(bl)) +
   labs(x = NULL, y = "% of reads", fill = "Bacterial label", title = "Bacterial composition (16S V4)") +

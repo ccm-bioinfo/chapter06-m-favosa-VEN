@@ -2,10 +2,13 @@
 # 07_labels.py - Per-ASV labels for RDP (AMPtk, from the package), SINTAX SILVA, GTDB, GTDB+ours and the
 # sensitivity run (clade if any at species rank, else genus, else "Lactobacillaceae (no genus)", else
 # "Unclassified"); writes the FASTA of ASVs to place (GTDB+ours = Nicoliella/Acetilactobacillus/clade or
-# Lactobacillaceae without genus).
+# Lactobacillaceae without genus). Organelle 16S (SILVA f:Mitochondria or o:Chloroplast at the cutoff) is set
+# apart first in every SINTAX column, because GTDB has no organelles; "final" = Lactobacillaceae (GTDB+ours at
+# the cutoff) named with GTDB+ours, every other ASV with SILVA (Table 6.5).
 import csv, os
 W = os.environ["CH06_WORK"] + "/"; I = os.environ["CH06_INPUTS"] + "/"
 NOGEN = ("uncultured", "unknown", "unidentified", "metagenome", "incertae")
+ORGANELLE = "Organelles (mitochondria, chloroplast)"
 
 def lab_from(ranks):
     s, g, f = ranks.get("s", ""), ranks.get("g", ""), ranks.get("f", "")
@@ -20,7 +23,7 @@ def sintax(p):
         x = l.rstrip("\n").split("\t")
         r = dict(t.split(":", 1) for t in x[3].split(",") if ":" in t) if len(x) > 3 and x[3] else {}
         full = x[1] if len(x) > 1 else ""
-        out[x[0]] = (lab_from(r), full)
+        out[x[0]] = (lab_from(r), full, r)
     return out
 
 tab = list(csv.DictReader(open(I + "asv/B-VEN-D9_ASV_table.tsv"), delimiter="\t"))
@@ -33,16 +36,20 @@ for l in open(I + "asv/B-VEN-D9_ASVs.fa"):
     if l.startswith(">"): h = l[1:].split()[0].split(";")[0]; asv[h] = ""
     else: asv[h] += l
 with open(W + "results/07_asv_labels.tsv", "w") as o, open(W + "work/place_query.fa", "w") as q:
-    o.write("ASV\treads\tamptk_lacto\tRDP\tSILVA\tGTDB\tGTDB+ours\tGTDB+ours_sens\tsintax_gtdb_ours_full\n")
+    o.write("ASV\treads\tamptk_lacto\tRDP\tSILVA\tGTDB\tGTDB+ours\tGTDB+ours_sens\tfinal\tsintax_gtdb_ours_full\n")
     nq = 0
     for r in tab:
         t = r["amptk_taxonomy"].replace('"', "")
         rr = dict(x.split(":", 1) for x in t.split(",") if ":" in x)
         rdp = lab_from({"g": rr.get("g", ""), "f": rr.get("f", "")})
         a = r["ASV"]
-        L = [runs[k][a][0] for k in ("SILVA", "GTDB", "GTDB+ours", "GTDB+ours_sens")]
+        org = runs["SILVA"][a][2].get("f") == "Mitochondria" or runs["SILVA"][a][2].get("o") == "Chloroplast"
+        L = [ORGANELLE if org else runs[k][a][0] for k in ("SILVA", "GTDB", "GTDB+ours", "GTDB+ours_sens")]
+        lacto = runs["GTDB+ours"][a][2].get("f") == "Lactobacillaceae"
+        assert not (org and lacto), a + ": organelle and Lactobacillaceae"
+        final = L[2] if lacto else L[0]
         o.write(f"{a}\t{r['reads']}\t{'yes' if rr.get('f') == 'Lactobacillaceae' else 'no'}\t{rdp}\t" +
-                "\t".join(L) + f"\t{runs['GTDB+ours'][a][1]}\n")
+                "\t".join(L) + f"\t{final}\t{runs['GTDB+ours'][a][1]}\n")
         if L[2] in ("Nicoliella", "Acetilactobacillus", "Lactobacillaceae (no genus)") or L[2].startswith("Clade"):
             q.write(f">{a}\n{asv[a]}\n"); nq += 1
 print("ASVs to place:", nq)

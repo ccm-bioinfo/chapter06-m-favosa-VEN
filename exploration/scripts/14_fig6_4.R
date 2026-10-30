@@ -64,7 +64,8 @@ b <- b + common
 p <- a + b + plot_layout(widths = c(1, 4.2)) &
   plot_annotation(caption = paste("Melipona favosa pot-honey (10MFH). (A) The 15 most abundant fungal genera; other genera as Other, reads without genus as Unclassified.",
                                   "(B) The same 16S ASVs classified with RDP (submitted), SILVA 138.2, GTDB r226, GTDB r226 + our 16S",
-                                  "from stingless bee MAGs and genomes, and EPA-ng tree placement; genera < 0.3% in every bar as Other;",
+                                  "from stingless bee MAGs and genomes, EPA-ng tree placement, and the final SILVA + GTDB + curated 16S (Lactobacillaceae with",
+                                  "GTDB + our 16S, the rest with SILVA); genera < 0.3% in every bar as Other;",
                                   "organelle 16S (SILVA mitochondria/chloroplast) removed first and shown apart, except in RDP.",
                                   sep = "\n"),
                   theme = theme(plot.caption = element_text(size = 10, hjust = 0)))

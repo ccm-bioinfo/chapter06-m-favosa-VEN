@@ -5,7 +5,7 @@
 #      10 pt its 109 tip labels need a ~9.8 in circle; its legends to its right; page 17.4 x 9.8 in (wide and short, leaving room for the caption).
 # Arial; tree tip labels 10 pt, every other text 14 pt; genera and species in italics (GTDB species with the genus abbreviated, as the shading
 # legend names the genera), little white space; editable SVG.
-# Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/*_v4
+# Usage (Mac, after 12_figures.R and 14_fig6_4.R): Rscript exploration/scripts/17_fig6_4_full.R -> results/17_fig6_4_full/*_v5
 suppressPackageStartupMessages({ library(ape); library(ggplot2); library(ggtree); library(patchwork) })
 out <- "results/17_fig6_4_full"; dir.create(out, showWarnings = FALSE)
 FS <- 14; TIP_PT <- 10; FONT <- "Arial"   # legends, axes and titles at 14 pt; tree tip labels at 10 pt
@@ -31,15 +31,15 @@ th <- theme_bw(base_size = FS, base_family = FONT) +
         legend.text.align = 0, legend.key.size = unit(0.5, "cm"), legend.margin = margin(0, 0, 0, 0),
         legend.box.spacing = unit(2, "pt"), plot.margin = margin(2, 2, 2, 2), panel.grid.major.x = element_blank())
 
-SAMPLE <- "Pot honey 10MFH"   # sample of both panels, as x-axis title under each bar group
+SAMPLE <- "Pot honey 10MFH"   # sample of both panels, one label centred under A and B
 # ---- A and B --------------------------------------------------------------------------------------
 a <- txt10(readRDS("results/14_fig6_4/fig6_4A_v2.rds")) + th +
-  labs(tag = "A", title = "Fungi (ITS1)", x = SAMPLE) +
-  scale_x_discrete(labels = "AMPtk (UNITE)") +   # the fungal classification method, as in B (AMPtk taxonomy -d ITS1)
+  labs(tag = "A", title = "Fungi (ITS1)", x = NULL) +
+  scale_x_discrete(labels = "UNITE (AMPtk)") +   # the fungal classification method, written as in B (amptk taxonomy -d ITS1)
   theme(axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1)) +
   theme(legend.position = "right") + guides(fill = guide_legend(ncol = 1))
 b <- txt10(readRDS("results/12_figures/fig1_genus_by_method_v2.rds")) + th +
-  labs(tag = "B", title = "Bacteria (16S rRNA) by reference", subtitle = NULL, x = SAMPLE) +
+  labs(tag = "B", title = "Bacteria (16S rRNA) by reference", subtitle = NULL, x = NULL) +
   scale_x_discrete(labels = c("RDP (AMPtk)", "SILVA 138.2", "GTDB r226", "GTDB + our 16S", "Tree (EPA-ng)",
                               "SILVA + GTDB + curated")) +
   theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(),
@@ -104,10 +104,11 @@ a <- a + theme(legend.position = "none")
 b <- b + theme(legend.position = "none")
 p <- p + theme(legend.position = "none")
 # left: short stacked bars over the fungal and bacterial genus legends (bacterial next to the tree); right: tree legends
-left <- (a + b + plot_layout(widths = c(1, 3.2))) / (wrap_elements(full = legA) | wrap_elements(full = legB)) +
-  plot_layout(heights = c(5, 4.8))
+sample_lab <- wrap_elements(full = grid::textGrob(SAMPLE, gp = grid::gpar(fontsize = FS, fontfamily = FONT)))
+left <- (a + b + plot_layout(widths = c(1, 3.2))) / sample_lab / (wrap_elements(full = legA) | wrap_elements(full = legB)) +
+  plot_layout(heights = c(5, 0.3, 4.5))
 fig <- wrap_plots(left, wrap_elements(full = p), wrap_elements(full = legC), widths = c(6.2, 9.8, 4.9))
-ggsave(file.path(out, "fig6_4_full_v4.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
-ggsave(file.path(out, "fig6_4_full_v4.png"), fig, width = W, height = H, dpi = 250, bg = "white")
-ggsave(file.path(out, "fig6_4_full_v4.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text
+ggsave(file.path(out, "fig6_4_full_v5.pdf"), fig, width = W, height = H, device = function(filename, ...) grDevices::quartz(type = "pdf", file = filename, ...))
+ggsave(file.path(out, "fig6_4_full_v5.png"), fig, width = W, height = H, dpi = 250, bg = "white")
+ggsave(file.path(out, "fig6_4_full_v5.svg"), fig, width = W, height = H, device = svglite::svglite, fix_text_size = FALSE)   # editable text
 message("written ", out)
